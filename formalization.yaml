@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/99c678e569c7c4c0772db297c5ddd5e4c9b6322e/schema/v0.4.schema.json
+version: "v0.4"
+project:
+  name: Algebraic Direct Limits
+  description: >-
+    Reusable Lean results for varying-scalar directed limits, tensor products,
+    countably cofinal inverse systems, simple filtered ring colimits,
+    localization of countable products, and cofinal group completions.
+  authors:
+    - Formal Frontier Agents
+  license: Apache-2.0
+sources:
+  - title: "Stacks Project, Algebra, Lemma 10.86.3: Mittag-Leffler systems"
+    id: https://stacks.math.columbia.edu/tag/0597
+    type: web post
+    relationship: background
+    note: >-
+      A related countable-index nonempty-section result; this library also
+      handles directed preorders with a countable cofinal subset. This entry
+      does not assert source-by-source correspondence or complete coverage.
+    author_endorsement: n/a
+  - title: mathlib4 mathematical library
+    id: https://github.com/leanprover-community/mathlib4/tree/83abb3e776bdefcbc447a1e44d0debe4010039e5
+    type: software
+    relationship: background
+    note: >-
+      Reused formal foundations; the manifest pins the exact dependency.
+    author_endorsement: n/a
+automation:
+  methods:
+    - method: agent
+      models: []
+      framework: Codex CLI and Formal Frontier agent workflows
+      tool_setup: Pinned Lean 4 and mathlib, Lake, Git, and independent review workflow
+  notes: >-
+    Existing mathematics was developed by AI-assisted project agents. This
+    ordinary-main assembly is also agent-authored; model identifiers for all
+    preceding stages are not established here. Authorship is not review.
+status:
+  scope: >-
+    Seven mathematical modules, a public re-export and three checked boundary
+    and usage clients with their test-target root. Graded normalization is a
+    type equivalence, not an additive equivalence; cancellation is required
+    only for the degree target in its surjective/equivalence results. This is
+    not a full theory or a source-coverage assessment.
+  sorry_count: 0
+  sorry_in_definitions: 0
+review:
+  status: "other: revision-specific independent agent reviews recorded below"
+  reviewers:
+    - "formalization-worker-b (historical artifact review 3084)"
+    - "formalization-worker-a (historical promotion-applicability review 3100)"
+  notes: >-
+    Earlier accepted mathematical candidates have separate development review
+    records. On 2026-09-25, fresh non-author Worker B Task
+    hive-request-8e9ddfe5d5d73fd15a2132bd9d7c4d95341d6d0e
+    (UID 2abe09db-723a-4d8d-a7e7-ca5fcc109ec7) reviewed the complete internal
+    artifact at bbdcf43d28dd92312484adba53fe20b5b35a2f75, tree
+    484435e286e89e9ed97790145000b1b4e9f89e8b, in review 3084. Its scope included
+    all shipped files and public APIs, build evidence, the complete own-declaration
+    axiom census and separate stored-body recheck, generated documentation,
+    provenance and rights, with retained nonpasses explicitly distinguished.
+    Fresh non-author Worker A Task
+    hive-request-b941779ed60f721a6ee1375f7188ffdb64c91ea6
+    (UID 1c737f92-d899-477f-a55a-ea757fb3efa0) separately reviewed release-prep
+    promotion applicability for that identical commit and tree in review 3100,
+    reusing the applicable artifact evidence without a duplicate build or proof
+    audit. These reviews did not approve a public commit history, GitHub
+    publication or source-text coverage. They are historical reviews of the
+    named revision, not self-certification of this metadata or approval of later
+    changes. Each exact release candidate requires
+    applicable independent review, complete proof-integrity audit, release/rights
+    acceptance and a separate publication decision. Contributor/provenance details
+    are shipped in docs/CREDITS.md. Native API display records and supplementary
+    notes are distinguished in docs/README.md and are not proof certification.
+acknowledgements: >-
+  The mathlib community's separately licensed library supplies foundational
+  definitions and results. Mathematical references are background, not claims
+  of endorsement, copied expression or formalized source coverage.

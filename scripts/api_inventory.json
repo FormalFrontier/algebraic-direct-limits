@@ -1,0 +1,578 @@
+{
+  "Algebra.GrothendieckAddGroup.GradedStabilization.degreeDirectedSystem": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "instance",
+    "display_kind": "instance",
+    "header_sha256": "647798e7f441135c4d1d1976d9d6a61b91774874fa652f3ee886f4a8945ef0f7"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.degreeFiber": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "2894a22f8ce0268f517f4c4cbf29fdb42384fbe2927a7d8deddcc91642a198e1"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.exists_normalized_representative": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "2dd0b21624a31066c37209a2b1b4ccf6b3027c897359f7dd7cf6e825fc843b70"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.inducedDegree": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "c16c7fcc23a79c38315cdc83fc0a8fca93f0c66f75ec797c948182a6b4b5cc5d"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.inducedDegree_addMonoidOf": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "d7d3b1ae1df1905cdc6d60f41384b17eacdc509c2ba6cd73c25d5c3387143bc3"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.inducedDegree_of": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "9e9971aaddf280b2866ebe804f73fd7bc9c3ee31ec4e6999b1ed1f1f3c1997cb"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.mk_eq_iff": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "0699c4ca10c0bb51b9593be11aa540a203b39ab2710c151173b0fd53b3112353"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.mk_same_stage_eq_iff": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "cb584a3fa3be20f2a53a40fd07f874f569fe7d3db72fb3a730edb1576a28714f"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalization": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "565c000e96bbf1704592dfa4dfde98c0b098ce0311d05dff208f448f019349a2"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalizationEquiv": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "b4728f1732080c660124e3d3f9d0d573cd07031a8b47440c18af5dee079ce8d7"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalizationEquiv_mk": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "b5b44e2c46cb08622f42e4a37da5d59c30ef05379412426108da33227a714db6"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalizationEquiv_symm_eq_mk": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "ded39a36406235ecd21f0615550c22ef849da647619a21c853732573b8905cbd"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalization_injective": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "e9e963129c10dab801fcf7b67a3b206df5da3982a7621dad92cbb961546e8817"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalization_mk": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "f4e40a1a0349d2a778e3aa90bb04d295cdcbf07200f8f85137d1965e0b6feb6c"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalization_surjective": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "483339e7f1f366c4900fa536e8efe935c585a8b11f66639fadbb6275781709cc"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalizedAt": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "9445219f702efcc85ae576ce102b415b1ff659766c6a979c3e21a36aa6b8c721"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalizedAt_transition": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "3200805efd6d7ed903a2e77a67314a71f232a5b23b6865d29aa921f8806a9678"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.normalized_eq_iff": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "5881a202e144020fe05390480c589f2d566a4f96569390196844146a58ace262"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.of_eq_iff_cyclic_stabilizer": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "7ab97bfe642c29b26de7d77f4aee2ea0a7884dc34afca98e96ff7578bf76e0cd"
+  },
+  "Algebra.GrothendieckAddGroup.GradedStabilization.transition": {
+    "module": "AlgebraicDirectLimits.GradedStabilization",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "e80879dd6490ff3aa76ef2d89569bb24f4262053982770192099ca3744366c84"
+  },
+  "Algebra.GrothendieckAddGroup.exists_cofinal_denominator": {
+    "module": "AlgebraicDirectLimits.CofinalGroupCompletion",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "d4b19e97b079ad8bef20c62191d79b086174ab41d81dbc47a127069e460b6b2c"
+  },
+  "Algebra.GrothendieckAddGroup.isLocalizationMap_of_saturation_eq_top": {
+    "module": "AlgebraicDirectLimits.CofinalGroupCompletion",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "859ea0b6a75377342e7647afe6f5974fbd5df615c14a39f0037a77969446526c"
+  },
+  "Algebra.GrothendieckAddGroup.lift_subtype_injective": {
+    "module": "AlgebraicDirectLimits.CofinalGroupCompletion",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "be6413a944ef41a2f2202a1319fc4e3ca6b459195ac4f5150141bdb1c584a43b"
+  },
+  "Algebra.GrothendieckAddGroup.of_eq_iff_exists_cofinal_stabilizer": {
+    "module": "AlgebraicDirectLimits.CofinalGroupCompletion",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "9a140aa3c1b47f629b81268aff241a2e015e63cf0a7f3f18ba7267781424846e"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbingEquiv": {
+    "module": "GradedStabilizationClient",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "1797c55c1b6a021c2cea9bb79816e873d7f9b4f570a50dd321346784f82013ea"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbingOne": {
+    "module": "GradedStabilizationClient",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "2c961457e2ed5f03d979ec3a4e0e0fc0b90524976c3728f211b98f72bfd3d6a7"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbingZero": {
+    "module": "GradedStabilizationClient",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "06bcd4dddd8423c9594df1be508e03efc5ffd194212c18223253e010fa8d2718"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbing_cofinal": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "459fd27f54ddab9b5901402a7d0ad8c78e2d5e1c3e167f4e508c18db49e99341"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbing_limit_equal": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "5032b4e2b196c62b293523fd37f09d38a747f889395beb69d4bef532db839e74"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbing_representatives_distinct": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "60e1745c14348b03d3fa5a9a8a53e4d6641aae9719084e75799b6dd15826b7cc"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.absorbing_transition_not_injective": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "bf2f126586d9bf07efde6132e937ae8e5a3f3e7c7a10b59dc6ac31ace51bafeb"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.arbitrary_target_cross_stage": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "8a7051d639338d358dd5bc41fcc1bb044627c1e4953bfebc0ec1ecbfe90d40e0"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.componentwiseEquiv": {
+    "module": "GradedStabilizationClient",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "54892e4fe38d642d2f6624c8e68adb6e6449a9764c2f022ca61f535ab1f1585c"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.groupZeroEquiv": {
+    "module": "GradedStabilizationClient",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "3516755f1657967f232922805339e6dd7be4d543a48dda067ff1abdd9c072867"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.group_zero_cofinal": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "9d2dcdec1030447cf4ed7bc805bf1c8e2eea9af1147a7abf404bb3cba94f41ea"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.nat_one_cofinal": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "480a06c35026e0c912505cb3dc57280452b7a8f05b394b2360dfd487516383b4"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.product_diagonal_cofinal": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "d08c08da9a427bf9b1184f399e4f7e83f7b97e7b364cb2060b14bc19c7aa7162"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.zeroDegreeEquiv": {
+    "module": "GradedStabilizationClient",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "cade64a39b86491fa7e9688bafc63152107989c42cd3f232c1facfa6f2835380"
+  },
+  "AlgebraicDirectLimits.Tests.GradedStabilization.zero_degree_distinguishes": {
+    "module": "GradedStabilizationClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "bc6ad982fd25e244b76051c16e27b77ab85b0c30fc363700c48c39d78c8cab27"
+  },
+  "CategoryTheory.Functor.IsMittagLeffler.comp_monotone_cofinal": {
+    "module": "AlgebraicDirectLimits.MittagLeffler",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "7ae54bcec73520d8c3a9c1096829336a9e3bdd9f0e339eb38f961090a8bb52da"
+  },
+  "CategoryTheory.Functor.IsMittagLeffler.nonempty_sections_of_countable_cofinal": {
+    "module": "AlgebraicDirectLimits.MittagLeffler",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "277dc59eeaac5cc2fce7b7858c21424d2dd0b8d1812cdecfac30b880971749b3"
+  },
+  "CategoryTheory.Functor.IsMittagLeffler.surjective_evalSectionToEventualRange": {
+    "module": "AlgebraicDirectLimits.MittagLeffler",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "1b04c1fb52f330b9c972b80b7069bf36e413e0cca5cb41d75eef4a63603524ae"
+  },
+  "CategoryTheory.Functor.evalSectionToEventualRange": {
+    "module": "AlgebraicDirectLimits.MittagLeffler",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "e98c509f359ef4c2ee95cfb87cf5b22111e3fbf1b5703e03aed972479732167f"
+  },
+  "CategoryTheory.Functor.nonempty_sections_of_surjective_inverse_sequence": {
+    "module": "AlgebraicDirectLimits.MittagLeffler",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "668e9c6b179f057040a8461f1d247b641b62482d70be2dc9afd938890e6dab6a"
+  },
+  "CofinalGroupCompletionClient.evens": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "3f7e235ff26afb2a7fd7f78db9bb83bd02c90abb6fb19795a703d126fd035d5e"
+  },
+  "CofinalGroupCompletionClient.evens_completion_injective": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "7ab45b3a9c29c3257f3e92e24e214dcdc63254323fc9d3535f1df70341782164"
+  },
+  "CofinalGroupCompletionClient.evens_denominators": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "62e8033ae6fd0a87105946d42f1f935b8ef55c28d1a87ebca3d123d7186e4763"
+  },
+  "CofinalGroupCompletionClient.evens_proper": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "2ae95ce3f177bfe992a98e08f200caf5939cb33088dda55f96320e10d18776a2"
+  },
+  "CofinalGroupCompletionClient.evens_saturation": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "42d85859f60e761c069bb773669d32b673f7d8c7bdd0a38f32a16f31064a40c9"
+  },
+  "CofinalGroupCompletionClient.noncancellative_canonical_map_not_injective": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "5a11df6324d4d53e1efe707773263d924fd0ef5a4e2003173c9338edeac0f030"
+  },
+  "CofinalGroupCompletionClient.noncancellative_completion_injective": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "49082719f0a437e76efc83f30f06c2f09fa00e331fed0eddb25ffb5f23063563"
+  },
+  "CofinalGroupCompletionClient.punit_completion_injective": {
+    "module": "CofinalGroupCompletionClient",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "3d67a7ce330f21ff042fdb494ca3ee6ce943f7d1060bc47106a857dccb97105a"
+  },
+  "DirectLimit.VaryingScalar.ScalarLimit": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "abbrev",
+    "header_sha256": "2ef926405d2609e50495e959eef243095d39b9794a0e31d00b30db52cb5c1d8b"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimit": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "f262368b3e238dbf0833d2051b7ad5a45ca0bbb288d889a8a870a3c7e86d9e55"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimitDef": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "28852c007bc8d12777fe7f2e92826943aebdeab50a25b1f65cf28e0f345f8ea1"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimitDef_add": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "e6e36794ac49e35e016e0cd2da2702ed89bf67214feff94c41ec0d25a43960b1"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimitDef_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "def8a66ac647f98922b8fe95d39da65fb873d8293e41494e8be441f004e43c90"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimitDef_smul": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "4593525a88fb4f937295147ba289d06a378367c426c4eeb4060c3273b78cd9e0"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimit_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "fb7283beef9d6f93e6c35a94ecb79e33be98e6a9492eba36bdac71cced54fb13"
+  },
+  "DirectLimit.VaryingScalar.fromTensorLimit_toTensorLimit": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "74dd52789501f6897e55f7f09bd5cf63b4cb7ce3576c1c4440ac82e9591a461e"
+  },
+  "DirectLimit.VaryingScalar.instDirectedSystemTensorProduct": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "instance",
+    "display_kind": "instance",
+    "header_sha256": "caa142c59c2e7396e0598f0f9ba6b7eb905bad4e672c0c7832a0839aad498b8d"
+  },
+  "DirectLimit.VaryingScalar.instModule": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "instance",
+    "display_kind": "noncomputable instance",
+    "header_sha256": "3a8c651bcefe52a88fa1f4128ff4b3911d51f5df13c601ba587621317a19987a"
+  },
+  "DirectLimit.VaryingScalar.of": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "0102ce936a5dd68e74d55384accd17c12be3adb5c674a78243ade70f435b5a94"
+  },
+  "DirectLimit.VaryingScalar.of_apply": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "5e06d4ee0fe302c4f1540c52e75983f8ad6d4ca4e016c05d8037dbea1f1bfbc5"
+  },
+  "DirectLimit.VaryingScalar.of_map": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "ae997dea1c8a65eaa7cce61a6bb60c90ad7fa8d880c4ec2ef038dedc0247c5c5"
+  },
+  "DirectLimit.VaryingScalar.pairing": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "97312046207b5013c04729a9b6c33687c6341c61101a3e470e1df6918918fcc4"
+  },
+  "DirectLimit.VaryingScalar.pairingLinear": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "c97564b2ec9620aba04870875c199d47ca3be2b31c2b25679c2b40f042dbd4c1"
+  },
+  "DirectLimit.VaryingScalar.pairing_add_left": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "a16455fc0ee017d867c9cb89816520699b512462b0505eb38cc9f1d941a0b8aa"
+  },
+  "DirectLimit.VaryingScalar.pairing_add_right": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "6846a3fa5424120e1d8fd3678a7126ad53ed44cf156f130c31f60d620b5afa3b"
+  },
+  "DirectLimit.VaryingScalar.pairing_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "477d7f0197bcc178dca88d3a097aba4c101ff4e875d3b9109dd464930c2fed44"
+  },
+  "DirectLimit.VaryingScalar.pairing_smul_left": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "87bdd0ae2a9fa024ca0227c025aba65a568d8f3897c391e13bc0f038fa2ddc98"
+  },
+  "DirectLimit.VaryingScalar.pairing_smul_right": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "e8eca05ca7e587e674d4756e117e9c59d7053736775298985b0b3a7fe46f5c97"
+  },
+  "DirectLimit.VaryingScalar.smulDef": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "5272a99084b5a57c82c684ed7eebcd851986f06f5b001dc39750a89f330c5f75"
+  },
+  "DirectLimit.VaryingScalar.smulDef_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "c5a55a1b90c2c3bf082a84345b05412b2f85f998d1823ce222fcde849aac59c9"
+  },
+  "DirectLimit.VaryingScalar.smul_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "7cfc606144c240a387748875fb1b985bcfb9ae4129c650249825d147fc46d698"
+  },
+  "DirectLimit.VaryingScalar.tensorMap": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "2dd4c7f41072a5cd6fe2bc1cf3a36a2b754b3c036e1f1cb0ce52e155cf0cb36f"
+  },
+  "DirectLimit.VaryingScalar.tensorOf": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "def",
+    "header_sha256": "bf99fec774668a38c0f9496c832e6e0069fda0759063a4ead10909883edc1330"
+  },
+  "DirectLimit.VaryingScalar.tensorOf_apply": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "6877ef90e2a3c4b212548aef344ca8b524947a9e374149fdfcd0ae60cd659e8d"
+  },
+  "DirectLimit.VaryingScalar.tensorOf_map": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "4bb472e0d7b392079f71fb7a058c63b431fd7a70d00320880eb3a5c47463f3c2"
+  },
+  "DirectLimit.VaryingScalar.tensorProductEquiv": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "911ac99186aa9cb4d4b7e88bebdd64dccd6f716e8ef5f06460460872b4f7b8fe"
+  },
+  "DirectLimit.VaryingScalar.tensorProductEquiv_symm_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "c2552defed7b77245cad399b0e4c1df690af03422d15af254f56480be2f3fcbf"
+  },
+  "DirectLimit.VaryingScalar.tensorProductEquiv_tmul_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "617f2b3587e906e3c115bbd10c95f6efb702387502cf005872f7f0256598921f"
+  },
+  "DirectLimit.VaryingScalar.tensorProductEquiv_tmul_mk_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "831d174fac11dc63373f170af041824c4a662c6897c293d5f4dc7e428d66b259"
+  },
+  "DirectLimit.VaryingScalar.tensorToLimits": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "a7593e3d22dc34bd187fd87fd4affe16f9967068362f67c25e94dab52ac47579"
+  },
+  "DirectLimit.VaryingScalar.tensorToLimits_map": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "64d008fd23039dfdbd91d95ee67cca7b29d43d548a06ac03e3457fbdb843b779"
+  },
+  "DirectLimit.VaryingScalar.tensorToLimits_tmul": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "bfe5811acd93602ef0de2b538ca9c4ee8cd5d861d6620983715a0740da10c219"
+  },
+  "DirectLimit.VaryingScalar.toTensorLimit": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "616f61b9ccb11893b7a86154bfc76975973bd4d20df4c8bdada3bd912283f881"
+  },
+  "DirectLimit.VaryingScalar.toTensorLimit_fromTensorLimit": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "1d1a23bc9479eb5b6f903e15ad44acf94249e1ea451471cbcaaf1fc598a36f62"
+  },
+  "DirectLimit.VaryingScalar.toTensorLimit_tmul_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "0b64245f29662e8cc37f758c85d6505d13202e95d1810c6f87e3d09ded61e18d"
+  },
+  "DirectLimit.VaryingScalar.toTensorLimit_tmul_mk_mk": {
+    "module": "AlgebraicDirectLimits.VaryingScalar",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "154c5da17f0a78e5b732a8285618d2f92f4ce04387e218e6e5cd86500d26e131"
+  },
+  "IsCofinal.exists_final_functor_nat": {
+    "module": "AlgebraicDirectLimits.CofinalSequence",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "3f16e2a12463f4e0a8ba64c0c67432327e3a827d398cdf173488da5244bf749b"
+  },
+  "IsCofinal.exists_monotone_nat": {
+    "module": "AlgebraicDirectLimits.CofinalSequence",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "3c4c7522f49657878ff01b34983272acadfbf12085573e426a4db8c2b934d914"
+  },
+  "Localization.awayPiComparison": {
+    "module": "AlgebraicDirectLimits.LocalizationPi",
+    "kind": "def",
+    "display_kind": "noncomputable def",
+    "header_sha256": "05676f9bd8878a0d4a0ea8919c6cfeeb039d4c36951c653337d48fce3146bef2"
+  },
+  "Localization.awayPiComparison_algebraMap": {
+    "module": "AlgebraicDirectLimits.LocalizationPi",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "921b9285183c93bb75fd034305c0d1e5375568174ef890b035d26f347072af93"
+  },
+  "Localization.awayPiComparison_not_surjective": {
+    "module": "AlgebraicDirectLimits.LocalizationPi",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "334ea707a2845672316b2092685b40face88f1ef6e86ed5a7f8879da40487e1f"
+  },
+  "RingCat.FilteredColimits.colimit_isSimpleRing": {
+    "module": "AlgebraicDirectLimits.SimpleRing",
+    "kind": "theorem",
+    "display_kind": "theorem",
+    "header_sha256": "acfa36210c457d0eeb81d8652814f11bb23f2a60c0d5d4bab2c4870e24049f06"
+  }
+}
