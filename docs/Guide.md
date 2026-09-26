@@ -70,7 +70,7 @@ family with coordinate `r^(-n)` has no such bound. Evaluating a putative lift
 at `k+1` would make `r` a unit. The theorem is about the literal countable product;
 it does not assert failure for finite products, zero elements or units.
 
-## Cofinal submonoids and graded stabilization
+## Cofinal submonoids
 
 For an additive commutative monoid `M`, a submonoid `L` with top saturation means
 that every `m` has an ambient complement `c` with `m+c` in `L`. This is sufficient
@@ -79,6 +79,37 @@ for the canonical map to the Grothendieck additive group to be localization at
 two canonical images agree exactly when their representatives agree after adding
 one element of `L`. The map on group completions induced by inclusion of `L` is
 injective. None of these conclusions requires cancellation in `M`.
+
+## Monoidal object classes and actual image cofinality
+
+`CategoryTheory.MonoidalGroupCompletion.objectClass X` is the class of an
+object in the native `Additive (Skeleton C)`; its equality criterion is
+isomorphism of objects. This needs only a category. The tensor/unit formulas
+require a monoidal category but no braiding. For a strong monoidal functor
+`F : C ⥤ D`, `skeletonMap F` is the native skeleton monoid hom in additive
+notation; `imageSubmonoid F` is its *actual image* in the target skeleton.
+`mem_imageSubmonoid_iff` recovers an actual source object from any image class.
+
+When `D` is braided, `saturation_eq_top_iff F` identifies top saturation of
+that image with the explicit condition that every target `Y` admits target
+`Z` and source `X` with `Y ⊗ Z ≅ F.obj X`. No source braiding or full
+faithfulness is required here, in `exists_object_denominator`, or in
+`object_eq_iff_stabilizer`. These give actual image-object denominators and
+identify equality of completed object classes by tensoring both representatives
+with one `F.obj X`. No cancellation or essential surjectivity is assumed.
+
+If both categories are braided, `completionMap F` is precisely the native
+Grothendieck lift of `of.comp (skeletonMap F)`. Its generator law,
+identity/composition laws for independent category universes, and invariance
+under ordinary natural isomorphism are in the module. Full faithfulness yields
+`imageEquiv F`, an additive equivalence onto the actual image, and the exact
+homomorphism equation `completionMap_factorization F`. Together with cofinality
+this proves `completionMap_injective F`; `completionRangeEquiv F` identifies the
+source completion with the map's native subgroup *range*, not necessarily
+the entire target group. See `tests/MonoidalGroupCompletionClient.lean` for
+identity, equivalence, terminal, noncancellative and proper-image examples.
+
+## Graded stabilization
 
 Now take a degree homomorphism `d : M →+ A` and an element `u : M`. Stage `n` is
 the fiber `d m = n • d u`; transition from `n` to `k` adds `(k-n) • u`.

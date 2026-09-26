@@ -6,6 +6,7 @@ module
 
 public import CofinalGroupCompletionClient
 public import GradedStabilizationClient
+public import MonoidalGroupCompletionClient
 public import ReadinessClient
 
-/-! Build entry point for the three standalone public-API clients. -/
+/-! Build entry point for the four standalone public-API clients. -/

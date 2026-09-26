@@ -5,7 +5,8 @@ project:
   description: >-
     Reusable Lean results for varying-scalar directed limits, tensor products,
     countably cofinal inverse systems, simple filtered ring colimits,
-    localization of countable products, and cofinal group completions.
+    localization of countable products, cofinal group completions, and
+    monoidal-category object classes with actual-image cofinality.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -38,27 +39,35 @@ automation:
     preceding stages are not established here. Authorship is not review.
 status:
   scope: >-
-    Seven mathematical modules, a public re-export and three checked boundary
-    and usage clients with their test-target root. Graded normalization is a
+    Eight mathematical modules, a public re-export and four checked boundary
+    and usage clients with their test-target root. Monoidal group completion
+    uses the native skeleton and its actual image, with cofinal denominators,
+    stabilization and an injective induced map under full faithfulness.
+    Graded normalization is a
     type equivalence, not an additive equivalence; cancellation is required
     only for the degree target in its surjective/equivalence results. This is
     not a full theory or a source-coverage assessment.
   sorry_count: 0
   sorry_in_definitions: 0
 review:
-  status: "other: revision-specific independent agent reviews recorded below"
+  status: "other: revision-specific independent reviews recorded separately"
   reviewers:
     - "formalization-worker-b (historical artifact review 3084)"
     - "formalization-worker-a (historical promotion-applicability review 3100)"
   notes: >-
-    Earlier accepted mathematical candidates have separate development review
-    records. On 2026-09-25, fresh non-author Worker B Task
+    At the 2026-09-26 author freeze, the eighth module and changed
+    aggregate/client/docs were an author candidate awaiting independent
+    exact-candidate review. Subsequent decisions belong to the exact
+    contribution and release review records; this metadata does not assert
+    acceptance, and completion of the author Task is not acceptance.
+    Earlier accepted mathematical candidates
+    have separate development review records. On 2026-09-25, fresh non-author Worker B Task
     hive-request-8e9ddfe5d5d73fd15a2132bd9d7c4d95341d6d0e
     (UID 2abe09db-723a-4d8d-a7e7-ca5fcc109ec7) reviewed the complete internal
     artifact at bbdcf43d28dd92312484adba53fe20b5b35a2f75, tree
     484435e286e89e9ed97790145000b1b4e9f89e8b, in review 3084. Its scope included
-    all shipped files and public APIs, build evidence, the complete own-declaration
-    axiom census and separate stored-body recheck, generated documentation,
+    all files and public APIs shipped at that earlier revision, build evidence,
+    its complete own-declaration axiom census and historical stored-body recheck, generated documentation,
     provenance and rights, with retained nonpasses explicitly distinguished.
     Fresh non-author Worker A Task
     hive-request-b941779ed60f721a6ee1375f7188ffdb64c91ea6

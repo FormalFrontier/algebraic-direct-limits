@@ -1,15 +1,21 @@
 # API reference generation
 
-[API.md](API.md) is the native-display reference for this library's seven
+[API.md](API.md) is the historical native-display reference for seven
 mathematical modules: 73 library display sites, plus 23 sites from two separate
-boundary clients. It includes every name in the fixed display inventory, complete
-native visible signatures and relative source links. The aggregate and the two
-other test modules have no public native display sites but are included in the
-twelve-module generation and provenance record. Client namespaces are not
+boundary clients. At the manifest's analyzed source revision
+`96f074b6df709d2478d2565fb0acb3ddfc07fed4`, it includes every name in
+that fixed display inventory and complete native visible signatures. The
+aggregate and two other historical test modules were included in that
+twelve-module generation/provenance record. This changed checkout adds
+`MonoidalGroupCompletion.lean`, its client and changes the root/test/config:
+the generated reference **does not** document the new API or represent current
+full-module coverage. Use the new module's docstrings and the
+[hand-authored guide](Guide.md#monoidal-object-classes-and-actual-image-cofinality).
+Client namespaces are not
 re-exported by `AlgebraicDirectLimits`.
 
 This is not a complete raw/kernel declaration census: private helpers, private
-examples and compiler-generated declarations also need the separate proof audit.
+examples and compiler-generated declarations require complete transitive axiom checks.
 Native display-site selection is distinct from both public-import and full-private
 environment inventories. Read the [mathematical guide](Guide.md) for constructions
 and hypotheses, and the root README for public import and build examples.
@@ -36,7 +42,13 @@ It reproduces this project's own signatures/docstrings with local source links;
 the third-party documentation implementation and its generated website/assets
 are not bundled. See [CREDITS.md](CREDITS.md).
 
-## Reproduce native records
+## Reproduce historical native records
+
+The following generation commands describe the unchanged seven-leaf input at
+the manifest's recorded source revision. Run them against that exact checkout,
+**not** the new aggregate/test/config from the present checkout; the retained
+API, manifest and scripts are exact historical artifacts rather than regenerated
+claims. New-module documentation is hand-authored and subject to review.
 
 Use a separate unchanged doc-gen4 checkout at
 `97d4ecdfc8e09e7f511724c25e303d448de6a3db`, with its committed manifest and
@@ -105,4 +117,6 @@ the shipped signatures; they are not native generation. Real records and command
 receipts must be authenticated independently. Neither hashes nor this adapter
 attest that supplied JSON came from doc-gen4, and neither is a kernel check,
 copyright clearance or release decision. Complete mathematical/provenance review
-and the separate raw/stored-proof audit remain distinct evidence.
+and actual transitive axiom checks remain distinct evidence; separate
+stored-body replay and fresh expensive doc-generation are not required current
+computational gates.

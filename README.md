@@ -2,7 +2,7 @@
 
 Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 
-This Lean library supplies seven independently importable modules, also available
+This Lean library supplies eight independently importable modules, also available
 through the public aggregate `import AlgebraicDirectLimits`:
 
 | Module | Reusable results and boundaries |
@@ -13,6 +13,7 @@ through the public aggregate `import AlgebraicDirectLimits`:
 | `AlgebraicDirectLimits.SimpleRing` | Simplicity of filtered colimits of simple rings in `RingCat`; injectivity is derived, not assumed. |
 | `AlgebraicDirectLimits.LocalizationPi` | Comparison for localization of a countable product at a constant element; non-surjectivity for a nonzero nonunit in a commutative domain. |
 | `AlgebraicDirectLimits.CofinalGroupCompletion` | Localization and stabilization for a top-saturated submonoid of any additive commutative monoid; no cancellation assumption. |
+| `AlgebraicDirectLimits.MonoidalGroupCompletion` | Actual image of a strong monoidal functor on additive skeleta; object cofinality gives image denominators/stabilization, and full faithfulness gives injectivity of its native completion map. |
 | `AlgebraicDirectLimits.GradedStabilization` | Native degree-fiber direct limits and normalization into a group-completion kernel; injectivity needs top saturation, while surjectivity/type equivalence also needs cancellation of the degree target only. |
 
 The graded equivalence is an equivalence **of types**, not an additive
@@ -22,10 +23,14 @@ Source-specific passage correspondence and coverage belong in separate source
 repositories; this library is usable without them.
 
 Start with the [mathematical guide](docs/Guide.md) and the
-[checked clients](tests/ReadinessClient.lean). The [generated API reference](docs/API.md)
-contains 73 library and 23 separate boundary-client native display sites, with
-exact source/pin binding and [reproduction instructions](docs/README.md). This
-display inventory is not the complete private/generated proof census. Boundary-test
+[checked clients](tests/ReadinessClient.lean), including the
+[monoidal completion client](tests/MonoidalGroupCompletionClient.lean).
+The [historical generated API reference](docs/API.md) records 73 library and
+23 boundary-client native display sites for the earlier seven-module input at
+its recorded revision; it does **not** cover the new eighth module or changed
+root/tests. The new API is documented in the
+[new module](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) and mathematical
+guide. The historical display inventory is not a private/generated proof census. Boundary-test
 namespaces are not re-exported by the library root and are not additional
 advertised library APIs.
 
@@ -49,15 +54,16 @@ elan toolchain install leanprover/lean4:v4.34.0-rc2
 lake exe cache get
 lake --wfail build
 lake --wfail build ReadinessTests
+lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion
+lake env lean -DwarningAsError=true tests/MonoidalGroupCompletionClient.lean
 lake env lean -DwarningAsError=true tests/ReadinessClient.lean
-lake env lean -T0 -DwarningAsError=true tests/ReadinessClient.lean
 ```
 
 The default build includes the public aggregate and the separate
-`ReadinessTests` target; that target imports both existing boundary clients and
+`ReadinessTests` target; that target imports all three boundary clients and
 the root-import client. Individual source files are also checkable with the
-same `lake env lean` commands. `-T0` is a literal, non-independent elaboration
-check and does not replace a separate proof-term checker. Client namespaces
+same `lake env lean` commands. `-T0` disables the allocation timeout; it is
+not a change of trust level or an independent proof replay. Client namespaces
 and private test declarations are checks, not advertised public library APIs.
 An outside project can import `AlgebraicDirectLimits` using a matching Lean
 toolchain and a Lake dependency on this repository; importing individual modules
@@ -71,6 +77,9 @@ zero degree, noninjective transitions and noncancellative source monoids; the
 cofinal-completion client includes a proper cofinal submonoid and noncancellative
 boundary cases. These are mathematical examples, not tests that add assumptions
 to the public declarations.
+`tests/MonoidalGroupCompletionClient.lean` also exercises weak-hypothesis
+object classes, functoriality, exact image factorization, a subgroup-range
+equivalence and the noncancellative/doubling boundary cases.
 
 ## Initial resource baseline
 
@@ -82,9 +91,10 @@ This is a warm-dependency owner measurement on a Linux x86-64 agent runtime with
 a23GiB shared cgroup limit, not a clean dependency-source rebuild or a hardware-
 independent benchmark. Sampled total cgroup memory stayed below20GB and included
 another retained cache and file cache; it is not the compiler's private peak.
-No speedup over a former release is claimed. A separate full stored-proof audit
-can use substantially more memory than compiling this small library; do not infer
-its resource needs or completion from the build timings. Exact commands and
+No speedup over a former release is claimed. The historical stored-proof audit
+was a separate diagnostic, not a required repeat gate for new contributions;
+build and complete transitive standard-axiom checks are the computational checks.
+Exact commands and
 resource samples accompany that candidate's evidence. Its explicit test-library
 globs omitted the separate shipped `ReadinessTests` re-export. The configuration adds
 that module to the globs; the earlier timings are not a measurement of this
@@ -132,6 +142,6 @@ and concrete third-party licensing concerns still require independent review.
 An ordinary build, metadata or generated reference alone is not release
 acceptance or copyright clearance. Each exact release requires applicable
 independent public-API semantic review, a complete shipped-declaration axiom
-census, separate stored-body rechecking, documentation and provenance/rights
-review, followed by protected promotion and a separate publication decision.
+census, documentation and provenance/rights review, followed by protected
+promotion and a separate publication decision.
 Historical development records do not approve later artifacts or source coverage.

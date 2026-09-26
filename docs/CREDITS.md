@@ -20,6 +20,19 @@ metadata and subsequent simplifier/unused-premise corrections are later changes.
 | CofinalGroupCompletion and its boundary client | Worker B execution below | `8e97fcad53b65ee5fc28f7ee8c22d86aa481c3fc` |
 | GradedStabilization and its boundary client | Prism | `afd717e3d2af49092317cf26880e3c693b7e1aad` |
 
+The new `MonoidalGroupCompletion` module and its public-root boundary client
+are authored by Worker A Task
+`hive-request-39dc94bb51e220acb520f90199af3aa1d17f69bb`, UID
+`c5095c53-cf7f-4464-aefb-72ffd77efdda`, on the
+`worker-a/monoidal-group-completion-20260926` contribution branch. Its
+original *unaccepted research probe*, authored by Prism in
+`FormalFrontier/source-weibel-k-book` at
+`6bbd9cc4291450919ea0c6cf1316e10f5c3eb51e`, informed this extraction.
+The probe is not a production import or an accepted mathematical prerequisite.
+At the 2026-09-26 author freeze, independent review of the new code and its
+provenance was pending; subsequent acceptance is recorded separately for each
+exact contribution and release, not inferred from this authorship record.
+
 The two pooled-identity author executions are:
 
 - LocalizationPi: Task `hive-request-b2f4b134768b028dd78d07ab495ddcccd7b140b2`,

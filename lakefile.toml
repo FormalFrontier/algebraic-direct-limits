@@ -13,4 +13,4 @@ name = "AlgebraicDirectLimits"
 [[lean_lib]]
 name = "ReadinessTests"
 srcDir = "tests"
-globs = ["CofinalGroupCompletionClient", "GradedStabilizationClient", "ReadinessClient", "ReadinessTests"]
+globs = ["CofinalGroupCompletionClient", "GradedStabilizationClient", "MonoidalGroupCompletionClient", "ReadinessClient", "ReadinessTests"]
