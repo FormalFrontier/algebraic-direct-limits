@@ -2,105 +2,163 @@
 
 Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 
-This Lean library supplies eight independently importable modules, also available
-through the public aggregate `import AlgebraicDirectLimits`:
+This library works with mathlib's native directed limits, localizations,
+Grothendieck group completions and categorical colimits. Import the
+[public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
+or import any of the eight mathematical modules individually.
 
-| Module | Reusable results and boundaries |
-| --- | --- |
-| `AlgebraicDirectLimits.VaryingScalar` | Semilinear directed limits and a tensor-product linear equivalence for four independent universes; no injectivity of transition maps. |
-| `AlgebraicDirectLimits.CofinalSequence` | Monotone cofinal sequence and final functor from a countable cofinal subset of a nonempty directed preorder; the preorder need not be countable. |
-| `AlgebraicDirectLimits.MittagLeffler` | Sections of pointwise nonempty Type-valued Mittag--Leffler inverse systems and surjective evaluation onto eventual ranges over such directed preorders. |
-| `AlgebraicDirectLimits.SimpleRing` | Simplicity of filtered colimits of simple rings in `RingCat`; injectivity is derived, not assumed. |
-| `AlgebraicDirectLimits.LocalizationPi` | Comparison for localization of a countable product at a constant element; non-surjectivity for a nonzero nonunit in a commutative domain. |
-| `AlgebraicDirectLimits.CofinalGroupCompletion` | Localization and stabilization for a top-saturated submonoid of any additive commutative monoid; no cancellation assumption. |
-| `AlgebraicDirectLimits.MonoidalGroupCompletion` | Actual image of a strong monoidal functor on additive skeleta; object cofinality gives image denominators/stabilization, and full faithfulness gives injectivity of its native completion map. |
-| `AlgebraicDirectLimits.GradedStabilization` | Native degree-fiber direct limits and normalization into a group-completion kernel; injectivity needs top saturation, while surjectivity/type equivalence also needs cancellation of the degree target only. |
+## Headline results
 
-The graded equivalence is an equivalence **of types**, not an additive
-equivalence. The library does not claim a complete theory of algebraic limits,
-complete formalization of any source, or coverage of unproved statements.
-Source-specific passage correspondence and coverage belong in separate source
-repositories; this library is usable without them.
+- **Varying scalars and tensor products.**
+  [`DirectLimit.VaryingScalar.tensorProductEquiv`](AlgebraicDirectLimits/VaryingScalar.lean#L429)
+  identifies the tensor product of two module limits over a *varying*
+  commutative-semiring limit with the limit of their stagewise tensor products.
+  It uses compatible semilinear module systems over a nonempty directed preorder,
+  with four independent universes and no injectivity assumption on transitions.
+  See the [module](AlgebraicDirectLimits/VaryingScalar.lean) and
+  [representative client](tests/ReadinessClient.lean#L48).
+- **Sequentializing cofinality.**
+  [`IsCofinal.exists_monotone_nat`](AlgebraicDirectLimits/CofinalSequence.lean#L33)
+  and [`exists_final_functor_nat`](AlgebraicDirectLimits/CofinalSequence.lean#L55)
+  produce a monotone cofinal sequence and a final functor from `ℕ` when a
+  *nonempty directed preorder has a countable cofinal subset*; the entire index
+  type need not be countable. See the [module](AlgebraicDirectLimits/CofinalSequence.lean)
+  and [client](tests/ReadinessClient.lean#L100).
+- **Mittag--Leffler inverse systems.**
+  [`IsMittagLeffler.nonempty_sections_of_countable_cofinal`](AlgebraicDirectLimits/MittagLeffler.lean#L66)
+  gives a compatible section for a pointwise nonempty, Type-valued
+  Mittag--Leffler inverse system over a nonempty directed preorder with a
+  countable cofinal subset. Under the same index and Mittag--Leffler conditions,
+  [`surjective_evalSectionToEventualRange`](AlgebraicDirectLimits/MittagLeffler.lean#L97)
+  lifts each element of an eventual range to a section; this second theorem does
+  not separately assume pointwise nonemptiness. See the
+  [module](AlgebraicDirectLimits/MittagLeffler.lean) and
+  [client](tests/ReadinessClient.lean#L136).
+- **Filtered colimits of simple rings.**
+  [`RingCat.FilteredColimits.colimit_isSimpleRing`](AlgebraicDirectLimits/SimpleRing.lean#L47)
+  proves that a small filtered colimit of simple rings in the possibly
+  noncommutative `RingCat` is simple. Stage-map injectivity follows from
+  simplicity; it is not a diagram hypothesis. See the
+  [module](AlgebraicDirectLimits/SimpleRing.lean) and
+  [client](tests/ReadinessClient.lean#L156).
+- **Localization of a countable product.**
+  [`Localization.awayPiComparison`](AlgebraicDirectLimits/LocalizationPi.lean#L26)
+  compares localization of `ℕ → R` at a constant `r` with the countable product
+  of localizations of `R` away from `r`.
+  [`awayPiComparison_not_surjective`](AlgebraicDirectLimits/LocalizationPi.lean#L50)
+  shows non-surjectivity if `R` is a commutative domain and `r` is nonzero and
+  not a unit; no finite-product claim follows. See the
+  [module](AlgebraicDirectLimits/LocalizationPi.lean) and
+  [client](tests/ReadinessClient.lean#L166).
+- **Cofinal submonoids and group completion.** If an additive submonoid `L`
+  of an arbitrary additive commutative monoid has top saturation, the canonical
+  completion map [localizes at `L`](AlgebraicDirectLimits/CofinalGroupCompletion.lean#L31).
+  This supplies [denominators](AlgebraicDirectLimits/CofinalGroupCompletion.lean#L57),
+  [a stabilization test for equal images](AlgebraicDirectLimits/CofinalGroupCompletion.lean#L64)
+  and [injectivity on completion of the inclusion](AlgebraicDirectLimits/CofinalGroupCompletion.lean#L71).
+  No cancellation is assumed. See the
+  [module](AlgebraicDirectLimits/CofinalGroupCompletion.lean) and
+  [client](tests/CofinalGroupCompletionClient.lean#L41).
+- **Monoidal object classes.** For a strong monoidal functor, the
+  [image submonoid](AlgebraicDirectLimits/MonoidalGroupCompletion.lean#L71)
+  consists of its *actual* image on additive skeleta. For braided target `D`,
+  [`saturation_eq_top_iff`](AlgebraicDirectLimits/MonoidalGroupCompletion.lean#L87)
+  identifies its cofinality with every target object acquiring a complement
+  isomorphic to a source-image object, giving object denominators and
+  stabilization. If the source is also braided and the functor is fully
+  faithful, [`completionMap_injective`](AlgebraicDirectLimits/MonoidalGroupCompletion.lean#L230)
+  makes the induced completion map injective; the
+  [additive equivalence](AlgebraicDirectLimits/MonoidalGroupCompletion.lean#L238)
+  is to its *range*, not necessarily the whole target completion. Neither
+  cancellation nor essential surjectivity is needed. See the
+  [module](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) and
+  [client](tests/MonoidalGroupCompletionClient.lean#L169).
+- **Graded stabilization.** For `d : M →+ A` and `u : M`,
+  [normalization](AlgebraicDirectLimits/GradedStabilization.lean#L112)
+  sends the native limit of fibers `d m = n • d u` to the kernel of the induced
+  group-completion degree map. Top saturation of the multiples of `u` gives
+  [injectivity](AlgebraicDirectLimits/GradedStabilization.lean#L158);
+  **cancellation in the degree target `A` only** additionally gives
+  [surjectivity](AlgebraicDirectLimits/GradedStabilization.lean#L195)
+  and [`normalizationEquiv`](AlgebraicDirectLimits/GradedStabilization.lean#L210),
+  an equivalence **of types**, not an additive equivalence. Source monoid
+  cancellation and injective transitions are not required. See the
+  [module](AlgebraicDirectLimits/GradedStabilization.lean) and
+  [boundary client](tests/GradedStabilizationClient.lean#L125).
 
-Start with the [mathematical guide](docs/Guide.md) and the
-[checked clients](tests/ReadinessClient.lean), including the
-[monoidal completion client](tests/MonoidalGroupCompletionClient.lean).
-The [historical generated API reference](docs/API.md) records 73 library and
-23 boundary-client native display sites for the earlier seven-module input at
-its recorded revision; it does **not** cover the new eighth module or changed
-root/tests. The new API is documented in the
-[new module](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) and mathematical
-guide. The historical display inventory is not a private/generated proof census. Boundary-test
-namespaces are not re-exported by the library root and are not additional
-advertised library APIs.
+The [mathematical guide](docs/Guide.md) explains the constructions and proofs;
+the Lean modules give the exact signatures and hypotheses. The
+[historical API display](docs/API.md) selects **73 library and 23 boundary-client
+sites from seven earlier leaves** at its recorded source revision. Its inputs
+are source-byte equivalent to the [initial published library snapshot](https://github.com/FormalFrontier/algebraic-direct-limits/tree/d3e1787bbc962d028698af2259d2ef31212857d1),
+but this does not mean its native displays were generated at that public commit.
+It does not cover `MonoidalGroupCompletion`, the current aggregate/test roots or
+all private/generated declarations. Use the module source and guide for omitted
+material; client namespaces are not re-exported as library APIs. This library
+does not claim a complete theory of limits or formal coverage of a specific
+mathematical source.
 
 ## Reproduce
 
-The repository pins Lean `leanprover/lean4:v4.34.0-rc2` in `lean-toolchain` and
-mathlib `83abb3e776bdefcbc447a1e44d0debe4010039e5` in both `lakefile.toml`
-and `lake-manifest.json`. Mathlib is the sole direct dependency. The manifest
-also fixes eight transitive packages (`plausible`, `LeanSearchClient`,
-`importGraph`, `proofwidgets`, `aesop`, `Qq`, `batteries`, `Cli`). Install the
-pinned toolchain with `elan`, and allow network access to retrieve dependencies
-and the matching precompiled mathlib cache. The intended distribution repository
-is [FormalFrontier/algebraic-direct-limits](https://github.com/FormalFrontier/algebraic-direct-limits).
-Access to a private distribution requires authorized GitHub access. This URL
-alone does not establish publication or acceptance of a particular release.
-The source tree itself has no dependency on a private research workspace.
-From the repository root:
+The [Lean toolchain](lean-toolchain) is `leanprover/lean4:v4.34.0-rc2`; the
+[Lake package](lakefile.toml) and [manifest](lake-manifest.json) pin mathlib to
+`83abb3e776bdefcbc447a1e44d0debe4010039e5` and resolve its transitive
+packages. Mathlib is the sole direct dependency. With network access (and
+authorized GitHub access if the distribution is private), run from the
+repository root, **fetching the matching precompiled mathlib cache successfully
+before any build**:
 
 ```sh
 elan toolchain install leanprover/lean4:v4.34.0-rc2
 lake exe cache get
 lake --wfail build
-lake --wfail build ReadinessTests
+```
+
+The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate and
+[`ReadinessTests`](tests/ReadinessTests.lean), which imports four clients (three
+boundary clients and the aggregate-import client). To check a narrow module or
+client after the cache succeeds, for example:
+
+```sh
 lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion
-lake env lean -DwarningAsError=true tests/MonoidalGroupCompletionClient.lean
 lake env lean -DwarningAsError=true tests/ReadinessClient.lean
 ```
 
-The default build includes the public aggregate and the separate
-`ReadinessTests` target; that target imports all three boundary clients and
-the root-import client. Individual source files are also checkable with the
-same `lake env lean` commands. `-T0` disables the allocation timeout; it is
-not a change of trust level or an independent proof replay. Client namespaces
-and private test declarations are checks, not advertised public library APIs.
-An outside project can import `AlgebraicDirectLimits` using a matching Lean
-toolchain and a Lake dependency on this repository; importing individual modules
-is supported too.
+External projects should use a matching Lean toolchain and pin their Lake Git
+dependency to a **full published release commit** of
+[FormalFrontier/algebraic-direct-limits](https://github.com/FormalFrontier/algebraic-direct-limits),
+not a moving branch or development commit. No private research workspace is
+needed. Import the aggregate or the linked leaf module appropriate to the use.
 
-For a first use, follow `tensor_equiv_on_representatives` or
-`cofinal_restriction_without_nonempty` in `tests/ReadinessClient.lean`.
-Both are stable named, build-checked private examples with just the public
-aggregate import. `tests/GradedStabilizationClient.lean` additionally demonstrates
-zero degree, noninjective transitions and noncancellative source monoids; the
-cofinal-completion client includes a proper cofinal submonoid and noncancellative
-boundary cases. These are mathematical examples, not tests that add assumptions
-to the public declarations.
-`tests/MonoidalGroupCompletionClient.lean` also exercises weak-hypothesis
-object classes, functoriality, exact image factorization, a subgroup-range
-equivalence and the noncancellative/doubling boundary cases.
+For a first use, follow
+[`tensor_equiv_on_representatives`](tests/ReadinessClient.lean#L48) or
+[`cofinal_restriction_without_nonempty`](tests/ReadinessClient.lean#L115).
+The [graded client](tests/GradedStabilizationClient.lean) covers zero degree,
+noninjective transitions and noncancellative source monoids; the
+[cofinal-completion client](tests/CofinalGroupCompletionClient.lean) covers a
+proper cofinal submonoid. The
+[monoidal client](tests/MonoidalGroupCompletionClient.lean) checks the actual
+image, range equivalence and a fully faithful doubling example that is not
+essentially surjective. These checked examples are not public library declarations.
 
-## Initial resource baseline
+## Historical resource observation
 
-On the earlier `7d61d5d` Lean4.34.0-rc2 candidate, a fresh matching cache fetch took about
-86 seconds and supplied8892 mathlib cache artifacts. With that cache retained,
-the eleven sequential explicit library/client builds plus the actual2256-job
-default build and three diagnostic commands completed in about44 seconds.
-This is a warm-dependency owner measurement on a Linux x86-64 agent runtime with
-a23GiB shared cgroup limit, not a clean dependency-source rebuild or a hardware-
-independent benchmark. Sampled total cgroup memory stayed below20GB and included
-another retained cache and file cache; it is not the compiler's private peak.
-No speedup over a former release is claimed. The historical stored-proof audit
-was a separate diagnostic, not a required repeat gate for new contributions;
-build and complete transitive standard-axiom checks are the computational checks.
-Exact commands and
-resource samples accompany that candidate's evidence. Its explicit test-library
-globs omitted the separate shipped `ReadinessTests` re-export. The configuration adds
-that module to the globs; the earlier timings are not a measurement of this
-configuration or a claim that the omitted module was checked by those commands.
+On an *earlier seven-leaf configuration*, a fresh matching mathlib-cache fetch
+took about 86 seconds for 8,892 artifacts. With that cache retained, eleven
+sequential explicit library/client builds, a 2,256-job default build and three
+diagnostic commands took about 44 seconds in total. These are measured times on
+one Linux x86-64 runtime with a 23 GiB shared cgroup limit, **not** current
+eight-leaf timings, clean dependency-source builds or machine-independent
+benchmarks. That configuration's explicit test-library globs omitted the
+`ReadinessTests` re-export now present in the default targets. Sampled total
+cgroup memory stayed below 20 GB but included another retained cache and file
+cache; it was not a compiler peak. No full-current measurement or validated
+smaller-machine memory estimate is available. As unvalidated planning advice,
+allow headroom for the matching cache and concurrently scheduled Lean jobs;
+prefer checking one target at a time when constrained. Do not replace a failed
+cache fetch with a full mathlib source build.
 
-## Mathematical and formal credits
+## References and credits
 
 The [Stacks Project, Algebra, Lemma 10.86.3](https://stacks.math.columbia.edu/tag/0597)
 is a mathematical reference for nonempty Mittag--Leffler inverse limits over
@@ -108,40 +166,23 @@ countable indices. The present countable-*cofinal*-subset theorem has a differen
 index hypothesis and is not a claim of verbatim translation or source coverage.
 The [Stacks Project, Algebra, Section 10.8](https://stacks.math.columbia.edu/tag/07N7)
 provides mathematical background on filtered colimits; specific source
-correspondences, if any, require separate assessment. Mathematical foundations
-already formalized in the pinned mathlib are reused, notably
-`Mathlib.Algebra.Colimit.DirectLimit`,
+correspondences, if any, require separate assessment. The modules reuse native
+constructions in [mathlib4](https://github.com/leanprover-community/mathlib4),
+including `Mathlib.Algebra.Colimit.DirectLimit`,
 `Mathlib.CategoryTheory.Filtered.Final`,
 `Mathlib.CategoryTheory.CofilteredSystem`,
 `Mathlib.Algebra.Category.Ring.FilteredColimits` and
-`Mathlib.RingTheory.Localization.Pi`. Consult the leaf module headers for
-their exact assumptions and definitions. References credit mathematical ideas;
-no excerpts or original source assets are reproduced here.
+`Mathlib.RingTheory.Localization.Pi`. References are mathematical background,
+not quotations or claims of formalizing those exact texts.
 
-Original project contributions list **Formal Frontier Agents** as authors.
-The historical mathematical leaves were contributed by Anchor (varying scalars,
-cofinal sequences and Mittag--Leffler systems), Prism (simple-ring colimits and
-graded stabilization), a worker-a Task (localization of countable products), and
-a worker-b Task (cofinal group completion). Their exact reviewed commits and
-Task attributions are preserved in the shipped [contributor/provenance record](docs/CREDITS.md).
-Prior formal
-developments and this worker-b assembly involve AI-assisted agent work;
-the checked Lean files, not model output alone, are the mathematical artifact.
-The readiness assembly was contributed by a worker-b Task; Anchor made the
-provenance-backed header correction and the computation-rule/client repairs.
-The bundled `LICENSE`
-is Apache-2.0. Original project files use SPDX license identifiers and collective
-author credit; unsupported project-generated copyright-owner labels were removed
-after checking their first-added history. No replacement holder is inferred.
-Mathlib and other downloaded dependencies retain their own licenses and
-attribution. Standing project authorization covers verified original Formal
-Frontier contributions, but collective author credit does not establish legal
-ownership or clear third-party rights. Exact provenance, real contributor credit,
-and concrete third-party licensing concerns still require independent review.
-
-An ordinary build, metadata or generated reference alone is not release
-acceptance or copyright clearance. Each exact release requires applicable
-independent public-API semantic review, a complete shipped-declaration axiom
-census, documentation and provenance/rights review, followed by protected
-promotion and a separate publication decision.
-Historical development records do not approve later artifacts or source coverage.
+Original Formal Frontier contributions credit Anchor (varying scalars,
+cofinality and Mittag--Leffler systems), Prism (simple-ring colimits, graded
+stabilization and monoidal research) and other Formal Frontier agents (including
+the distinct Lean implementations for localization, cofinal completion and
+monoidal completion). Anchor also contributed assembly and subsequent
+improvements. See [contributors and provenance](docs/CREDITS.md) for details;
+these are AI-assisted formal developments, not claims of source-author
+endorsement. The [Apache-2.0 license](LICENSE) covers original project material;
+mathlib and the other separately maintained dependencies keep their own licenses
+and notices. Collective author credit alone does not establish legal ownership
+or resolve third-party rights concerns.

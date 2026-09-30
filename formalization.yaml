@@ -32,11 +32,11 @@ automation:
     - method: agent
       models: []
       framework: Codex CLI and Formal Frontier agent workflows
-      tool_setup: Pinned Lean 4 and mathlib, Lake, Git, and independent review workflow
+      tool_setup: Pinned Lean 4, mathlib, Lake, and Git
   notes: >-
-    Existing mathematics was developed by AI-assisted project agents. This
-    ordinary-main assembly is also agent-authored; model identifiers for all
-    preceding stages are not established here. Authorship is not review.
+    AI-assisted Formal Frontier agents developed and assembled this library.
+    A complete list of models used in earlier contributions is unavailable.
+    Independent review is distinct from authorship.
 status:
   scope: >-
     Eight mathematical modules, a public re-export and four checked boundary
@@ -50,38 +50,13 @@ status:
   sorry_count: 0
   sorry_in_definitions: 0
 review:
-  status: "other: revision-specific independent reviews recorded separately"
-  reviewers:
-    - "formalization-worker-b (historical artifact review 3084)"
-    - "formalization-worker-a (historical promotion-applicability review 3100)"
+  status: "other: mathematical contributions independently reviewed"
   notes: >-
-    At the 2026-09-26 author freeze, the eighth module and changed
-    aggregate/client/docs were an author candidate awaiting independent
-    exact-candidate review. Subsequent decisions belong to the exact
-    contribution and release review records; this metadata does not assert
-    acceptance, and completion of the author Task is not acceptance.
-    Earlier accepted mathematical candidates
-    have separate development review records. On 2026-09-25, fresh non-author Worker B Task
-    hive-request-8e9ddfe5d5d73fd15a2132bd9d7c4d95341d6d0e
-    (UID 2abe09db-723a-4d8d-a7e7-ca5fcc109ec7) reviewed the complete internal
-    artifact at bbdcf43d28dd92312484adba53fe20b5b35a2f75, tree
-    484435e286e89e9ed97790145000b1b4e9f89e8b, in review 3084. Its scope included
-    all files and public APIs shipped at that earlier revision, build evidence,
-    its complete own-declaration axiom census and historical stored-body recheck, generated documentation,
-    provenance and rights, with retained nonpasses explicitly distinguished.
-    Fresh non-author Worker A Task
-    hive-request-b941779ed60f721a6ee1375f7188ffdb64c91ea6
-    (UID 1c737f92-d899-477f-a55a-ea757fb3efa0) separately reviewed release-prep
-    promotion applicability for that identical commit and tree in review 3100,
-    reusing the applicable artifact evidence without a duplicate build or proof
-    audit. These reviews did not approve a public commit history, GitHub
-    publication or source-text coverage. They are historical reviews of the
-    named revision, not self-certification of this metadata or approval of later
-    changes. Each exact release candidate requires
-    applicable independent review, complete proof-integrity audit, release/rights
-    acceptance and a separate publication decision. Contributor/provenance details
-    are shipped in docs/CREDITS.md. Native API display records and supplementary
-    notes are distinguished in docs/README.md and are not proof certification.
+    Independent agent reviews covered the mathematical contributions at their
+    accepted revisions. This description does not claim independent review of
+    subsequent documentation corrections, endorsement by source authors, or
+    complete formal coverage of a source. Contributor and API-documentation
+    distinctions are described in docs/CREDITS.md and docs/README.md.
 acknowledgements: >-
   The mathlib community's separately licensed library supplies foundational
   definitions and results. Mathematical references are background, not claims

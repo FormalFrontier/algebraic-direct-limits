@@ -1,122 +1,43 @@
-# API reference generation
+# API reference
 
-[API.md](API.md) is the historical native-display reference for seven
-mathematical modules: 73 library display sites, plus 23 sites from two separate
-boundary clients. At the manifest's analyzed source revision
-`96f074b6df709d2478d2565fb0acb3ddfc07fed4`, it includes every name in
-that fixed display inventory and complete native visible signatures. The
-aggregate and two other historical test modules were included in that
-twelve-module generation/provenance record. This changed checkout adds
-`MonoidalGroupCompletion.lean`, its client and changes the root/test/config:
-the generated reference **does not** document the new API or represent current
-full-module coverage. Use the new module's docstrings and the
-[hand-authored guide](Guide.md#monoidal-object-classes-and-actual-image-cofinality).
-Client namespaces are not
-re-exported by `AlgebraicDirectLimits`.
+[API.md](API.md) retains a partial native-display reference for seven mathematical
+modules: 73 library display sites and 23 sites from two boundary clients. These
+sites are an authored display selection, **not** a theorem count, a declaration
+census or documentation for the entire current library. Client namespaces are
+not re-exported by `AlgebraicDirectLimits`.
 
-This is not a complete raw/kernel declaration census: private helpers, private
-examples and compiler-generated declarations require complete transitive axiom checks.
-Native display-site selection is distinct from both public-import and full-private
-environment inventories. Read the [mathematical guide](Guide.md) for constructions
-and hypotheses, and the root README for public import and build examples.
+The signatures and source docstrings come from historical native display records;
+63 sites have genuine source docstrings. For the other 33 sites, explanations
+written in [`scripts/api_notes.json`](../scripts/api_notes.json) are labeled
+**API note (not a source docstring)** in [API.md](API.md). The adapter preserves
+native visible signatures and their module/name mapping while normalizing
+whitespace. Native pretty-printing can omit inferable types or depend on source
+notation, so consult the linked Lean files for authoritative statements and
+hypotheses. Neither the selection nor supplementary notes certify proofs.
 
-## What the adapter preserves
+The retained [manifest](api-manifest.json) labels its analyzed source revision
+`96f074b6df709d2478d2565fb0acb3ddfc07fed4`. Its 15 recorded source/pin
+hashes also match the [published initial library snapshot](https://github.com/FormalFrontier/algebraic-direct-limits/tree/d3e1787bbc962d028698af2259d2ef31212857d1):
+this is **source-byte
+equivalence**, not evidence that native records were generated at that public
+commit. The seven documented leaves and boundary clients remain unchanged in
+the current checkout, while the aggregate root, Lake configuration and test root
+have changed. The reference does not cover the newer
+[`MonoidalGroupCompletion`](../AlgebraicDirectLimits/MonoidalGroupCompletion.lean)
+module or its client. See its source docstrings and the unchanged
+[mathematical guide](Guide.md#monoidal-object-classes-and-actual-image-cofinality)
+for that API; the [guide](Guide.md) also explains the other modules' scope.
 
-The adapter keeps all visible header tokens, including implicit arguments and
-literal `noncomputable`/`abbrev` modifiers. It normalizes whitespace only, verifies
-the exact module/name/kind map and checks each normalized signature against its
-recorded SHA256. Native pretty-printing uses source namespaces, notation and type
-inference. It may suppress inferable types, so these fragments are not promised
-to elaborate alone in a fresh namespace; the linked source is authoritative.
+## Optional adapter
 
-Sixty-three display sites have native source docstrings. Thirty-three do not;
-their supplementary explanations are authored in `scripts/api_notes.json` and
-explicitly labeled **API note (not a source docstring)**. The generator refuses
-unexpected missing or invented source docstrings. Notes and the mathematical
-guide require semantic review just as other API documentation does. They do not
-replace formal statements or add assumptions to them.
-
-No dependency website, remote style, JavaScript, fonts or interactive search is
-shipped. This reference does not purport to document Lean or all of mathlib.
-It reproduces this project's own signatures/docstrings with local source links;
-the third-party documentation implementation and its generated website/assets
-are not bundled. See [CREDITS.md](CREDITS.md).
-
-## Reproduce historical native records
-
-The following generation commands describe the unchanged seven-leaf input at
-the manifest's recorded source revision. Run them against that exact checkout,
-**not** the new aggregate/test/config from the present checkout; the retained
-API, manifest and scripts are exact historical artifacts rather than regenerated
-claims. New-module documentation is hand-authored and subject to review.
-
-Use a separate unchanged doc-gen4 checkout at
-`97d4ecdfc8e09e7f511724c25e303d448de6a3db`, with its committed manifest and
-Lean `v4.34.0-rc2`. Build that core-only tool with `lake build doc-gen4`; do not
-alter this library's mathematical pins to install it. In this library's pinned
-environment, first fetch the matching mathlib cache and build all default targets
-as described in the root README. All twelve shipped modules must be built,
-including `ReadinessTests`; the four test modules resolve below **tests/**.
-
-The following uses Bash and Python3. Set the absolute path to the built native
-executable. Use a fresh database and create its parent directories **before**
-calling `single`, since the native SQLite opener does not create them:
-
-```sh
-docgen_executable=/absolute/path/to/doc-gen4
-docs_work=$(mktemp -d)
-mkdir "$docs_work/analysis" "$docs_work/rendered"
-source_revision=$(python3 -c 'import json; print(json.load(open("docs/api-manifest.json"))["analyzed_source_revision"])')
-for leaf in CofinalSequence CofinalGroupCompletion GradedStabilization LocalizationPi MittagLeffler SimpleRing VaryingScalar; do
-  lake env "$docgen_executable" single --build "$docs_work/analysis" "AlgebraicDirectLimits.$leaf" api.db "https://github.com/FormalFrontier/algebraic-direct-limits/blob/$source_revision/AlgebraicDirectLimits/$leaf.lean"
-done
-lake env "$docgen_executable" single --build "$docs_work/analysis" AlgebraicDirectLimits api.db "https://github.com/FormalFrontier/algebraic-direct-limits/blob/$source_revision/AlgebraicDirectLimits.lean"
-for module in CofinalGroupCompletionClient GradedStabilizationClient ReadinessClient ReadinessTests; do
-  lake env "$docgen_executable" single --build "$docs_work/analysis" "$module" api.db "https://github.com/FormalFrontier/algebraic-direct-limits/blob/$source_revision/tests/$module.lean"
-done
-lake env "$docgen_executable" bibPrepass --build "$docs_work/rendered" --none
-lake env "$docgen_executable" fromDb --build "$docs_work/rendered" --manifest "$docs_work/rendered/manifest.json" "$docs_work/analysis/api.db"
-python3 -B scripts/generate_api.py --native-data "$docs_work/rendered/doc-data" --source-revision "$source_revision" --check
-python3 -B scripts/test_generate_api.py
-```
-
-Run these commands in this project's `lake env`: the native executable carries
-its implementation while resolving this project's built imports. Preserve both
-resolved dependency manifests and record the effective search path. Native
-warnings and failed attempts are findings, not silent passes. Do not substitute
-a mutable branch for the full source commit. For reviewed regeneration after a
-source change, use its actual full commit, renew the bounded inventory/notes as
-necessary, and omit `--check` only after generating matching new native records.
-
-The pinned native GitHub linker appends `#Lstart-Lend`. The adapter requires the
-exact repository, full revision and module-specific path; a canonical positive
-range starts at native `info.line` and ends within that source file. A test module
-cannot silently use a root-level source path. A valid string does not establish
-remote URL availability. Shipped Markdown links instead target the same checkout's
-source, not an unpublished development URL.
-
-## Reproduce without internal history
-
-`api-manifest.json` records the analyzed source revision, all twelve source and
-three Lean/Lake configuration/pin hashes, module/path mapping, tool revision,
-three adapter/inventory/note hashes, canonical native-record hashes, exact display
-names and output hash. Later documentation-only changes can be related through
-those exact source/pin bytes; a changed mathematical source or pin requires new
-native generation and renewed affected checks.
-
-When the selected source Git object exists, the adapter checks every source/pin
-against it and refuses any mismatch. A public release may have independent Git
-ancestry: only Git's explicit `missing` result or a source-only tree with no `.git`
-marker allows fallback to the committed manifest's exact fifteen source/pin
-hashes, revision and module/tool selection. A broken Git command/repository or a
-non-commit object refuses fallback. `--check` additionally compares both complete
-generated files byte for byte, including all documentation/native-record hashes.
-
-The data controls test this bounded contract with synthetic markup derived from
-the shipped signatures; they are not native generation. Real records and command
-receipts must be authenticated independently. Neither hashes nor this adapter
-attest that supplied JSON came from doc-gen4, and neither is a kernel check,
-copyright clearance or release decision. Complete mathematical/provenance review
-and actual transitive axiom checks remain distinct evidence; separate
-stored-body replay and fresh expensive doc-generation are not required current
-computational gates.
+[`scripts/generate_api.py`](../scripts/generate_api.py) accepts historical
+doc-gen4 `doc-data` as `--native-data` and the manifest's exact analyzed revision
+as `--source-revision`; `--check` compares the retained API and manifest without
+rewriting them. Use a checkout with all 15 matching source/pin inputs (for example,
+the published initial snapshot), **not** the changed current aggregate/test/Lake
+inputs. Its recorded native tool revision is in the manifest; native input data
+must be provided separately. The adapter validates source binding and rendered
+records but cannot independently attest how supplied native data was generated.
+No fresh native generation or full-current-module coverage is claimed. For
+library builds and usage, consult the root README; for contributor and tool
+attribution, see [CREDITS.md](CREDITS.md).
