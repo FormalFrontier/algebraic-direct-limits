@@ -70,6 +70,26 @@ family with coordinate `r^(-n)` has no such bound. Evaluating a putative lift
 at `k+1` would make `r` a unit. The theorem is about the literal countable product;
 it does not assert failure for finite products, zero elements or units.
 
+## Prime spectra of filtered colimits
+
+Let `F` be a diagram of commutative rings indexed by a small filtered category,
+and let `c` be a colimit cocone for `F`. Taking prime spectra reverses arrows:
+each ring map induces contraction of prime ideals. The theorem
+[`PrimeSpectrum.colimitCone_isLimit`](../AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean)
+proves that the spectrum of `c.pt`, with its contraction maps to the stage
+spectra, is a limit of `F.op ⋙ AlgebraicGeometry.Spec.toTop` in `TopCat`.
+
+The chosen-limit homeomorphism `PrimeSpectrum.colimitHomeomorph` identifies
+`PrimeSpectrum c.pt` with that topological limit. Its projection law
+`colimitHomeomorph_π_apply` says that coordinate `j` is contraction along
+`c.ι.app j`. No injectivity of transition maps, nonzero-ring,
+nonempty-spectrum or separation hypothesis is required.
+
+The [examples](../AlgebraicDirectLimitsExamples/PrimeSpectrumFilteredColimits.lean)
+include a constant integer diagram, a sequence beginning with the noninjective
+quotient `ℤ → ZMod 2`, a constant zero-ring diagram with empty spectrum and
+limit, and the non-Hausdorff spectrum of `ℤ`.
+
 ## Cofinal submonoids
 
 For an additive commutative monoid `M`, a submonoid `L` with top saturation means

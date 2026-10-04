@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the eight mathematical modules individually.
+or import any of the nine mathematical modules individually.
 
 ## Headline results
 
@@ -41,6 +41,14 @@ or import any of the eight mathematical modules individually.
   simplicity; it is not a diagram hypothesis. See the
   [module](AlgebraicDirectLimits/SimpleRing.lean) and
   [client](tests/ReadinessClient.lean#L156).
+- **Prime spectra of filtered colimits.** For a small filtered category and
+  any colimit cocone of commutative rings,
+  [`PrimeSpectrum.colimitCone_isLimit`](AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean)
+  identifies its spectrum cone as a limit **in topological spaces**. The
+  [chosen-limit homeomorphism and projection law](AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean)
+  identify each coordinate with contraction along its cocone map. No
+  injectivity, nonzero-ring, nonempty-spectrum or separation hypothesis is
+  required. See the [constant, quotient and empty-spectrum examples](AlgebraicDirectLimitsExamples/PrimeSpectrumFilteredColimits.lean).
 - **Localization of a countable product.**
   [`Localization.awayPiComparison`](AlgebraicDirectLimits/LocalizationPi.lean#L26)
   compares localization of `ℕ → R` at a constant `r` with the countable product
@@ -86,17 +94,31 @@ or import any of the eight mathematical modules individually.
   [module](AlgebraicDirectLimits/GradedStabilization.lean) and
   [boundary client](tests/GradedStabilizationClient.lean#L125).
 
+## Modules
+
+| Module | Contents |
+| --- | --- |
+| [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
+| [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
+| [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
+| [`SimpleRing`](AlgebraicDirectLimits/SimpleRing.lean) | Filtered colimits of simple rings |
+| [`PrimeSpectrumFilteredColimits`](AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean) | Topological limits of filtered-colimit prime spectra |
+| [`LocalizationPi`](AlgebraicDirectLimits/LocalizationPi.lean) | Localization and countable products |
+| [`CofinalGroupCompletion`](AlgebraicDirectLimits/CofinalGroupCompletion.lean) | Group completions at cofinal submonoids |
+| [`MonoidalGroupCompletion`](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) | Object classes under strong monoidal functors |
+| [`GradedStabilization`](AlgebraicDirectLimits/GradedStabilization.lean) | Graded normalization and kernel criteria |
+
 The [mathematical guide](docs/Guide.md) explains the constructions and proofs;
 the Lean modules give the exact signatures and hypotheses. The
 [historical API display](docs/API.md) selects **73 library and 23 boundary-client
 sites from seven earlier leaves** at its recorded source revision. Its inputs
 are source-byte equivalent to the [initial published library snapshot](https://github.com/FormalFrontier/algebraic-direct-limits/tree/d3e1787bbc962d028698af2259d2ef31212857d1),
 but this does not mean its native displays were generated at that public commit.
-It does not cover `MonoidalGroupCompletion`, the current aggregate/test roots or
-all private/generated declarations. Use the module source and guide for omitted
-material; client namespaces are not re-exported as library APIs. This library
-does not claim a complete theory of limits or formal coverage of a specific
-mathematical source.
+It does not cover `MonoidalGroupCompletion`, `PrimeSpectrumFilteredColimits`,
+the current aggregate/test roots or all private/generated declarations.
+Use the module source and guide for omitted material; client namespaces are not
+re-exported as library APIs. This library does not claim a complete theory of
+limits or formal coverage of a specific mathematical source.
 
 ## Reproduce
 
@@ -114,21 +136,40 @@ lake exe cache get
 lake --wfail build
 ```
 
-The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate and
-[`ReadinessTests`](tests/ReadinessTests.lean), which imports four clients (three
-boundary clients and the aggregate-import client). To check a narrow module or
-client after the cache succeeds, for example:
+The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
+[`AlgebraicDirectLimitsExamples`](AlgebraicDirectLimitsExamples/PrimeSpectrumFilteredColimits.lean)
+and [`ReadinessTests`](tests/ReadinessTests.lean). The examples test constant,
+noninjective quotient and zero-ring diagrams, while `ReadinessTests` imports
+four standalone clients. To check a narrow module or client after the cache
+succeeds, for example:
 
 ```sh
 lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion
 lake env lean -DwarningAsError=true tests/ReadinessClient.lean
 ```
 
-External projects should use a matching Lean toolchain and pin their Lake Git
-dependency to a **full published release commit** of
-[FormalFrontier/algebraic-direct-limits](https://github.com/FormalFrontier/algebraic-direct-limits),
-not a moving branch or development commit. No private research workspace is
-needed. Import the aggregate or the linked leaf module appropriate to the use.
+To use the library in another project with a matching Lean toolchain, add this
+dependency to your `lakefile.toml`:
+
+```toml
+[[require]]
+name = "algebraic-direct-limits"
+git = "https://github.com/FormalFrontier/algebraic-direct-limits.git"
+rev = "main"
+```
+
+GitHub `main` contains reviewed releases. Lake resolves the latest release when
+you first add or update the dependency, and `lake-manifest.json` retains that
+commit until you update again. To pin a specific release, replace `main` with a
+full commit from the history of
+[FormalFrontier/algebraic-direct-limits](https://github.com/FormalFrontier/algebraic-direct-limits).
+No private research workspace is needed. Import the aggregate with
+
+```lean
+import AlgebraicDirectLimits
+```
+
+or import the linked leaf module appropriate to your use.
 
 For a first use, follow
 [`tensor_equiv_on_representatives`](tests/ReadinessClient.lean#L48) or
@@ -148,7 +189,7 @@ took about 86 seconds for 8,892 artifacts. With that cache retained, eleven
 sequential explicit library/client builds, a 2,256-job default build and three
 diagnostic commands took about 44 seconds in total. These are measured times on
 one Linux x86-64 runtime with a 23 GiB shared cgroup limit, **not** current
-eight-leaf timings, clean dependency-source builds or machine-independent
+nine-leaf timings, clean dependency-source builds or machine-independent
 benchmarks. That configuration's explicit test-library globs omitted the
 `ReadinessTests` re-export now present in the default targets. Sampled total
 cgroup memory stayed below 20 GB but included another retained cache and file

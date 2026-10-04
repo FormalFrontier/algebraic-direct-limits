@@ -24,9 +24,11 @@ commit. The seven documented leaves and boundary clients remain unchanged in
 the current checkout, while the aggregate root, Lake configuration and test root
 have changed. The reference does not cover the newer
 [`MonoidalGroupCompletion`](../AlgebraicDirectLimits/MonoidalGroupCompletion.lean)
-module or its client. See its source docstrings and the unchanged
-[mathematical guide](Guide.md#monoidal-object-classes-and-actual-image-cofinality)
-for that API; the [guide](Guide.md) also explains the other modules' scope.
+or [`PrimeSpectrumFilteredColimits`](../AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean)
+modules or their clients. See their source docstrings and the guide sections on
+[monoidal object classes](Guide.md#monoidal-object-classes-and-actual-image-cofinality)
+and [prime spectra](Guide.md#prime-spectra-of-filtered-colimits) for those APIs;
+the [guide](Guide.md) also explains the other modules' scope.
 
 ## Optional adapter
 

@@ -5,6 +5,7 @@ project:
   description: >-
     Reusable Lean results for varying-scalar directed limits, tensor products,
     countably cofinal inverse systems, simple filtered ring colimits,
+    prime spectra of filtered commutative-ring colimits,
     localization of countable products, cofinal group completions, and
     monoidal-category object classes with actual-image cofinality.
   authors:
@@ -39,8 +40,10 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Eight mathematical modules, a public re-export and four checked boundary
-    and usage clients with their test-target root. Monoidal group completion
+    Nine mathematical modules, a public re-export, four checked standalone
+    clients and prime-spectrum examples. Filtered commutative-ring colimits
+    give limits of prime spectra in topological spaces, without injective
+    transition maps or separation hypotheses. Monoidal group completion
     uses the native skeleton and its actual image, with cofinal denominators,
     stabilization and an injective induced map under full faithfulness.
     Graded normalization is a
@@ -50,13 +53,12 @@ status:
   sorry_count: 0
   sorry_in_definitions: 0
 review:
-  status: "other: mathematical contributions independently reviewed"
+  status: agent-reviewed
   notes: >-
-    Independent agent reviews covered the mathematical contributions at their
-    accepted revisions. This description does not claim independent review of
-    subsequent documentation corrections, endorsement by source authors, or
-    complete formal coverage of a source. Contributor and API-documentation
-    distinctions are described in docs/CREDITS.md and docs/README.md.
+    Independent agent reviews cover the mathematical contributions, including
+    the prime-spectrum comparison. This does not assert source-author
+    endorsement or complete formal coverage of a source. API documentation
+    is partial; see docs/CREDITS.md and docs/README.md.
 acknowledgements: >-
   The mathlib community's separately licensed library supplies foundational
   definitions and results. Mathematical references are background, not claims

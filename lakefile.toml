@@ -1,6 +1,12 @@
 name = "algebraic-direct-limits"
 version = "0.1.0"
-defaultTargets = ["AlgebraicDirectLimits", "ReadinessTests"]
+defaultTargets = ["AlgebraicDirectLimits", "AlgebraicDirectLimitsExamples", "ReadinessTests"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+weak.linter.style.header = false
 
 [[require]]
 name = "mathlib"
@@ -9,6 +15,10 @@ rev = "83abb3e776bdefcbc447a1e44d0debe4010039e5"
 
 [[lean_lib]]
 name = "AlgebraicDirectLimits"
+
+[[lean_lib]]
+name = "AlgebraicDirectLimitsExamples"
+roots = ["AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits"]
 
 [[lean_lib]]
 name = "ReadinessTests"

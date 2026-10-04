@@ -6,6 +6,7 @@
       "path": ".",
       "targets": [
         "AlgebraicDirectLimits",
+        "AlgebraicDirectLimitsExamples",
         "ReadinessTests"
       ],
       "source_roots": [
