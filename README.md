@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the nine mathematical modules individually.
+or import any of the ten mathematical modules individually.
 
 ## Headline results
 
@@ -17,6 +17,15 @@ or import any of the nine mathematical modules individually.
   with four independent universes and no injectivity assumption on transitions.
   See the [module](AlgebraicDirectLimits/VaryingScalar.lean) and
   [representative client](tests/ReadinessClient.lean#L48).
+- **Coinduced topological modules.**
+  [`TopModuleCat.continuous_coinduced_iff`](AlgebraicDirectLimits/Topology/Coinduced.lean)
+  characterizes continuity of a linear map out of Mathlib's existing coinduced
+  topological module by continuity on every generator. It needs only a ring
+  with a supplied topology, allows an empty index type and an independently
+  leveled target, and does not assert a nonlinear final-topology property.
+  The [examples](AlgebraicDirectLimitsExamples/Coinduced.lean) use the two integer
+  axes in `ℤ × ℤ` and the nonzero functional `(x, y) ↦ x + 2 * y`; addition on
+  a product is also treated over a possibly noncommutative ring.
 - **Sequentializing cofinality.**
   [`IsCofinal.exists_monotone_nat`](AlgebraicDirectLimits/CofinalSequence.lean#L33)
   and [`exists_final_functor_nat`](AlgebraicDirectLimits/CofinalSequence.lean#L55)
@@ -99,6 +108,7 @@ or import any of the nine mathematical modules individually.
 | Module | Contents |
 | --- | --- |
 | [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
+| [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
 | [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
 | [`SimpleRing`](AlgebraicDirectLimits/SimpleRing.lean) | Filtered colimits of simple rings |
@@ -115,7 +125,8 @@ sites from seven earlier leaves** at its recorded source revision. Its inputs
 are source-byte equivalent to the [initial published library snapshot](https://github.com/FormalFrontier/algebraic-direct-limits/tree/d3e1787bbc962d028698af2259d2ef31212857d1),
 but this does not mean its native displays were generated at that public commit.
 It does not cover `MonoidalGroupCompletion`, `PrimeSpectrumFilteredColimits`,
-the current aggregate/test roots or all private/generated declarations.
+`Topology.Coinduced`, the current aggregate/test roots or all private/generated
+declarations.
 Use the module source and guide for omitted material; client namespaces are not
 re-exported as library APIs. This library does not claim a complete theory of
 limits or formal coverage of a specific mathematical source.
@@ -137,10 +148,12 @@ lake --wfail build
 ```
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
-[`AlgebraicDirectLimitsExamples`](AlgebraicDirectLimitsExamples/PrimeSpectrumFilteredColimits.lean)
-and [`ReadinessTests`](tests/ReadinessTests.lean). The examples test constant,
-noninjective quotient and zero-ring diagrams, while `ReadinessTests` imports
-four standalone clients. To check a narrow module or client after the cache
+`AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean).
+The [spectrum examples](AlgebraicDirectLimitsExamples/PrimeSpectrumFilteredColimits.lean)
+test constant, noninjective quotient and zero-ring diagrams; the
+[coinduced-module examples](AlgebraicDirectLimitsExamples/Coinduced.lean) test
+continuity on two coordinate generators. `ReadinessTests` imports four
+standalone clients. To check a narrow module or client after the cache
 succeeds, for example:
 
 ```sh
@@ -189,7 +202,7 @@ took about 86 seconds for 8,892 artifacts. With that cache retained, eleven
 sequential explicit library/client builds, a 2,256-job default build and three
 diagnostic commands took about 44 seconds in total. These are measured times on
 one Linux x86-64 runtime with a 23 GiB shared cgroup limit, **not** current
-nine-leaf timings, clean dependency-source builds or machine-independent
+ten-leaf timings, clean dependency-source builds or machine-independent
 benchmarks. That configuration's explicit test-library globs omitted the
 `ReadinessTests` re-export now present in the default targets. Sampled total
 cgroup memory stayed below 20 GB but included another retained cache and file
@@ -223,7 +236,10 @@ the distinct Lean implementations for localization, cofinal completion and
 monoidal completion). Anchor also contributed assembly and subsequent
 improvements. See [contributors and provenance](docs/CREDITS.md) for details;
 these are AI-assisted formal developments, not claims of source-author
-endorsement. The [Apache-2.0 license](LICENSE) covers original project material;
+endorsement. The coinduced-module criterion follows Richard Hill and Andrew
+Yang's Mathlib coinduced construction and `TopModuleCat.isColimit`
+induced-topology proof.
+The [Apache-2.0 license](LICENSE) covers original project material;
 mathlib and the other separately maintained dependencies keep their own licenses
 and notices. Collective author credit alone does not establish legal ownership
 or resolve third-party rights concerns.

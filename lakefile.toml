@@ -18,7 +18,7 @@ name = "AlgebraicDirectLimits"
 
 [[lean_lib]]
 name = "AlgebraicDirectLimitsExamples"
-roots = ["AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits"]
+roots = ["AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits", "AlgebraicDirectLimitsExamples.Coinduced"]
 
 [[lean_lib]]
 name = "ReadinessTests"

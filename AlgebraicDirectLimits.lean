@@ -12,6 +12,7 @@ public import AlgebraicDirectLimits.MittagLeffler
 public import AlgebraicDirectLimits.MonoidalGroupCompletion
 public import AlgebraicDirectLimits.PrimeSpectrumFilteredColimits
 public import AlgebraicDirectLimits.SimpleRing
+public import AlgebraicDirectLimits.Topology.Coinduced
 public import AlgebraicDirectLimits.VaryingScalar
 
 /-!
@@ -20,6 +21,7 @@ public import AlgebraicDirectLimits.VaryingScalar
 Public entry point for directed limits with varying scalars, tensor products,
 cofinal sequences and group completions, monoidal object classes, graded
 stabilization, Type-valued Mittag--Leffler systems, filtered colimits of simple
-rings, spectra of filtered ring colimits, and localization of countable products.
+rings, spectra of filtered ring colimits, localization of countable products,
+and linear continuity for coinduced topological modules.
 Each module may be imported independently.
 -/
