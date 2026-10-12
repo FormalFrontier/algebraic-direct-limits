@@ -30,6 +30,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorCompactness",
   "AlgebraicDirectLimitsExamples.TensorHom",
   "AlgebraicDirectLimitsExamples.TensorUnit",
+  "AlgebraicDirectLimitsExamples.TensorAssociativity",
   "AlgebraicDirectLimitsExamples.TensorSeparation"
 ]
 

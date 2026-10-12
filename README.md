@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import the mathematical modules individually.
+or import any of the twenty mathematical modules individually.
 
 ## Headline results
 
@@ -76,6 +76,15 @@ or import the mathematical modules individually.
   commutative ring with a supplied topology and jointly continuous action on
   `M`, without continuity of ring multiplication or a finite basis. See the
   [integer-pair doubling examples](AlgebraicDirectLimitsExamples/TensorUnit.lean).
+- **Associativity for the one-sided tensor topology.**
+  [`TopModuleCat.tensorAssocContinuousLinearEquiv`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
+  equips Mathlib's algebraic associator `(C ⊗[R] D) ⊗[R] M ≃ₗ[R] C ⊗[R] (D ⊗[R] M)`
+  with continuous forward and inverse maps for the supplied one-sided tensor
+  topologies. Only `M` is topological; the commutative ring has a supplied
+  topology and both coefficient modules are algebraic. Pure-tensor formulas,
+  threefold extensionality, inverse identities and naturality in all three
+  factors require no finiteness, freeness or separation hypothesis. See the
+  [mixed integer-pair, nonfree torsion and empty-coefficient examples](AlgebraicDirectLimitsExamples/TensorAssociativity.lean).
 - **Compactness with finitely generated coefficients.**
   [`TopModuleCat.compactSpace_tensorLeftObj`](AlgebraicDirectLimits/Topology/TensorCompactness.lean)
   gives compactness of the one-sided tensor when its algebraic coefficient
@@ -229,6 +238,7 @@ or import the mathematical modules individually.
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry and universal-property linear equivalence |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
+| [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products and naturality in three factors |
 | [`Topology.TensorSeparation`](AlgebraicDirectLimits/Topology/TensorSeparation.lean) | Finite-basis and finite-free Hausdorff preservation |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
 | [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
@@ -249,7 +259,8 @@ sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
 `Topology.Restriction`, `Topology.TensorHom`, `Topology.TensorUnit`,
-`Topology.TensorCompactness`, `Topology.TensorSeparation`,
+`Topology.TensorAssociativity`, `Topology.TensorCompactness`,
+`Topology.TensorSeparation`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
 `RingTheory.KrullDimension.DirectedUnion`, aggregate/test roots or all
 private/generated declarations.
@@ -275,9 +286,9 @@ lake --wfail build
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
-which imports the registered standalone clients. They include the mathematical
-modules, examples and test modules. To check one module or client after the
-cache succeeds:
+which imports the registered standalone clients. They include all twenty
+mathematical modules, thirteen example modules and six test modules. To check one
+module or client after the cache succeeds:
 
 ```sh
 lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion

@@ -21,6 +21,7 @@ public import AlgebraicDirectLimits.Topology.TensorCompactness
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import AlgebraicDirectLimits.Topology.TensorUnit
+public import AlgebraicDirectLimits.Topology.TensorAssociativity
 public import AlgebraicDirectLimits.Topology.TensorSeparation
 public import AlgebraicDirectLimits.VaryingScalar
 
