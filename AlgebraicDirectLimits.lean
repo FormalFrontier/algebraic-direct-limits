@@ -34,7 +34,8 @@ stabilization, Type-valued Mittag--Leffler systems, filtered colimits of simple
 rings, spectra of filtered ring colimits, Krull dimension under finite-subset
 capture, for directed colimits and for directed subsemiring unions,
 localization of countable products, one-sided tensor topologies, same-topology
-scalar restriction, compactness for finitely generated coefficients, finite-basis
-tensor Hausdorffness, and linear continuity for coinduced topological modules.
+scalar restriction, compactness for finitely generated coefficients, statements
+for arbitrary-basis and projective tensor Hausdorffness, and linear continuity
+for coinduced topological modules.
 Each module may be imported independently.
 -/

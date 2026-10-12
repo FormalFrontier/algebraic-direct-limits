@@ -5,6 +5,9 @@ Authors: Formal Frontier Agents
 module
 
 public import AlgebraicDirectLimits.Topology.TensorProduct
+public import Mathlib.Algebra.Module.LinearMap.End
+public import Mathlib.LinearAlgebra.Finsupp.Pi
+public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
 
 /-!
 # Continuous bilinear maps out of the one-sided tensor
@@ -20,6 +23,14 @@ continuous fixed-coefficient generators.
 outgoing continuous linear maps to linear families of continuous linear maps.
 The characteristic statements include pure-tensor evaluation, agreement with
 Mathlib's algebraic universal property, uniqueness, and composition coherence.
+
+`TopModuleCat.tensorCoordinatesCLM` applies the same lift to basis coefficient
+functionals and assembles the resulting maps with continuous product projections.
+Its target is the arbitrary product of the right module, not a product equivalence:
+infinite product tuples need not have finite support. The coordinate statements
+specify pure-tensor and generator values, support forgetting from Mathlib's
+algebraic Finsupp coordinates, injectivity, and agreement with the forward map of
+the existing finite coordinate equivalence.
 
 ## Implementation notes
 
@@ -37,13 +48,17 @@ constructions in `AlgebraicDirectLimits.Topology.Coinduced` and
 `AlgebraicDirectLimits.Topology.TensorProduct`, by Formal Frontier Agents, which
 in turn follow Mathlib's topological-module development by Richard Hill and Andrew
 Yang and Beacon's original topological development for continuous group cohomology.
+The basis coefficient and Finsupp APIs are Mathlib's constructions by Johannes
+Hölzl, Kim Morrison, Mario Carneiro and Alexander Bentkamp; its tensor-basis
+coordinates are due to Jakob von Raumer. The arbitrary product-coordinate
+application follows Lantern's split-cover mathematics.
 -/
 
 @[expose] public section
 
 open scoped TensorProduct
 
-universe uR uC uD uM uN uP
+universe uR uC uD uM uN uP uι
 
 namespace TopModuleCat
 
@@ -286,5 +301,75 @@ theorem tensorCurry_comp_tensorMapCLM (f : tensorLeftObj R C M →L[R] N)
     _ = _ := (tensorCurry_apply_apply R f (a d) (g p)).symm
 
 end Composition
+
+section Coordinates
+
+variable (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) {ι : Type uι}
+
+/-- Continuous product coordinates for an arbitrary supplied coefficient basis.
+Only the right factor is topological; no finiteness or separation is required. -/
+noncomputable def tensorCoordinatesCLM (b : Module.Basis ι R C) :
+    tensorLeftObj R C M →L[R] (ι → M) :=
+  ContinuousLinearMap.pi (fun i ↦
+    tensorLiftCLM R ((b.coord i).smulRight (ContinuousLinearMap.id R M)))
+
+/-- The product coordinates of a pure tensor are scalar multiples of its right factor. -/
+@[simp]
+theorem tensorCoordinatesCLM_tmul_apply (b : Module.Basis ι R C)
+    (c : C) (m : M) (i : ι) :
+    tensorCoordinatesCLM R C M b (c ⊗ₜ[R] m) i = b.repr c i • m := by
+  change tensorLiftCLM R ((b.coord i).smulRight (ContinuousLinearMap.id R M))
+      (c ⊗ₜ[R] m) = b.repr c i • m
+  exact (tensorLiftCLM_tmul R
+    ((b.coord i).smulRight (ContinuousLinearMap.id R M)) c m).trans (by rfl)
+
+/-- The product coordinates of a continuous tensor generator use the basis coefficients. -/
+@[simp]
+theorem tensorCoordinatesCLM_tensorGenerator_apply (b : Module.Basis ι R C)
+    (c : C) (m : M) (i : ι) :
+    tensorCoordinatesCLM R C M b (tensorGenerator R C M c m) i = b.repr c i • m := by
+  exact (congrArg (fun x : tensorLeftObj R C M ↦ tensorCoordinatesCLM R C M b x i)
+    (tensorGenerator_apply R C M c m)).trans
+      (tensorCoordinatesCLM_tmul_apply R C M b c m i)
+
+/-- Algebraically, product coordinates forget the support of the stock Finsupp coordinates. -/
+theorem tensorCoordinatesCLM_toLinearMap [DecidableEq ι] (b : Module.Basis ι R C) :
+    (tensorCoordinatesCLM R C M b).toLinearMap =
+      (Finsupp.lcoeFun : (ι →₀ M) →ₗ[R] (ι → M)).comp
+        (TensorProduct.equivFinsuppOfBasisLeft b).toLinearMap := by
+  apply TensorProduct.ext'
+  intro c m
+  funext i
+  exact (tensorCoordinatesCLM_tmul_apply R C M b c m i).trans
+    (TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply b c m i).symm
+
+/-- Product coordinates detect equality of tensors, without finiteness or separation premises. -/
+theorem tensorCoordinatesCLM_injective (b : Module.Basis ι R C) :
+    Function.Injective (tensorCoordinatesCLM R C M b) := by
+  classical
+  intro x y h
+  apply (TensorProduct.equivFinsuppOfBasisLeft (N := M) b).injective
+  apply DFunLike.coe_injective
+  calc
+    ⇑((TensorProduct.equivFinsuppOfBasisLeft b) x) =
+        tensorCoordinatesCLM R C M b x :=
+      (DFunLike.congr_fun (tensorCoordinatesCLM_toLinearMap R C M b) x).symm
+    _ = tensorCoordinatesCLM R C M b y := h
+    _ = ⇑((TensorProduct.equivFinsuppOfBasisLeft b) y) :=
+      DFunLike.congr_fun (tensorCoordinatesCLM_toLinearMap R C M b) y
+
+/-- For a finite basis, product coordinates are the forward continuous map of the
+existing coordinate equivalence. The equivalence and its inverse remain finite-only. -/
+theorem tensorCoordinatesCLM_eq_finiteCoordinates [Finite ι] (b : Module.Basis ι R C) :
+    tensorCoordinatesCLM R C M b =
+      (tensorCoordinateContinuousLinearEquiv R C M b).toContinuousLinearMap := by
+  apply ContinuousLinearMap.coe_injective
+  apply TensorProduct.ext'
+  intro c m
+  funext i
+  exact (tensorCoordinatesCLM_tmul_apply R C M b c m i).trans
+    (tensorCoordinateContinuousLinearEquiv_tmul_apply R C M b c m i).symm
+
+end Coordinates
 
 end TopModuleCat

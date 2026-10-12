@@ -30,8 +30,9 @@ coefficient, right-factor and basis-index universes independent.
 
 ## Limitations
 
-The preservation consumers use the finite-basis and finite-free theorems in
-`AlgebraicDirectLimits.Topology.TensorSeparation`. Coordinate calculations,
+The preservation consumers use supplied-basis and projective statements in
+`AlgebraicDirectLimits.Topology.TensorSeparation`, specializing them to the
+finite models above. Coordinate calculations,
 nonfreeness and the singleton boundaries do not assume tensor Hausdorffness.
 No compactness preservation or general Hausdorffness reflection is asserted.
 
@@ -206,12 +207,11 @@ theorem residueTensor_t2_of_basis : T2Space residueTensor := by
   exact TopModuleCat.t2Space_tensorLeftObj_of_basis ℤ
     integerPairCoefficients residueModule (Module.Basis.finTwoProd ℤ)
 
-/-- The canonical finite-free theorem supplies Hausdorffness of the same tensor. -/
+/-- The projective statement applies to these finite-free coefficients through
+Mathlib's free-to-projective instance. -/
 theorem residueTensor_t2 : T2Space residueTensor := by
   letI : Module.Free ℤ integerPairCoefficients :=
     Module.Free.of_basis (Module.Basis.finTwoProd ℤ)
-  letI : Module.Finite ℤ integerPairCoefficients :=
-    Module.Finite.of_basis (Module.Basis.finTwoProd ℤ)
   exact TopModuleCat.t2Space_tensorLeftObj ℤ integerPairCoefficients residueModule
 
 /-- The basis theorem supplies disjoint open neighborhoods of the pure tensor and zero. -/
@@ -267,16 +267,17 @@ theorem trivialRing_t2 [Subsingleton R] (C : ModuleCat.{uC} R) (M : TopModuleCat
 
 /-- The explicit-basis theorem is usable over a trivial ring without an empty-index premise. -/
 theorem trivialRing_t2_of_basis [Subsingleton R]
-    (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) {ι : Type uι} [Finite ι]
+    (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) {ι : Type uι}
     (b : Module.Basis ι R C) : T2Space (TopModuleCat.tensorLeftObj R C M) := by
   letI : Subsingleton M := Module.subsingleton R M
   letI : T2Space M := inferInstance
   exact TopModuleCat.t2Space_tensorLeftObj_of_basis R C M b
 
-/-- The canonical finite-free theorem also permits a trivial scalar ring. -/
+/-- Free coefficients over a trivial ring satisfy the projective statement;
+in particular this includes the finite-free specialization. -/
 theorem trivialRing_freeFinite_t2 [Subsingleton R]
     (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
-    [Module.Free R C] [Module.Finite R C] : T2Space (TopModuleCat.tensorLeftObj R C M) := by
+    [Module.Free R C] : T2Space (TopModuleCat.tensorLeftObj R C M) := by
   letI : Subsingleton M := Module.subsingleton R M
   letI : T2Space M := inferInstance
   exact TopModuleCat.t2Space_tensorLeftObj R C M
@@ -313,15 +314,54 @@ theorem emptyIndiscrete_tensor_boundary :
       indiscreteIntegerModule) ∧ ¬ T2Space indiscreteIntegerModule := by
   exact ⟨emptyCoefficient_t2 ℤ indiscreteIntegerModule, indiscreteIntegerModule_not_t2⟩
 
-/-- The basis theorem gives open separation with independently leveled input and index types. -/
+/-- The supplied-basis statement gives open separation with arbitrary independently
+leveled input and index types, including the finite-basis specialization. -/
 theorem finiteBasis_separates_tensor
     (R : Type uR) [CommRing R] [TopologicalSpace R]
     (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
-    {ι : Type uι} [Finite ι] (b : Module.Basis ι R C) [T2Space M]
+    {ι : Type uι} (b : Module.Basis ι R C) [T2Space M]
     (x y : TopModuleCat.tensorLeftObj R C M) (hne : x ≠ y) :
     ∃ U V : Set (TopModuleCat.tensorLeftObj R C M),
       IsOpen U ∧ IsOpen V ∧ x ∈ U ∧ y ∈ V ∧ Disjoint U V := by
   letI := TopModuleCat.t2Space_tensorLeftObj_of_basis R C M b
   exact t2_separation hne
+
+section ZeroRight
+
+variable (R : Type uR) [CommRing R] [TopologicalSpace R]
+
+/-- The canonical zero right module, as in the zero-right tensor-Hom client. -/
+abbrev zeroRightModule : TopModuleCat R :=
+  (TopModuleCat.indiscrete R).obj (ModuleCat.of R (Fin 0 → R))
+
+/-- The supplied-basis statement applies to the zero right module. -/
+theorem zeroRight_t2_of_basis (C : ModuleCat.{uC} R) {ι : Type uι}
+    (b : Module.Basis ι R C) :
+    T2Space (TopModuleCat.tensorLeftObj R C (zeroRightModule R)) := by
+  letI : Subsingleton (zeroRightModule R) := by
+    change Subsingleton (Fin 0 → R)
+    exact ⟨fun f g ↦ funext (fun i ↦ Fin.elim0 i)⟩
+  letI : T2Space (zeroRightModule R) := inferInstance
+  exact TopModuleCat.t2Space_tensorLeftObj_of_basis R C (zeroRightModule R) b
+
+/-- The projective statement also applies to the canonical zero right module. -/
+theorem zeroRight_projective_t2 (C : ModuleCat.{uC} R) [Module.Projective R C] :
+    T2Space (TopModuleCat.tensorLeftObj R C (zeroRightModule R)) := by
+  letI : Subsingleton (zeroRightModule R) := by
+    change Subsingleton (Fin 0 → R)
+    exact ⟨fun f g ↦ funext (fun i ↦ Fin.elim0 i)⟩
+  letI : T2Space (zeroRightModule R) := inferInstance
+  exact TopModuleCat.t2Space_tensorLeftObj R C (zeroRightModule R)
+
+end ZeroRight
+
+/-- The arbitrary product-coordinate map agrees with the old finite residue coordinates
+on every tensor, not just on the generators. -/
+theorem residueProductCoordinates_eq (x : residueTensor) :
+    TopModuleCat.tensorCoordinatesCLM ℤ integerPairCoefficients residueModule
+      (Module.Basis.finTwoProd ℤ) x = residueCoordinates x := by
+  exact DFunLike.congr_fun
+    (TopModuleCat.tensorCoordinatesCLM_eq_finiteCoordinates ℤ
+      integerPairCoefficients residueModule (Module.Basis.finTwoProd ℤ)) x
 
 end TensorSeparationExamples

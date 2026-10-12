@@ -14,7 +14,7 @@ project:
     continuous finite-basis coordinates for one-sided tensor products,
     continuous tensor universal properties, the scalar tensor unit, continuous
     associativity, compactness for finitely generated tensor coefficients, and
-    finite-basis and finite-free tensor Hausdorffness preservation.
+    arbitrary-basis and projective tensor Hausdorffness preservation.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -47,12 +47,13 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Twenty mathematical modules, a public re-export, thirteen example modules
-    and five standalone clients. The examples cover prime spectra, finite-capture,
-    directed-colimit and directed-union dimensions including proper subsemiring
-    traces, coinduced modules, integer-pair tensors, tensor-Hom, the scalar unit,
-    scalar restriction, tensor separation, tensor associativity with nonfree
-    torsion and empty coefficients, and finite torsion tensor compactness.
+    Twenty mathematical modules, a public re-export, fourteen example modules
+    and six test modules (five standalone clients and their aggregate). The examples
+    cover prime spectra, finite-capture, directed-colimit and directed-union
+    dimensions including proper subsemiring traces, coinduced modules, integer-pair
+    tensors, tensor-Hom, the scalar unit, scalar restriction, tensor separation,
+    infinite-basis and nonfree projective coefficients, tensor associativity with
+    nonfree torsion and empty coefficients, and finite torsion tensor compactness.
     Scalar restriction along a continuous ring homomorphism between arbitrary
     rings retains each topological module's topology, with functorial
     continuous-linear maps, natural identity/composition comparisons and both
@@ -81,19 +82,32 @@ status:
     inverse identities, threefold extensionality and naturality in all three
     factors, without finiteness, freeness or separation assumptions.
     Basis change remains a type contract without a proof or an exported
-    construction of its realization. Finite-basis Hausdorff preservation and its
-    canonical finite-free specialization follow from the continuous finite-product
-    coordinates, with independent carrier and index universes over an arbitrary
-    commutative ring with a supplied topology. They require no coefficient
-    topology, finiteness of the right factor or continuity of ring multiplication.
-    Their separation examples use the nonfree integer module ZMod 3, nonzero pure
-    and mixed tensors, the noncompact Hausdorff integer right factor, and
-    empty-basis and trivial-ring boundaries. Preservation for arbitrary projective
-    coefficients and Hausdorffness reflection are outside these results.
+    construction of its realization. The arbitrary product-coordinate map is
+    constructed from the continuous tensor lift and Pi construction. Its
+    characteristic lemmas describe pure tensors and generators, support forgetting
+    from algebraic Finsupp coordinates, injectivity and finite-coordinate agreement.
+    The coordinate equivalences and finite-sum inverses remain finite-only.
+    An arbitrary supplied coefficient basis or projective coefficient module
+    preserves Hausdorffness of the right topological module. The projective case
+    uses a section of the canonical free cover and the induced continuous split
+    tensor maps. These results retain independent carrier and index universes over
+    a commutative ring with a supplied topology and a jointly continuous right
+    action, without a coefficient topology, continuity of ring multiplication,
+    scalar separation, a field, Small or finite-generation hypotheses.
+    Separation examples retain the nonfree right integer module ZMod 3, nonzero
+    pure and mixed tensors, right doubling, the noncompact integer right factor,
+    empty-basis and trivial-ring boundaries and nonreflection. Further examples
+    construct the canonical infinite Finsupp integer coefficients with usual
+    nondiscrete real right module, and the nonfree projective first-axis ideal over
+    the discrete integer product ring, including model properties and explicit
+    disjoint open pullbacks. These are forward Hausdorff preservation results;
+    no Hausdorffness reflection or infinite-product surjectivity is asserted.
     Tensoring a compact topological module with a finitely generated algebraic
     coefficient module preserves compactness, over a commutative ring with a
     supplied topology and independent carrier universes. A finite spanning
     family gives a continuous surjection from a finite power of the right factor.
+    This requires Module.Finite R C, not projectivity alone; neither coefficient
+    freeness nor compactness of the scalar ring is required.
     The nonfree integer-module example uses ZMod 3 and multiplication to detect
     a nonzero pure tensor and instantiates this compactness result.
     Finite-subset capture in one homomorphism range per finite subset bounds the
@@ -122,7 +136,9 @@ status:
     Graded normalization is a
     type equivalence, not an additive equivalence; cancellation is required
     only for the degree target in its surjective/equivalence results. This is
-    not a full theory or a source-coverage assessment.
+    not a full theory or a source-coverage assessment. Full categorical tensor
+    coherence, a pentagon construction, flat-coefficient preservation, completed
+    tensor products are outside this API.
   sorry_count: 0
   sorry_in_definitions: 0
 review:

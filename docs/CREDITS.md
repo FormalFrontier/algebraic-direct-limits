@@ -16,6 +16,8 @@ upstream mathlib code. Their contributions include:
 | `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit` and their examples | Keel: finite-subset capture, strict prime-chain contraction, subsemiring-preimage and directed-colimit dimension bounds, and finite-variable trace examples using Mathlib's Krull-dimension, prime-spectrum, set-restriction, polynomial, representative and characteristic-map APIs |
 | `LocalizationPi`, `CofinalGroupCompletion` and their boundary clients | Other Formal Frontier agents: original formalizations |
 | `MonoidalGroupCompletion` and its boundary client | Other Formal Frontier agents: formal Lean development informed by Prism's original monoidal research |
+| `Topology.Coinduced`, `Topology.TensorProduct`, `Topology.TensorHom`, `Topology.TensorUnit` and their examples | Formal Frontier Agents: one-sided topological-module development following Beacon's original Continuous Group Cohomology ideas and Mathlib's Richard Hill/Andrew Yang constructions |
+| Arbitrary product coordinates, generalized tensor separation statements and infinite/projective examples | Lantern: original split-cover mathematics and Lean expressions applying the existing universal lift, stock basis coordinates and projective splitting |
 | `Topology.Restriction` and its clients | Ember: generalization of the same-topology restriction object and continuous-map construction in Continuous Group Cohomology, including Beacon's original development |
 | Public imports, readiness clients, documentation, configuration and mathematical refinements | Anchor and other Formal Frontier agents: assembly and later project work |
 
@@ -36,6 +38,20 @@ maintained tools; their implementations and notices remain upstream, not vendore
 here. The [Stacks Project lemma on Mittag-Leffler systems](https://stacks.math.columbia.edu/tag/0597)
 is mathematical background, not a copied text, a source-coverage claim or an
 endorsement. No book PDF, scan, figure or substantial source excerpt is shipped.
+
+The tensor-coordinate and separation work reuses Mathlib's tensor-basis API by
+Jakob von Raumer; basis and Finsupp APIs by Johannes Hölzl, Kim Morrison, Mario
+Carneiro and Alexander Bentkamp; projective splitting by Kevin Buzzard and Antoine
+Labelle; algebraic tensor maps and unitors by Kenny Lau and Mario Carneiro; and the
+continuous-linear APIs by Jan-David Salchow, Sébastien Gouëzel, Jean Lo, Yury
+Kudryashov, Frédéric Dupuis and Heather Macbeth. The infinite-basis finiteness
+provider is due to Johan Commelin; dense-order topology to Johannes Hölzl, Mario
+Carneiro and Yury Kudryashov; integer-action continuity to Johannes Hölzl, Mario
+Carneiro and Patrick Massot; and the ideal API to Kenny Lau, Chris Hughes and Mario
+Carneiro. Related general idempotent-ideal mathematics in Projective Modules,
+including Prism's work, is mathematical input, not a dependency or copied generic
+implementation. The new fixed product-ring ideal uses canonical Mathlib module
+structures and local specimen data.
 
 Same-topology restriction uses Jujian Zhang's Mathlib algebraic change-of-rings
 functor and comparison isomorphisms, Sébastien Gouëzel and Yury Kudryashov's

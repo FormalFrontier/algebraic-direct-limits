@@ -31,7 +31,8 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorHom",
   "AlgebraicDirectLimitsExamples.TensorUnit",
   "AlgebraicDirectLimitsExamples.TensorAssociativity",
-  "AlgebraicDirectLimitsExamples.TensorSeparation"
+  "AlgebraicDirectLimitsExamples.TensorSeparation",
+  "AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation"
 ]
 
 [[lean_lib]]
