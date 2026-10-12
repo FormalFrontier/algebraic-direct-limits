@@ -21,6 +21,7 @@ name = "AlgebraicDirectLimitsExamples"
 roots = [
   "AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCapture",
+  "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCaptureTrace",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectLimit",
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.TensorProduct",

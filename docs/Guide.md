@@ -90,6 +90,56 @@ include a constant integer diagram, a sequence beginning with the noninjective
 quotient `ℤ → ZMod 2`, a constant zero-ring diagram with empty spectrum and
 limit, and the non-Hausdorff spectrum of `ℤ`.
 
+## Krull dimension under finite-subset capture
+
+Let `φ i : A i →+* B` be a family of homomorphisms between commutative
+semirings. The hypothesis of
+[`ringKrullDim_le_iSup_of_finite_subset_range`](../AlgebraicDirectLimits/RingTheory/KrullDimension/FiniteCapture.lean)
+is **one common stage for each finite subset**:
+`∀ E : Set B, E.Finite → ∃ i, E ⊆ Set.range (φ i)`.
+The index may depend on the whole finite set. There need not be a stage covering
+all of `B`, nor a directed system, nor injective maps. The empty subset already
+forces an inhabited index type. Separate pointwise capture
+`∀ b, ∃ i, b ∈ Set.range (φ i)` is a weaker condition and is not the theorem's
+hypothesis: without an additional common-stage property, the indices chosen for
+different elements need not agree. No dimension bound under that weaker
+hypothesis, or formal counterexample to such a bound, is asserted here.
+
+The proof takes an arbitrary finite strict chain of prime ideals of `B` and
+chooses one element in each successive ideal difference. A single stage captures
+this finite witness set. Contraction along its homomorphism preserves strictness
+of this chain, even though contraction need not preserve all strict inclusions.
+Taking the supremum of the finite-chain lengths gives
+`ringKrullDim B ≤ ⨆ i, ringKrullDim (A i)` in `WithBot ℕ∞`, including bottom
+and top. The finite-generated-subsemiring corollary uses the canonical inclusion
+of the closure of each finite subset.
+
+For a subsemiring `C` of `B`,
+[`ringKrullDim_subsemiring_le_iSup_comap_of_finite_subset_range`](../AlgebraicDirectLimits/RingTheory/KrullDimension/FiniteCapture.lean)
+gives `ringKrullDim C ≤ ⨆ i, ringKrullDim (C.comap (φ i))` under the same
+ambient hypothesis. Restrict `φ i` to its preimage of `C`; the range is exactly
+those elements of `C` whose ambient values lie in `Set.range (φ i)`, as stated
+by `RingHom.range_restrict_comap`. The finite ambient image of a finite subset
+of `C` is captured in one stage, so the restricted family satisfies the original
+finite-subset condition. The bound uses the dimensions of these preimages, not
+an unstated comparison with the dimensions of the ambient sources.
+
+The [trace examples](../AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/FiniteCaptureTrace.lean)
+use `MvPolynomial ℕ ℕ` with stages indexed by finite sets of variables. Taking
+the union of the variables appearing in a finite family gives a common stage,
+while every individual stage misses a variable. The subsemiring obtained by
+renaming `X n` to `X (2 * n)` is proper. Its preimage at the stage on the odd
+variable `1` is proper too, and no restricted finite-variable stage surjects
+onto the even-variable subsemiring. Nonetheless, finite subsets of that
+subsemiring are captured in one restricted stage, and the trace inequality
+applies. These are structural non-surjectivity and properness examples; their
+dimension inequality is not claimed to give a sharp finite numerical bound.
+The separate `ZMod 1` example checks dimension bottom, not dimension zero,
+and supplies only the trivial-semiring boundary. The
+[original examples](../AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/FiniteCapture.lean)
+retain the singleton-surjective, finite-generated polynomial, subsingleton-source
+and empty-index boundaries.
+
 ## Krull dimension and directed colimits
 
 The [finite-subset criterion](../AlgebraicDirectLimits/RingTheory/KrullDimension/FiniteCapture.lean)
