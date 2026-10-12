@@ -122,7 +122,11 @@ those elements of `C` whose ambient values lie in `Set.range (φ i)`, as stated
 by `RingHom.range_restrict_comap`. The finite ambient image of a finite subset
 of `C` is captured in one stage, so the restricted family satisfies the original
 finite-subset condition. The bound uses the dimensions of these preimages, not
-an unstated comparison with the dimensions of the ambient sources.
+an unstated comparison with the dimensions of the ambient sources. Such a
+comparison cannot be assumed: the integer subsemiring of `ℚ` has dimension one,
+whereas `ℚ` has dimension zero. Even for the singleton identity map of `ℚ`,
+finite-subset capture does not bound that subsemiring's dimension by the raw
+source dimension; its stage preimage is the integer subsemiring itself.
 
 The [trace examples](../AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/FiniteCaptureTrace.lean)
 use `MvPolynomial ℕ ℕ` with stages indexed by finite sets of variables. Taking
@@ -165,6 +169,28 @@ is needed. The index and stage universes are independent. The
 apply the theorem to the constant integer system and to the ordered two-stage
 system `ℤ → ZMod 2`. In the latter, the integer-stage map identifies `2` and `0`,
 while the terminal-stage map distinguishes `0` and `1`.
+
+## Krull dimension of directed subsemiring unions
+
+For a nonempty family `s : ι → Subsemiring R` in a commutative semiring,
+with `Directed (· ≤ ·) s`,
+[`Subsemiring.ringKrullDim_iSup_le`](../AlgebraicDirectLimits/RingTheory/KrullDimension/DirectedUnion.lean)
+proves `ringKrullDim (⨆ i, s i : Subsemiring R) ≤ ⨆ i, ringKrullDim (s i)`.
+The index type carries no order and has a universe independent of `R`.
+No Noetherianity, domain, nontriviality or finite-dimension assumption is needed.
+The dimension values include `⊥` and `⊤`.
+
+Directedness identifies the lattice supremum with the set-theoretic union and
+puts each finite subset in one stage. The canonical inclusions into the
+supremum therefore satisfy the finite-subset capture criterion. Nonemptiness
+supplies a stage for the empty finite subset; it cannot be dropped.
+
+The [integer-to-rational models](../AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/DirectedUnion.lean)
+use `Bool` to index the integer image in `ℚ` and the whole rational semiring.
+The first stage is proper, and its inclusion into the union is not surjective.
+The stage dimensions are one and zero, their supremum is one, and the union
+has dimension zero. Thus the theorem is an upper bound, not an equality.
+The same models give an empty-index boundary where the inequality fails.
 
 ## Cofinal submonoids
 

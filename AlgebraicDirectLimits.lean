@@ -13,6 +13,7 @@ public import AlgebraicDirectLimits.MonoidalGroupCompletion
 public import AlgebraicDirectLimits.PrimeSpectrumFilteredColimits
 public import AlgebraicDirectLimits.RingTheory.KrullDimension.FiniteCapture
 public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectLimit
+public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectedUnion
 public import AlgebraicDirectLimits.SimpleRing
 public import AlgebraicDirectLimits.Topology.Coinduced
 public import AlgebraicDirectLimits.Topology.TensorProduct

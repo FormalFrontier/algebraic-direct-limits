@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the fifteen mathematical modules individually.
+or import any of the sixteen mathematical modules individually.
 
 ## Headline results
 
@@ -118,6 +118,17 @@ or import any of the fifteen mathematical modules individually.
   domain, nontriviality or finite-dimension hypothesis is needed; dimensions
   retain `⊥` and `⊤`. The proof applies finite-subset capture to the canonical
   stage maps. See the [constant integer and noninjective quotient models](AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/DirectLimit.lean).
+- **Krull dimension of directed subsemiring unions.** For a nonempty family
+  `s : ι → Subsemiring R` in a commutative semiring, directed under inclusion,
+  [`Subsemiring.ringKrullDim_iSup_le`](AlgebraicDirectLimits/RingTheory/KrullDimension/DirectedUnion.lean)
+  bounds `ringKrullDim (⨆ i, s i : Subsemiring R)` by `⨆ i, ringKrullDim (s i)`.
+  The index needs no order, and its universe is independent of the ambient
+  semiring's. No Noetherianity, domain, nontriviality or finite-dimension
+  hypothesis is needed; dimension values include `⊥` and `⊤`. The proof uses
+  canonical inclusions and finite-subset capture. See the
+  [proper integer-to-rational family and empty-index boundary](AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/DirectedUnion.lean).
+  This is only an upper bound: the proper two-stage family indexed by `Bool`
+  in `ℚ` has stage-dimension supremum one and union dimension zero.
 - **Localization of a countable product.**
   [`Localization.awayPiComparison`](AlgebraicDirectLimits/LocalizationPi.lean#L26)
   compares localization of `ℕ → R` at a constant `r` with the countable product
@@ -178,6 +189,7 @@ or import any of the fifteen mathematical modules individually.
 | [`PrimeSpectrumFilteredColimits`](AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean) | Topological limits of filtered-colimit prime spectra |
 | [`RingTheory.KrullDimension.FiniteCapture`](AlgebraicDirectLimits/RingTheory/KrullDimension/FiniteCapture.lean) | Finite-subset capture, strict prime chains and Krull-dimension bounds for semirings and subsemiring preimages |
 | [`RingTheory.KrullDimension.DirectLimit`](AlgebraicDirectLimits/RingTheory/KrullDimension/DirectLimit.lean) | Directed-colimit dimension bound without injective transitions |
+| [`RingTheory.KrullDimension.DirectedUnion`](AlgebraicDirectLimits/RingTheory/KrullDimension/DirectedUnion.lean) | Dimension bound for nonempty inclusion-directed subsemiring unions |
 | [`LocalizationPi`](AlgebraicDirectLimits/LocalizationPi.lean) | Localization and countable products |
 | [`CofinalGroupCompletion`](AlgebraicDirectLimits/CofinalGroupCompletion.lean) | Group completions at cofinal submonoids |
 | [`MonoidalGroupCompletion`](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) | Object classes under strong monoidal functors |
@@ -191,7 +203,7 @@ those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
 `Topology.TensorHom`, `Topology.TensorUnit`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
-aggregate/test roots or all
+`RingTheory.KrullDimension.DirectedUnion`, aggregate/test roots or all
 private/generated declarations.
 Use the module source and guide for omitted material; client namespaces are not
 re-exported as library APIs. This library does not claim a complete theory of
@@ -282,6 +294,9 @@ Mathlib's `Order.krullDim`, `LTSeries` and `PrimeSpectrum.comap`; the singleton
 family recovers Mathlib's `ringKrullDim_le_of_surjective`. The directed-colimit
 specialization and its models are also Keel's development, using Mathlib's
 characteristic maps, representatives and directed finite-union capture API.
+The directed-subsemiring union bound and its models use the same finite-capture
+criterion, Mathlib's subsemiring union and inclusion API, and the integer and
+rational dimension theorems.
 The coinduced-module criterion follows Richard Hill and Andrew
 Yang's Mathlib coinduced construction and `TopModuleCat.isColimit`
 induced-topology proof. The one-sided tensor topology follows scalar-extension ideas from

@@ -6,7 +6,8 @@ project:
     Reusable Lean results for varying-scalar directed limits, tensor products,
     countably cofinal inverse systems, simple filtered ring colimits,
     prime spectra of filtered commutative-ring colimits,
-    Krull dimension under finite-subset capture and for directed colimits,
+    Krull dimension under finite-subset capture, for directed colimits and for
+    directed subsemiring unions,
     localization of countable products, cofinal group completions,
     monoidal-category object classes with actual-image cofinality, linear
     continuity for coinduced topological modules, continuous finite-basis
@@ -44,11 +45,11 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Fifteen mathematical modules, a public re-export, five standalone
-    clients, prime-spectrum, finite-capture and directed-colimit dimension examples
-    including proper subsemiring traces, coinduced-module examples and
-    integer-pair tensor, tensor-Hom and scalar-unit examples. A linear map out
-    of the existing coinduced topological module
+    Sixteen mathematical modules, a public re-export, five standalone
+    clients, prime-spectrum, finite-capture, directed-colimit and directed-union
+    dimension examples, including proper subsemiring traces,
+    coinduced-module examples and integer-pair tensor, tensor-Hom and scalar-unit
+    examples. A linear map out of the existing coinduced topological module
     is continuous exactly when all generating composites are continuous, over
     any ring with a supplied topology and with an independently leveled target.
     The one-sided tensor topology is constructed from fixed-coefficient
@@ -76,6 +77,13 @@ status:
     The dimension of a directed colimit of commutative semirings
     over a nonempty directed preorder is bounded by the supremum of stage dimensions,
     without injective transitions and with independent index and stage universes.
+    The dimension of the supremum of a nonempty inclusion-directed family of
+    subsemirings of a commutative semiring is bounded by the supremum of stage
+    dimensions. The index carries no order and has a universe independent of
+    the ambient semiring; Noetherianity, domain, nontriviality and finite dimension
+    are not required. A proper integer-to-rational family has stage-dimension
+    supremum one and union dimension zero, so the bound need not be an equality.
+    An empty-index example shows why nonemptiness is needed.
     Filtered commutative-ring colimits give limits of prime spectra in topological
     spaces, without injective transition maps or separation hypotheses. Monoidal group completion
     uses the native skeleton and its actual image, with cofinal denominators,

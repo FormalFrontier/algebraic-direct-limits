@@ -23,6 +23,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCapture",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCaptureTrace",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectLimit",
+  "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectedUnion",
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.TensorProduct",
   "AlgebraicDirectLimitsExamples.TensorHom",
