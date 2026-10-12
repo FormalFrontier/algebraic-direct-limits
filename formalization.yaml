@@ -9,8 +9,9 @@ project:
     Krull dimension under finite-subset capture and for directed colimits,
     localization of countable products, cofinal group completions,
     monoidal-category object classes with actual-image cofinality, linear
-    continuity for coinduced topological modules, and continuous finite-basis
-    coordinates for one-sided tensor products.
+    continuity for coinduced topological modules, continuous finite-basis
+    coordinates for one-sided tensor products, continuous tensor universal
+    properties and the scalar tensor unit.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -43,17 +44,25 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Thirteen mathematical modules, a public re-export, five standalone
-    clients, prime-spectrum, finite-capture and directed-colimit dimension examples, coinduced-module examples
-    and integer-pair tensor examples. A linear map out of the existing coinduced topological module
+    Fifteen mathematical modules, a public re-export, five standalone
+    clients, prime-spectrum, finite-capture and directed-colimit dimension examples,
+    coinduced-module examples and integer-pair tensor, tensor-Hom and scalar-unit
+    examples. A linear map out of the existing coinduced topological module
     is continuous exactly when all generating composites are continuous, over
     any ring with a supplied topology and with an independently leveled target.
     The one-sided tensor topology is constructed from fixed-coefficient
     generators, with their characteristic linear continuity criterion,
     canonical continuous tensor maps and continuous finite-basis coordinates
-    with the product topology and finite-sum inverse. Basis change and
-    finite-free compactness/Hausdorff properties remain type contracts without
-    proofs or exported constructions of those realizations.
+    with the product topology and finite-sum inverse. Continuous linear maps out
+    of the tensor correspond to algebraic linear families of continuous linear
+    maps on the right factor, with explicit lift/curry constructions and
+    naturality. The scalar tensor unit equips Mathlib's algebraic left identity
+    with continuity and the generator at one as inverse. Both constructions
+    allow independent carrier universes over a commutative ring with a supplied
+    topology and jointly continuous right-factor actions, without a topology
+    on the coefficients or a finiteness hypothesis. Basis change and finite-free
+    compactness/Hausdorff properties remain type contracts without proofs or
+    exported constructions of those realizations.
     Finite-subset capture in one homomorphism range per finite subset bounds the
     Krull dimension of a commutative semiring by the supremum of the source
     dimensions, without injectivity or a directed-system assumption. The dimension
@@ -75,11 +84,11 @@ review:
   status: unchecked
   notes: >-
     Independent agent reviews cover the existing direct-limit contributions,
-    including the prime-spectrum comparison, and the coinduced-module continuity
-    API and its examples. A bounded mathematical assessment covers the
-    tensor-topology definitions, type contracts and algebraic integer-pair
-    examples; the tensor linear-continuity and continuous-map proofs require
-    independent assessment. This does not assert source-author endorsement or
+    including the prime-spectrum comparison, the coinduced-module continuity
+    criterion and the one-sided tensor-topology continuity and map API.
+    Tensor universal-property and scalar-unit constructions have characteristic
+    algebraic bridges, uniqueness and naturality laws, with integer-pair and
+    boundary examples. This does not assert source-author endorsement or
     complete formal coverage of a source. API documentation is partial;
     see docs/CREDITS.md and docs/README.md.
 acknowledgements: >-

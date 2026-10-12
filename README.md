@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the thirteen mathematical modules individually.
+or import any of the fifteen mathematical modules individually.
 
 ## Headline results
 
@@ -24,6 +24,26 @@ or import any of the thirteen mathematical modules individually.
   characterizations remain type contracts, not proved results.
   See the
   [integer-pair and boundary examples](AlgebraicDirectLimitsExamples/TensorProduct.lean).
+- **Continuous tensor universal property.**
+  [`TopModuleCat.tensorHomLinearEquiv`](AlgebraicDirectLimits/Topology/TensorHom.lean)
+  identifies continuous linear maps `C ⊗[R] M →L[R] N` with algebraic linear
+  families `C →ₗ[R] (M →L[R] N)`. The coefficient module is purely algebraic;
+  the ring is commutative with a supplied topology, and `M` and `N` have jointly
+  continuous scalar actions. The explicit lift and curry constructions agree
+  with Mathlib's algebraic tensor lift and commute with coefficient and
+  continuous right-factor maps. The carrier universes are independent, and no
+  topology on the Hom module or finiteness hypothesis is required. See the
+  [integer-pair examples](AlgebraicDirectLimitsExamples/TensorHom.lean), including
+  a nonzero cross tensor annihilated by the dot pairing but detected by a second
+  pairing.
+- **Continuous scalar tensor unit.**
+  [`TopModuleCat.tensorUnitContinuousLinearEquiv`](AlgebraicDirectLimits/Topology/TensorUnit.lean)
+  equips Mathlib's `TensorProduct.lid R M` with the one-sided tensor topology:
+  `r ⊗ₜ m` maps to `r • m`, and its inverse is the continuous generator
+  `m ↦ 1 ⊗ₜ m`. It is natural in continuous right-factor maps, over any
+  commutative ring with a supplied topology and jointly continuous action on
+  `M`, without continuity of ring multiplication or a finite basis. See the
+  [integer-pair doubling examples](AlgebraicDirectLimitsExamples/TensorUnit.lean).
 - **Varying scalars and tensor products.**
   [`DirectLimit.VaryingScalar.tensorProductEquiv`](AlgebraicDirectLimits/VaryingScalar.lean#L429)
   identifies the tensor product of two module limits over a *varying*
@@ -143,6 +163,8 @@ or import any of the thirteen mathematical modules individually.
 | [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps and finite-basis contracts |
+| [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry and universal-property linear equivalence |
+| [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
 | [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
 | [`SimpleRing`](AlgebraicDirectLimits/SimpleRing.lean) | Filtered colimits of simple rings |
@@ -160,6 +182,7 @@ the Lean modules give the exact signatures and hypotheses. The
 sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
+`Topology.TensorHom`, `Topology.TensorUnit`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
 aggregate/test roots or all
 private/generated declarations.
@@ -258,7 +281,11 @@ induced-topology proof. The one-sided tensor topology follows scalar-extension i
 [Continuous Group Cohomology](https://github.com/FormalFrontier/continuous-group-cohomology)
 by Formal Frontier Agents, including Beacon's original topological development.
 Its local universe adapters reuse Mathlib's module and continuous-linear `ULift`
-APIs directly. The [Apache-2.0 license](LICENSE) covers original project material;
+APIs directly. The continuous tensor universal property and scalar unit reuse
+Kenny Lau and Mario Carneiro's Mathlib algebraic tensor lift, lift equivalence
+and scalar unit; continuity is supplied by the fixed-coefficient generator
+criterion. The modules name the contributors to their continuous-linear APIs.
+The [Apache-2.0 license](LICENSE) covers original project material;
 mathlib and the other separately maintained dependencies keep their own licenses
 and notices. Collective author credit alone does not establish legal ownership
 or resolve third-party rights concerns.

@@ -16,6 +16,8 @@ public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectLimit
 public import AlgebraicDirectLimits.SimpleRing
 public import AlgebraicDirectLimits.Topology.Coinduced
 public import AlgebraicDirectLimits.Topology.TensorProduct
+public import AlgebraicDirectLimits.Topology.TensorHom
+public import AlgebraicDirectLimits.Topology.TensorUnit
 public import AlgebraicDirectLimits.VaryingScalar
 
 /-!

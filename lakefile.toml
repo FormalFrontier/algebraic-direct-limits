@@ -23,7 +23,9 @@ roots = [
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCapture",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectLimit",
   "AlgebraicDirectLimitsExamples.Coinduced",
-  "AlgebraicDirectLimitsExamples.TensorProduct"
+  "AlgebraicDirectLimitsExamples.TensorProduct",
+  "AlgebraicDirectLimitsExamples.TensorHom",
+  "AlgebraicDirectLimitsExamples.TensorUnit"
 ]
 
 [[lean_lib]]
