@@ -19,6 +19,7 @@ public import AlgebraicDirectLimits.Topology.Coinduced
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import AlgebraicDirectLimits.Topology.TensorUnit
+public import AlgebraicDirectLimits.Topology.TensorSeparation
 public import AlgebraicDirectLimits.VaryingScalar
 
 /-!

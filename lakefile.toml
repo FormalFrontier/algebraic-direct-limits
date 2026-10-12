@@ -27,7 +27,8 @@ roots = [
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.TensorProduct",
   "AlgebraicDirectLimitsExamples.TensorHom",
-  "AlgebraicDirectLimitsExamples.TensorUnit"
+  "AlgebraicDirectLimitsExamples.TensorUnit",
+  "AlgebraicDirectLimitsExamples.TensorSeparation"
 ]
 
 [[lean_lib]]

@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the sixteen mathematical modules individually.
+or import any of the seventeen mathematical modules individually.
 
 ## Headline results
 
@@ -20,10 +20,24 @@ or import any of the sixteen mathematical modules individually.
   and composition laws. Finite-basis coordinates give a continuous linear
   equivalence with the finite product of `M`; the inverse reconstructs tensors
   by summing continuous basis generators. The scalar ring may be trivial and
-  the basis index may be empty. Basis change and finite-free compactness/Hausdorff
-  characterizations remain type contracts, not proved results.
+  the basis index may be empty. Basis change and compactness characterizations
+  remain type contracts, not proved results.
   See the
   [integer-pair and boundary examples](AlgebraicDirectLimitsExamples/TensorProduct.lean).
+- **Finite-basis tensor Hausdorffness.**
+  [`TopModuleCat.t2Space_tensorLeftObj_of_basis`](AlgebraicDirectLimits/Topology/TensorSeparation.lean)
+  proves Hausdorff preservation with a finite coefficient basis, and
+  `t2Space_tensorLeftObj` gives its finite-free specialization. Both use the
+  continuous finite-product coordinates for the existing one-sided tensor
+  topology over an arbitrary commutative ring with a supplied topology, without
+  a coefficient topology, finiteness of the right module or continuity of ring
+  multiplication. The
+  [separation examples](AlgebraicDirectLimitsExamples/TensorSeparation.lean)
+  use integer-pair coefficients, the nonfree integer module `ZMod 3`, nonzero
+  pure and mixed tensors, and the noncompact Hausdorff integer right factor.
+  Empty and trivial coefficient cases illustrate why no converse is stated.
+  Preservation for arbitrary projective coefficients and compactness remain
+  outside these results.
 - **Continuous tensor universal property.**
   [`TopModuleCat.tensorHomLinearEquiv`](AlgebraicDirectLimits/Topology/TensorHom.lean)
   identifies continuous linear maps `C ⊗[R] M →L[R] N` with algebraic linear
@@ -183,6 +197,7 @@ or import any of the sixteen mathematical modules individually.
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps and finite-basis contracts |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry and universal-property linear equivalence |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
+| [`Topology.TensorSeparation`](AlgebraicDirectLimits/Topology/TensorSeparation.lean) | Finite-basis and finite-free Hausdorff preservation |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
 | [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
 | [`SimpleRing`](AlgebraicDirectLimits/SimpleRing.lean) | Filtered colimits of simple rings |
@@ -201,7 +216,7 @@ the Lean modules give the exact signatures and hypotheses. The
 sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
-`Topology.TensorHom`, `Topology.TensorUnit`,
+`Topology.TensorHom`, `Topology.TensorUnit`, `Topology.TensorSeparation`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
 `RingTheory.KrullDimension.DirectedUnion`, aggregate/test roots or all
 private/generated declarations.
@@ -227,8 +242,9 @@ lake --wfail build
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
-which imports the registered standalone clients. To check one module or client
-after the cache succeeds:
+which imports the registered standalone clients. They include all seventeen
+mathematical modules, ten example modules and six test modules. To check one
+module or client after the cache succeeds:
 
 ```sh
 lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion

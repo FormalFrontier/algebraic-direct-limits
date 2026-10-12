@@ -12,7 +12,8 @@ project:
     monoidal-category object classes with actual-image cofinality, linear
     continuity for coinduced topological modules, continuous finite-basis
     coordinates for one-sided tensor products, continuous tensor universal
-    properties and the scalar tensor unit.
+    properties and the scalar tensor unit, together with finite-basis and
+    finite-free tensor Hausdorffness preservation.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -45,11 +46,11 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Sixteen mathematical modules, a public re-export, five standalone
-    clients, prime-spectrum, finite-capture, directed-colimit and directed-union
-    dimension examples, including proper subsemiring traces,
-    coinduced-module examples and integer-pair tensor, tensor-Hom and scalar-unit
-    examples. A linear map out of the existing coinduced topological module
+    Seventeen mathematical modules, a public re-export, ten example modules
+    and five standalone clients. The examples cover prime spectra, finite-capture,
+    directed-colimit and directed-union dimensions including proper subsemiring
+    traces, coinduced modules, integer-pair tensors, tensor-Hom, the scalar unit
+    and tensor separation. A linear map out of the existing coinduced topological module
     is continuous exactly when all generating composites are continuous, over
     any ring with a supplied topology and with an independently leveled target.
     The one-sided tensor topology is constructed from fixed-coefficient
@@ -62,9 +63,17 @@ status:
     with continuity and the generator at one as inverse. Both constructions
     allow independent carrier universes over a commutative ring with a supplied
     topology and jointly continuous right-factor actions, without a topology
-    on the coefficients or a finiteness hypothesis. Basis change and finite-free
-    compactness/Hausdorff properties remain type contracts without proofs or
-    exported constructions of those realizations.
+    on the coefficients or a finiteness hypothesis. Basis change and compactness
+    properties remain type contracts without proofs or exported constructions
+    of those realizations. Finite-basis Hausdorff preservation and its canonical
+    finite-free specialization follow from the continuous finite-product
+    coordinates, with independent carrier and index universes over an arbitrary
+    commutative ring with a supplied topology. They require no coefficient
+    topology, finiteness of the right factor or continuity of ring multiplication.
+    Their separation examples use the nonfree integer module ZMod 3, nonzero pure
+    and mixed tensors, the noncompact Hausdorff integer right factor, and
+    empty-basis and trivial-ring boundaries. Preservation for arbitrary projective
+    coefficients and Hausdorffness reflection are outside these results.
     Finite-subset capture in one homomorphism range per finite subset bounds the
     Krull dimension of a commutative semiring by the supremum of the source
     dimensions, without injectivity or a directed-system assumption. The dimension
