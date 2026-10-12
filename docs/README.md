@@ -10,7 +10,8 @@ The seven library modules are `CofinalSequence`, `CofinalGroupCompletion`,
 `VaryingScalar`. The boundary clients are `CofinalGroupCompletionClient` and
 `GradedStabilizationClient`. The reference omits `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
-`RingTheory.KrullDimension.FiniteCapture`, aggregate/test roots and
+`RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
+aggregate/test roots and
 private/generated declarations. Use the [root module table](../README.md#modules)
 and [mathematical guide](Guide.md) for the rest of the library.
 

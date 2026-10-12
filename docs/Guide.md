@@ -90,6 +90,32 @@ include a constant integer diagram, a sequence beginning with the noninjective
 quotient `ℤ → ZMod 2`, a constant zero-ring diagram with empty spectrum and
 limit, and the non-Hausdorff spectrum of `ℤ`.
 
+## Krull dimension and directed colimits
+
+The [finite-subset criterion](../AlgebraicDirectLimits/RingTheory/KrullDimension/FiniteCapture.lean)
+bounds the dimension of a commutative semiring `B` by the supremum of dimensions
+of semirings `A i` whenever every finite subset of `B` lies in one homomorphism
+range `A i →+* B`. For a finite strict chain of primes, capture witnesses of its
+adjacent strict inclusions; contraction along that one map keeps the chain strict.
+Dimensions take values in `WithBot ℕ∞`, so trivial semirings and infinite
+dimension are covered. The family need not itself be a directed system.
+
+For a compatible system `G` of commutative semirings over a nonempty directed
+preorder, [`ringKrullDim_directLimit_le_iSup`](../AlgebraicDirectLimits/RingTheory/KrullDimension/DirectLimit.lean)
+proves `ringKrullDim (DirectLimit G f) ≤ ⨆ i, ringKrullDim (G i)`.
+Every colimit element has a stage representative. The equation
+`DirectLimit.Ring.of_f` puts the ranges of any two characteristic maps into
+the range at a common upper stage. Mathlib's directed finite-union lemma then
+captures every finite subset in one range, including the empty subset by
+nonemptiness. Applying the finite-subset criterion proves the bound.
+
+No transition-map injectivity, Noetherianity, domain or nontriviality assumption
+is needed. The index and stage universes are independent. The
+[models](../AlgebraicDirectLimitsExamples/RingTheory/KrullDimension/DirectLimit.lean)
+apply the theorem to the constant integer system and to the ordered two-stage
+system `ℤ → ZMod 2`. In the latter, the integer-stage map identifies `2` and `0`,
+while the terminal-stage map distinguishes `0` and `1`.
+
 ## Cofinal submonoids
 
 For an additive commutative monoid `M`, a submonoid `L` with top saturation means

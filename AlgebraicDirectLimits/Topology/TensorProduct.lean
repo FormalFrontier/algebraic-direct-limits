@@ -24,10 +24,13 @@ for an algebraic map on the left and a continuous linear map on the right, with
 application, identity and composition laws.
 
 The algebraic finite-basis coordinates use Mathlib's tensor-to-Finsupp equivalence
-followed by its finite-function equivalence. The remaining type contracts specify
-continuous coordinates, the induced finite-product topology, basis change, and
-separate compactness/Hausdorff preservation properties. These remaining contracts
-are types, not proofs or exported constructions of those realizations.
+followed by its finite-function equivalence. `tensorCoordinateContinuousLinearEquiv`
+realizes these coordinates as a continuous linear equivalence with the finite
+product. Its inverse sums the continuous basis generators after the canonical
+product projections. The remaining type contracts specify the induced finite-product
+topology equality, basis change, and separate compactness/Hausdorff preservation
+properties. These remaining contracts are types, not proofs or exported constructions
+of those realizations.
 The scalar ring need not be nontrivial, discrete or a field. Carrier and coordinate
 index universes are independent.
 
@@ -376,6 +379,149 @@ theorem tensorCoordinateLinearEquiv_symm_apply [Fintype ι]
   apply (tensorCoordinateLinearEquiv R C M b).injective
   ext j
   simp [tensorCoordinateLinearEquiv_tmul_apply]
+
+/-- The inverse algebraic coordinates reconstruct a tensor in `tensorLeftObj` by
+summing its continuous basis generators. -/
+theorem tensorCoordinateLinearEquiv_symm_apply_tensorGenerator [Fintype ι]
+    (b : Module.Basis ι R C) (x : ι → M) :
+    (show tensorLeftObj R C M from (tensorCoordinateLinearEquiv R C M b).symm x) =
+      ∑ i, tensorGenerator R C M (b i) (x i) := by
+  classical
+  change @Eq (TensorProduct R C M)
+    ((tensorCoordinateLinearEquiv R C M b).symm x)
+    (∑ i, (show TensorProduct R C M from tensorGenerator R C M (b i) (x i)))
+  refine (tensorCoordinateLinearEquiv_symm_apply R C M b x).trans ?_
+  apply Finset.sum_congr rfl
+  intro i _
+  exact congrArg (fun y : tensorLeftObj R C M ↦ (show TensorProduct R C M from y))
+    (tensorGenerator_apply R C M (b i) (x i)).symm
+
+/-- Finite-basis continuous tensor coordinates with the product topology.
+The underlying linear equivalence is `tensorCoordinateLinearEquiv`. -/
+noncomputable def tensorCoordinateContinuousLinearEquiv (b : Module.Basis ι R C) :
+    tensorLeftObj R C M ≃L[R] (ι → M) where
+  toLinearEquiv := tensorCoordinateLinearEquiv R C M b
+  continuous_toFun := by
+    apply (continuous_tensorLeftObj_iff_tmul R C M (TopModuleCat.of R (ι → M))
+      (tensorCoordinateLinearEquiv R C M b).toLinearMap).mpr
+    intro c
+    apply continuous_pi
+    intro i
+    change Continuous (fun m : M ↦ tensorCoordinateLinearEquiv R C M b (c ⊗ₜ[R] m) i)
+    exact (continuous_const.smul continuous_id : Continuous (fun m : M ↦ b.repr c i • m)).congr
+      (fun m ↦ (tensorCoordinateLinearEquiv_tmul_apply R C M b c m i).symm)
+  continuous_invFun := by
+    classical
+    let : Fintype ι := Fintype.ofFinite ι
+    change Continuous (show (ι → M) → tensorLeftObj R C M from
+      (tensorCoordinateLinearEquiv R C M b).invFun)
+    rw [LinearEquiv.invFun_eq_symm]
+    have hsum : Continuous (fun x : ι → M ↦ ∑ i, tensorGenerator R C M (b i) (x i)) := by
+      apply continuous_finsetSum
+      intro i _
+      exact ((tensorGenerator R C M (b i)).comp
+        (ContinuousLinearMap.proj (R := R) (φ := fun _ : ι ↦ M) i)).continuous
+    exact hsum.congr (fun x ↦
+      (tensorCoordinateLinearEquiv_symm_apply_tensorGenerator R C M b x).symm)
+
+/-- Forgetting continuity gives the algebraic finite-basis coordinate equivalence. -/
+@[simp]
+theorem tensorCoordinateContinuousLinearEquiv_toLinearEquiv (b : Module.Basis ι R C) :
+    (tensorCoordinateContinuousLinearEquiv R C M b).toLinearEquiv =
+      tensorCoordinateLinearEquiv R C M b := by
+  rfl
+
+/-- Continuous tensor coordinates agree with the algebraic coordinates on every tensor. -/
+theorem tensorCoordinateContinuousLinearEquiv_apply (b : Module.Basis ι R C)
+    (x : tensorLeftObj R C M) :
+    tensorCoordinateContinuousLinearEquiv R C M b x =
+      tensorCoordinateLinearEquiv R C M b x := by
+  exact DFunLike.congr_fun (tensorCoordinateContinuousLinearEquiv_toLinearEquiv R C M b) x
+
+/-- The underlying linear map of the continuous coordinate map is the algebraic one. -/
+@[simp]
+theorem tensorCoordinateContinuousLinearEquiv_toContinuousLinearMap_toLinearMap
+    (b : Module.Basis ι R C) :
+    (tensorCoordinateContinuousLinearEquiv R C M b).toContinuousLinearMap.toLinearMap =
+      (tensorCoordinateLinearEquiv R C M b).toLinearMap := by
+  rw [ContinuousLinearEquiv.toLinearMap_toContinuousLinearMap,
+    tensorCoordinateContinuousLinearEquiv_toLinearEquiv]
+
+/-- The continuous coordinates of a pure tensor are scalar multiples of its right factor. -/
+@[simp]
+theorem tensorCoordinateContinuousLinearEquiv_tmul_apply (b : Module.Basis ι R C)
+    (c : C) (m : M) (i : ι) :
+    tensorCoordinateContinuousLinearEquiv R C M b (c ⊗ₜ[R] m) i =
+      b.repr c i • m := by
+  exact (congrArg (fun y : ι → M ↦ y i)
+    (tensorCoordinateContinuousLinearEquiv_apply R C M b
+      (show tensorLeftObj R C M from c ⊗ₜ[R] m))).trans
+        (tensorCoordinateLinearEquiv_tmul_apply R C M b c m i)
+
+/-- The continuous coordinates of a tensor generator use the coefficient's basis coordinates. -/
+@[simp]
+theorem tensorCoordinateContinuousLinearEquiv_tensorGenerator_apply (b : Module.Basis ι R C)
+    (c : C) (m : M) (i : ι) :
+    tensorCoordinateContinuousLinearEquiv R C M b
+      (tensorGenerator R C M c m) i = b.repr c i • m := by
+  rw [tensorCoordinateContinuousLinearEquiv_apply]
+  exact tensorCoordinateLinearEquiv_tensorGenerator_apply R C M b c m i
+
+section FiniteSums
+
+variable [Fintype ι]
+
+/-- The inverse continuous coordinate map reconstructs a tensor by summing basis generators. -/
+theorem tensorCoordinateContinuousLinearEquiv_symm_apply (b : Module.Basis ι R C)
+    (x : ι → M) :
+    (tensorCoordinateContinuousLinearEquiv R C M b).symm x =
+      ∑ i, tensorGenerator R C M (b i) (x i) := by
+  rw [← ContinuousLinearEquiv.coe_symm_toLinearEquiv,
+    tensorCoordinateContinuousLinearEquiv_toLinearEquiv]
+  exact tensorCoordinateLinearEquiv_symm_apply_tensorGenerator R C M b x
+
+/-- The inverse continuous coordinate map is the finite sum of raw basis tensors. -/
+theorem tensorCoordinateContinuousLinearEquiv_symm_apply_tmul (b : Module.Basis ι R C)
+    (x : ι → M) :
+    (tensorCoordinateContinuousLinearEquiv R C M b).symm x =
+      ∑ i, b i ⊗ₜ[R] x i := by
+  change @Eq (TensorProduct R C M)
+    ((tensorCoordinateLinearEquiv R C M b).symm x)
+    (∑ i, b i ⊗ₜ[R] x i)
+  exact tensorCoordinateLinearEquiv_symm_apply R C M b x
+
+/-- The inverse continuous linear map is the sum of basis generators after Pi projections. -/
+theorem tensorCoordinateContinuousLinearEquiv_symm_toContinuousLinearMap
+    (b : Module.Basis ι R C) :
+    (tensorCoordinateContinuousLinearEquiv R C M b).symm.toContinuousLinearMap =
+      ∑ i, (tensorGenerator R C M (b i)).comp
+        (ContinuousLinearMap.proj (R := R) (φ := fun _ : ι ↦ M) i) := by
+  classical
+  apply ContinuousLinearMap.ext
+  intro x
+  simpa only [sum_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply,
+    ContinuousLinearEquiv.coe_coe] using
+      tensorCoordinateContinuousLinearEquiv_symm_apply R C M b x
+
+end FiniteSums
+
+/-- Exact algebraic agreement uniquely determines the continuous coordinate equivalence. -/
+theorem tensorCoordinateContinuousLinearEquiv_unique (b : Module.Basis ι R C)
+    (e : tensorLeftObj R C M ≃L[R] (ι → M))
+    (he : e.toLinearEquiv = tensorCoordinateLinearEquiv R C M b) :
+    e = tensorCoordinateContinuousLinearEquiv R C M b := by
+  apply ContinuousLinearEquiv.toLinearEquiv_injective
+  exact he.trans (tensorCoordinateContinuousLinearEquiv_toLinearEquiv R C M b).symm
+
+/-- The algebraic coordinate equivalence has a unique continuous realization,
+namely `tensorCoordinateContinuousLinearEquiv`. -/
+theorem exists_tensorCoordinateContinuousLinearEquiv (b : Module.Basis ι R C) :
+    ∃! e : tensorLeftObj R C M ≃L[R] (ι → M),
+      e.toLinearEquiv = tensorCoordinateLinearEquiv R C M b := by
+  refine ⟨tensorCoordinateContinuousLinearEquiv R C M b,
+    tensorCoordinateContinuousLinearEquiv_toLinearEquiv R C M b, ?_⟩
+  intro e he
+  exact tensorCoordinateContinuousLinearEquiv_unique R C M b e he
 
 /- Continuous coordinates must realize this precise algebraic equivalence. -/
 #check (∀ b : Module.Basis ι R C,

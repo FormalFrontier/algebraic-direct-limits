@@ -221,4 +221,104 @@ theorem chosenBasis_tensorGenerator_apply (C : ModuleCat.{uC} R) (M : TopModuleC
 
 end Boundaries
 
+/-- Continuous finite-basis tensor coordinates for the rank-two integer coefficient module. -/
+noncomputable def integerPairContinuousCoordinates :
+    TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule ≃L[ℤ]
+      (Fin 2 → integerModule) :=
+  TopModuleCat.tensorCoordinateContinuousLinearEquiv ℤ
+    integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ)
+
+/-- The continuous coordinates of the first generator are `![1, 0]`. -/
+theorem integerPairContinuousCoordinates_first :
+    integerPairContinuousCoordinates firstGeneratorTensor = ![1, 0] := by
+  exact (TopModuleCat.tensorCoordinateContinuousLinearEquiv_apply ℤ
+    integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ) firstGeneratorTensor).trans
+      firstGeneratorTensor_coordinates
+
+/-- The inverse continuous coordinates reconstruct the first generator. -/
+theorem integerPairContinuousCoordinates_inverse_first :
+    integerPairContinuousCoordinates.symm ![1, 0] = firstGeneratorTensor := by
+  apply integerPairContinuousCoordinates.injective
+  exact (integerPairContinuousCoordinates.apply_symm_apply ![1, 0]).trans
+    integerPairContinuousCoordinates_first.symm
+
+/-- The first coordinate as a continuous linear map, using the canonical Pi projection. -/
+noncomputable def integerFirstContinuousCoordinate :
+    TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule →L[ℤ]
+      integerModule :=
+  (ContinuousLinearMap.proj (R := ℤ)
+    (φ := fun _ : Fin 2 ↦ integerModule) (0 : Fin 2)).comp
+      integerPairContinuousCoordinates.toContinuousLinearMap
+
+/-- The first continuous coordinate of the first generator is `1`. -/
+theorem integerFirstContinuousCoordinate_first :
+    integerFirstContinuousCoordinate firstGeneratorTensor = 1 := by
+  calc
+    integerFirstContinuousCoordinate firstGeneratorTensor =
+        integerPairContinuousCoordinates firstGeneratorTensor 0 := rfl
+    _ = 1 := congrFun integerPairContinuousCoordinates_first (0 : Fin 2)
+
+/-- Right-factor doubling is detected by the first continuous coordinate, with value `2`. -/
+theorem integerFirstContinuousCoordinate_doubling_first :
+    integerFirstContinuousCoordinate
+      (integerTensorDoubling firstGeneratorTensor) = 2 := by
+  calc
+    integerFirstContinuousCoordinate (integerTensorDoubling firstGeneratorTensor) =
+        integerPairContinuousCoordinates (integerTensorDoubling firstGeneratorTensor) 0 := rfl
+    _ = TopModuleCat.tensorCoordinateLinearEquiv ℤ integerPairCoefficients integerModule
+        (Module.Basis.finTwoProd ℤ) doubledFirstTensor 0 := by
+      rw [integerTensorDoubling_firstGenerator]
+      exact congrFun (TopModuleCat.tensorCoordinateContinuousLinearEquiv_apply ℤ
+        integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ) doubledFirstTensor)
+          (0 : Fin 2)
+    _ = 2 := doubledFirstTensor_coordinate_zero
+
+section ContinuousBoundaries
+
+universe uι
+
+variable (R : Type uR) [CommRing R] [TopologicalSpace R]
+
+/-- Continuous coordinates for an empty coefficient basis and any right factor. -/
+noncomputable def emptyCoefficientContinuousCoordinates (M : TopModuleCat.{uM} R) :
+    TopModuleCat.tensorLeftObj R (ModuleCat.of R (Fin 0 → R)) M ≃L[R]
+      (Fin 0 → M) :=
+  TopModuleCat.tensorCoordinateContinuousLinearEquiv R
+    (ModuleCat.of R (Fin 0 → R)) M
+    (Module.Basis.empty (Fin 0 → R) : Module.Basis (Fin 0) R (Fin 0 → R))
+
+/-- The inverse continuous coordinates of the empty product reconstruct zero. -/
+theorem emptyCoefficientContinuousCoordinates_symm (M : TopModuleCat.{uM} R)
+    (x : Fin 0 → M) :
+    (emptyCoefficientContinuousCoordinates R M).symm x = 0 := by
+  calc
+    (emptyCoefficientContinuousCoordinates R M).symm x =
+        ∑ i : Fin 0, TopModuleCat.tensorGenerator R (ModuleCat.of R (Fin 0 → R)) M
+          ((Module.Basis.empty (Fin 0 → R) : Module.Basis (Fin 0) R (Fin 0 → R)) i)
+          (x i) :=
+      TopModuleCat.tensorCoordinateContinuousLinearEquiv_symm_apply R
+        (ModuleCat.of R (Fin 0 → R)) M (Module.Basis.empty (Fin 0 → R)) x
+    _ = 0 := emptyCoefficient_tensor_eq_zero R M _
+
+/-- Over a trivial scalar ring, the inverse continuous coordinates reconstruct zero. -/
+theorem trivialRing_continuousCoordinate_symm_eq_zero [Subsingleton R]
+    (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) {ι : Type uι} [Finite ι]
+    (b : Module.Basis ι R C) (x : ι → M) :
+    (TopModuleCat.tensorCoordinateContinuousLinearEquiv R C M b).symm x = 0 := by
+  exact trivialRing_tensor_eq_zero R C M _
+
+/-- Canonical finite-free continuous coordinates reconstruct the sum of chosen-basis generators,
+including for trivial scalar rings. -/
+theorem chosenBasis_continuousCoordinates_symm_apply (C : ModuleCat.{uC} R)
+    (M : TopModuleCat.{uM} R) [Module.Free R C] [Module.Finite R C]
+    (x : Module.Free.ChooseBasisIndex R C → M) :
+    (TopModuleCat.tensorCoordinateContinuousLinearEquiv R C M
+      (Module.Free.chooseBasis R C)).symm x =
+        ∑ i : Module.Free.ChooseBasisIndex R C,
+          TopModuleCat.tensorGenerator R C M ((Module.Free.chooseBasis R C) i) (x i) := by
+  exact TopModuleCat.tensorCoordinateContinuousLinearEquiv_symm_apply R C M
+    (Module.Free.chooseBasis R C) x
+
+end ContinuousBoundaries
+
 end TensorProductExamples
