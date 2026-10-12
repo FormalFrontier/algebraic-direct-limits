@@ -9,11 +9,11 @@ project:
     Krull dimension under finite-subset capture, for directed colimits and for
     directed subsemiring unions,
     localization of countable products, cofinal group completions,
-    monoidal-category object classes with actual-image cofinality, linear
-    continuity for coinduced topological modules, continuous finite-basis
-    coordinates for one-sided tensor products, continuous tensor universal
-    properties and the scalar tensor unit, together with finite-basis and
-    finite-free tensor Hausdorffness preservation.
+    monoidal-category object classes with actual-image cofinality, same-topology
+    scalar restriction, linear continuity for coinduced topological modules,
+    continuous finite-basis coordinates for one-sided tensor products,
+    continuous tensor universal properties and the scalar tensor unit, together
+    with finite-basis and finite-free tensor Hausdorffness preservation.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -46,11 +46,21 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Seventeen mathematical modules, a public re-export, ten example modules
+    Eighteen mathematical modules, a public re-export, eleven example modules
     and five standalone clients. The examples cover prime spectra, finite-capture,
     directed-colimit and directed-union dimensions including proper subsemiring
-    traces, coinduced modules, integer-pair tensors, tensor-Hom, the scalar unit
-    and tensor separation. A linear map out of the existing coinduced topological module
+    traces, coinduced modules, integer-pair tensors, tensor-Hom, the scalar unit,
+    scalar restriction and tensor separation.
+    Scalar restriction along a continuous ring homomorphism between arbitrary
+    rings retains each topological module's topology, with functorial
+    continuous-linear maps, natural identity/composition comparisons and both
+    forgetful agreements. Carrier universes for continuous-linear maps are
+    independent. Separately, over arbitrary semirings with supplied topologies,
+    continuity of the scalar map is equivalent to joint continuity of its
+    restricted regular action when target multiplication is continuous.
+    The algebra-map multiplication formula agrees with Algebra scalar
+    multiplication for any supplied topologies. A linear map out of the
+    existing coinduced topological module
     is continuous exactly when all generating composites are continuous, over
     any ring with a supplied topology and with an independently leveled target.
     The one-sided tensor topology is constructed from fixed-coefficient
@@ -111,7 +121,10 @@ review:
     criterion and the one-sided tensor-topology continuity and map API.
     Tensor universal-property and scalar-unit constructions have characteristic
     algebraic bridges, uniqueness and naturality laws, with integer-pair and
-    boundary examples. This does not assert source-author endorsement or
+    boundary examples. Scalar restriction has characteristic action and
+    forgetful agreements, natural identity and composition comparisons, and
+    a semiring regular-action continuity criterion with Algebra agreement.
+    This does not assert source-author endorsement or
     complete formal coverage of a source. API documentation is partial;
     see docs/CREDITS.md and docs/README.md.
 acknowledgements: >-

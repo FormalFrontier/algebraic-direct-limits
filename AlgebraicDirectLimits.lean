@@ -16,6 +16,7 @@ public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectLimit
 public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectedUnion
 public import AlgebraicDirectLimits.SimpleRing
 public import AlgebraicDirectLimits.Topology.Coinduced
+public import AlgebraicDirectLimits.Topology.Restriction
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import AlgebraicDirectLimits.Topology.TensorUnit
@@ -29,7 +30,9 @@ Public entry point for directed limits with varying scalars, tensor products,
 cofinal sequences and group completions, monoidal object classes, graded
 stabilization, Type-valued Mittag--Leffler systems, filtered colimits of simple
 rings, spectra of filtered ring colimits, Krull dimension under finite-subset
-capture and for directed colimits, localization of countable products,
-one-sided tensor topologies, and linear continuity for coinduced topological modules.
+capture, for directed colimits and for directed subsemiring unions,
+localization of countable products,
+one-sided tensor topologies, same-topology scalar restriction,
+and linear continuity for coinduced topological modules.
 Each module may be imported independently.
 -/

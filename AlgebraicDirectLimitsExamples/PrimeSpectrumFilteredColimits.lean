@@ -27,13 +27,15 @@ namespace AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits
 private instance : IsConnected ℕ := IsFiltered.isConnected ℕ
 private instance : IsConnected (Discrete PUnit) := IsFiltered.isConnected _
 
-example (p : PrimeSpectrum ℤ) (j : ℕ) :
+/-- The colimit homeomorphism for the constant integer diagram has identity projections. -/
+theorem constantInt_colimitHomeomorph_π_apply (p : PrimeSpectrum ℤ) (j : ℕ) :
     limit.π (((Functor.const ℕ).obj (CommRingCat.of ℤ)).op ⋙
       AlgebraicGeometry.Spec.toTop) (op j)
       (PrimeSpectrum.colimitHomeomorph
         ((Functor.const ℕ).obj (CommRingCat.of ℤ))
         (constCocone ℕ (CommRingCat.of ℤ))
-        (isColimitConstCocone ℕ (CommRingCat.of ℤ)) p) = p := by
+        (@isColimitConstCocone ℕ _ CommRingCat _ (CommRingCat.of ℤ)
+          (IsFiltered.isConnected ℕ)) p) = p := by
   calc
     _ = PrimeSpectrum.comap ((constCocone ℕ (CommRingCat.of ℤ)).ι.app j).hom p :=
       PrimeSpectrum.colimitHomeomorph_π_apply
@@ -57,24 +59,29 @@ def quotientStep : ∀ n, quotientStage n ⟶ quotientStage (n + 1)
 /-- The filtered diagram with a noninjective first transition. -/
 def quotientDiagram : ℕ ⥤ CommRingCat := Functor.ofSequence quotientStep
 
-example : ¬ Function.Injective (quotientStep 0).hom := by
+/-- The first transition of the quotient sequence is not injective. -/
+theorem quotientStep_zero_not_injective : ¬ Function.Injective (quotientStep 0).hom := by
   intro hinj
   have heq : (2 : ℤ) = 0 := hinj (by
     change (2 : ZMod 2) = 0
     decide)
   norm_num at heq
 
-example (p : PrimeSpectrum (ZMod 2)) :
+/-- The first quotient transition contracts every prime of `ZMod 2` to an ideal containing two. -/
+theorem two_mem_comap_quotientStep_zero (p : PrimeSpectrum (ZMod 2)) :
     (2 : ℤ) ∈ (PrimeSpectrum.comap (quotientStep 0).hom p).asIdeal := by
   change (2 : ZMod 2) ∈ p.asIdeal
   have hz : (2 : ZMod 2) = 0 := by decide
   rw [hz]
   exact p.asIdeal.zero_mem
 
-example : Nonempty (PrimeSpectrum (ZMod 2)) :=
+/-- The prime spectrum of `ZMod 2` is nonempty. -/
+theorem primeSpectrum_zmod_two_nonempty : Nonempty (PrimeSpectrum (ZMod 2)) :=
   PrimeSpectrum.nonempty_iff_nontrivial.mpr inferInstance
 
-example (p : PrimeSpectrum (CommRingCat.FilteredColimits.colimit quotientDiagram)) :
+/-- The zeroth projection of the quotient-colimit homeomorphism gives an ideal containing two. -/
+theorem two_mem_quotientDiagram_colimitHomeomorph_π_zero
+    (p : PrimeSpectrum (CommRingCat.FilteredColimits.colimit quotientDiagram)) :
     (2 : ℤ) ∈ (limit.π (quotientDiagram.op ⋙ AlgebraicGeometry.Spec.toTop) (op 0)
       (PrimeSpectrum.colimitHomeomorph quotientDiagram
         (CommRingCat.FilteredColimits.colimitCocone quotientDiagram)
@@ -102,9 +109,11 @@ example (p : PrimeSpectrum (CommRingCat.FilteredColimits.colimit quotientDiagram
   exact (PrimeSpectrum.colimitHomeomorph_π_apply quotientDiagram cocone
     (CommRingCat.FilteredColimits.colimitCoconeIsColimit quotientDiagram) 0 p).symm ▸ hmem
 
-example : IsEmpty (PrimeSpectrum (ZMod 1)) := inferInstance
+/-- The prime spectrum of the zero ring `ZMod 1` is empty. -/
+theorem primeSpectrum_zmod_one_isEmpty : IsEmpty (PrimeSpectrum (ZMod 1)) := inferInstance
 
-example : IsEmpty (↥(limit (((Functor.const (Discrete PUnit)).obj
+/-- The limit of spectra for the constant `ZMod 1` diagram on `Discrete PUnit` is empty. -/
+theorem constantZModOne_limit_isEmpty : IsEmpty (↥(limit (((Functor.const (Discrete PUnit)).obj
     (CommRingCat.of (ZMod 1))).op ⋙
     AlgebraicGeometry.Spec.toTop) : TopCat)) := by
   refine ⟨fun p => ?_⟩
@@ -114,11 +123,13 @@ example : IsEmpty (↥(limit (((Functor.const (Discrete PUnit)).obj
   have point : PrimeSpectrum (ZMod 1) := projection.hom p
   exact isEmptyElim point
 
-example : ¬ T1Space (PrimeSpectrum ℤ) := by
+/-- The prime spectrum of the integers is not T₁. -/
+theorem primeSpectrum_int_not_t1Space : ¬ T1Space (PrimeSpectrum ℤ) := by
   intro h
   exact Int.not_isField (PrimeSpectrum.t1Space_iff_isField.mp h)
 
-example : ¬ T2Space (PrimeSpectrum ℤ) := by
+/-- The prime spectrum of the integers is not Hausdorff. -/
+theorem primeSpectrum_int_not_t2Space : ¬ T2Space (PrimeSpectrum ℤ) := by
   intro h
   exact Int.not_isField (PrimeSpectrum.t1Space_iff_isField.mp
     (@T2Space.t1Space (PrimeSpectrum ℤ) _ h))

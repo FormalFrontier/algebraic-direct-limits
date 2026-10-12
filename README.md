@@ -5,10 +5,28 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the seventeen mathematical modules individually.
+or import any of the eighteen mathematical modules individually.
 
 ## Headline results
 
+- **Same-topology scalar restriction.**
+  [`TopModuleCat.restrictScalarsObj`](AlgebraicDirectLimits/Topology/Restriction.lean)
+  retains the carrier, additive group and topology of a topological `S`-module
+  along a continuous ring homomorphism `φ : R →+* S`. Both rings may be
+  noncommutative and neither scalar topology must be discrete. The algebraic
+  object is Mathlib's `ModuleCat.restrictScalars φ`; the restricted action is
+  `r • x = φ r • x`. Continuous-linear maps support independent source and
+  target carrier universes. Restriction is functorial, commutes with forgetting
+  to modules and topological spaces, and has natural identity and composition
+  comparisons. Separately, for arbitrary semirings with supplied topologies
+  and continuous multiplication on `S`, continuity of `φ` is equivalent to joint
+  continuity of its restricted regular action; evaluation at `1` gives necessity.
+  The algebra-map formula agrees with Algebra scalar multiplication and recovers
+  Mathlib's `continuous_algebraMap_iff_smul` for arbitrary scalar topologies.
+  This is separate from continuous Hom statements for an already constructed
+  extension object. No extension/restriction adjunction or finite-free continuous
+  Hom equivalence is asserted. See the
+  [coordinate-swap, matrix, semiring and Algebra clients](AlgebraicDirectLimitsExamples/Restriction.lean).
 - **One-sided tensor topology.**
   [`TopModuleCat.tensorLeftObj`](AlgebraicDirectLimits/Topology/TensorProduct.lean)
   equips `C ⊗[R] M` with the coinduced topological-module topology for every
@@ -194,6 +212,7 @@ or import any of the seventeen mathematical modules individually.
 | --- | --- |
 | [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
+| [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps and finite-basis contracts |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry and universal-property linear equivalence |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
@@ -216,7 +235,8 @@ the Lean modules give the exact signatures and hypotheses. The
 sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
-`Topology.TensorHom`, `Topology.TensorUnit`, `Topology.TensorSeparation`,
+`Topology.Restriction`, `Topology.TensorHom`, `Topology.TensorUnit`,
+`Topology.TensorSeparation`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
 `RingTheory.KrullDimension.DirectedUnion`, aggregate/test roots or all
 private/generated declarations.
@@ -242,8 +262,8 @@ lake --wfail build
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
-which imports the registered standalone clients. They include all seventeen
-mathematical modules, ten example modules and six test modules. To check one
+which imports the registered standalone clients. They include all eighteen
+mathematical modules, eleven example modules and six test modules. To check one
 module or client after the cache succeeds:
 
 ```sh
@@ -315,7 +335,16 @@ criterion, Mathlib's subsemiring union and inclusion API, and the integer and
 rational dimension theorems.
 The coinduced-module criterion follows Richard Hill and Andrew
 Yang's Mathlib coinduced construction and `TopModuleCat.isColimit`
-induced-topology proof. The one-sided tensor topology follows scalar-extension ideas from
+induced-topology proof. The same-topology restriction generalizes the restriction
+object and continuous-map construction in Continuous Group Cohomology, including
+Beacon's original development. Its algebraic objects and comparisons reuse
+Jujian Zhang's Mathlib change-of-rings API; continuous maps reuse Sébastien Gouëzel
+and Yury Kudryashov's restriction API. The regular-action continuity criterion
+and Algebra agreement follow Mathlib's `continuous_algebraMap_iff_smul` and
+`Algebra.smul_def`; the former is from the topological-algebra development by
+Kim Morrison, Antoine Chambert-Loir and María Inés de Frutos-Fernández.
+The one-sided tensor topology follows
+scalar-extension ideas from
 [Continuous Group Cohomology](https://github.com/FormalFrontier/continuous-group-cohomology)
 by Formal Frontier Agents, including Beacon's original topological development.
 Its local universe adapters reuse Mathlib's module and continuous-linear `ULift`
