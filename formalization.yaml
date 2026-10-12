@@ -41,13 +41,19 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Ten mathematical modules, a public re-export, four standalone clients,
-    prime-spectrum examples and coinduced-module examples. A linear map out of
-    the existing coinduced topological module is continuous exactly when all
-    generating composites are continuous, over any ring with a supplied
-    topology and with an independently leveled target. Filtered commutative-ring
-    colimits give limits of prime spectra in topological spaces, without injective
-    transition maps or separation hypotheses. Monoidal group completion
+    Eleven mathematical modules, a public re-export, four checked standalone
+    clients, prime-spectrum examples, coinduced-module examples and integer-pair
+    tensor examples. A linear map out of the existing coinduced topological module
+    is continuous exactly when all generating composites are continuous, over
+    any ring with a supplied topology and with an independently leveled target.
+    The one-sided tensor topology is constructed from fixed-coefficient
+    generators, with their characteristic linear continuity criterion,
+    canonical continuous tensor maps and algebraic finite-basis coordinates.
+    Continuous coordinates and basis change, and finite-free compactness/
+    Hausdorff properties remain type contracts without proofs or exported
+    constructions of those continuous realizations.
+    Filtered commutative-ring colimits give limits of prime spectra in topological
+    spaces, without injective transition maps or separation hypotheses. Monoidal group completion
     uses the native skeleton and its actual image, with cofinal denominators,
     stabilization and an injective induced map under full faithfulness.
     Graded normalization is a
@@ -59,11 +65,14 @@ status:
 review:
   status: unchecked
   notes: >-
-    Independent agent reviews cover the earlier direct-limit contributions,
-    including the prime-spectrum comparison. The coinduced-module continuity
-    API and its examples have not been independently reviewed or build-checked.
-    This does not assert source-author endorsement or complete formal coverage
-    of a source. API documentation is partial; see docs/CREDITS.md and docs/README.md.
+    Independent agent reviews cover the existing direct-limit contributions,
+    including the prime-spectrum comparison, and the coinduced-module continuity
+    API and its examples. A bounded mathematical assessment covers the
+    tensor-topology definitions, type contracts and algebraic integer-pair
+    examples; the tensor linear-continuity and continuous-map proofs require
+    independent assessment. This does not assert source-author endorsement or
+    complete formal coverage of a source. API documentation is partial;
+    see docs/CREDITS.md and docs/README.md.
 acknowledgements: >-
   The mathlib community's separately licensed library supplies foundational
   definitions and results. Mathematical references are background, not claims

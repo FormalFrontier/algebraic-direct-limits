@@ -171,7 +171,8 @@ private theorem doubling_cofinal (Y : Discrete (Multiplicative ℕ)) :
       Nonempty (Y ⊗ Z ≅ doublingFunctor.obj X) :=
   ⟨Y, Y, ⟨Discrete.eqToIso rfl⟩⟩
 
-private theorem doubling_completion_injective : Function.Injective (completionMap doublingFunctor) :=
+private theorem doubling_completion_injective :
+    Function.Injective (completionMap doublingFunctor) :=
   completionMap_injective doublingFunctor doubling_cofinal
 
 private theorem doubling_not_essSurj : ¬ doublingFunctor.EssSurj := by

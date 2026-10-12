@@ -27,7 +27,8 @@ private theorem denominator_representation {M : Type v} [AddCommMonoid M] (L : A
     ∃ m : M, ∃ l : L, z = of m - of (l : M) :=
   exists_cofinal_denominator L hL z
 
-private theorem cofinal_stabilizer_characterization {M : Type v} [AddCommMonoid M] (L : AddSubmonoid M)
+private theorem cofinal_stabilizer_characterization {M : Type v} [AddCommMonoid M]
+    (L : AddSubmonoid M)
     (hL : L.saturation = ⊤) (m n : M) :
     of m = of n ↔ ∃ l : L, m + (l : M) = n + (l : M) :=
   of_eq_iff_exists_cofinal_stabilizer L hL m n
