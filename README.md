@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the eighteen mathematical modules individually.
+or import the mathematical modules individually.
 
 ## Headline results
 
@@ -38,8 +38,8 @@ or import any of the eighteen mathematical modules individually.
   and composition laws. Finite-basis coordinates give a continuous linear
   equivalence with the finite product of `M`; the inverse reconstructs tensors
   by summing continuous basis generators. The scalar ring may be trivial and
-  the basis index may be empty. Basis change and compactness characterizations
-  remain type contracts, not proved results.
+  the basis index may be empty. Basis change remains a type contract, not a
+  proved result.
   See the
   [integer-pair and boundary examples](AlgebraicDirectLimitsExamples/TensorProduct.lean).
 - **Finite-basis tensor Hausdorffness.**
@@ -76,6 +76,18 @@ or import any of the eighteen mathematical modules individually.
   commutative ring with a supplied topology and jointly continuous action on
   `M`, without continuity of ring multiplication or a finite basis. See the
   [integer-pair doubling examples](AlgebraicDirectLimitsExamples/TensorUnit.lean).
+- **Compactness with finitely generated coefficients.**
+  [`TopModuleCat.compactSpace_tensorLeftObj`](AlgebraicDirectLimits/Topology/TensorCompactness.lean)
+  gives compactness of the one-sided tensor when its algebraic coefficient
+  module is finitely generated and its topological right factor is compact.
+  The commutative scalar ring has a supplied topology; neither a topology nor
+  freeness is required of the coefficient module, and all three carrier
+  universes are independent. A finite spanning family gives a continuous
+  surjection from a finite power of the right factor. This includes finite-free
+  coefficients and the
+  [torsion example](AlgebraicDirectLimitsExamples/TensorCompactness.lean), which
+  uses `ZMod 3` over the integers, with a nonfree coefficient module and a
+  nonzero pure tensor detected by multiplication.
 - **Varying scalars and tensor products.**
   [`DirectLimit.VaryingScalar.tensorProductEquiv`](AlgebraicDirectLimits/VaryingScalar.lean#L429)
   identifies the tensor product of two module limits over a *varying*
@@ -214,6 +226,7 @@ or import any of the eighteen mathematical modules individually.
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
 | [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps and finite-basis contracts |
+| [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry and universal-property linear equivalence |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
 | [`Topology.TensorSeparation`](AlgebraicDirectLimits/Topology/TensorSeparation.lean) | Finite-basis and finite-free Hausdorff preservation |
@@ -236,7 +249,7 @@ sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
 `Topology.Restriction`, `Topology.TensorHom`, `Topology.TensorUnit`,
-`Topology.TensorSeparation`,
+`Topology.TensorCompactness`, `Topology.TensorSeparation`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
 `RingTheory.KrullDimension.DirectedUnion`, aggregate/test roots or all
 private/generated declarations.
@@ -262,9 +275,9 @@ lake --wfail build
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
-which imports the registered standalone clients. They include all eighteen
-mathematical modules, eleven example modules and six test modules. To check one
-module or client after the cache succeeds:
+which imports the registered standalone clients. They include the mathematical
+modules, examples and test modules. To check one module or client after the
+cache succeeds:
 
 ```sh
 lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion

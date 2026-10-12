@@ -12,8 +12,9 @@ project:
     monoidal-category object classes with actual-image cofinality, same-topology
     scalar restriction, linear continuity for coinduced topological modules,
     continuous finite-basis coordinates for one-sided tensor products,
-    continuous tensor universal properties and the scalar tensor unit, together
-    with finite-basis and finite-free tensor Hausdorffness preservation.
+    continuous tensor universal properties, the scalar tensor unit, compactness
+    for finitely generated tensor coefficients, and finite-basis and finite-free
+    tensor Hausdorffness preservation.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -46,11 +47,11 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Eighteen mathematical modules, a public re-export, eleven example modules
-    and five standalone clients. The examples cover prime spectra, finite-capture,
-    directed-colimit and directed-union dimensions including proper subsemiring
-    traces, coinduced modules, integer-pair tensors, tensor-Hom, the scalar unit,
-    scalar restriction and tensor separation.
+    Mathematical modules, a public re-export and standalone clients. The examples
+    cover prime spectra, finite-capture, directed-colimit and directed-union
+    dimensions including proper subsemiring traces, coinduced modules, integer-pair
+    tensors, tensor-Hom, the scalar unit, scalar restriction, tensor separation
+    and finite torsion tensor compactness.
     Scalar restriction along a continuous ring homomorphism between arbitrary
     rings retains each topological module's topology, with functorial
     continuous-linear maps, natural identity/composition comparisons and both
@@ -73,17 +74,23 @@ status:
     with continuity and the generator at one as inverse. Both constructions
     allow independent carrier universes over a commutative ring with a supplied
     topology and jointly continuous right-factor actions, without a topology
-    on the coefficients or a finiteness hypothesis. Basis change and compactness
-    properties remain type contracts without proofs or exported constructions
-    of those realizations. Finite-basis Hausdorff preservation and its canonical
-    finite-free specialization follow from the continuous finite-product
-    coordinates, with independent carrier and index universes over an arbitrary
-    commutative ring with a supplied topology. They require no coefficient
-    topology, finiteness of the right factor or continuity of ring multiplication.
-    Their separation examples use the nonfree integer module ZMod 3, nonzero pure
-    and mixed tensors, the noncompact Hausdorff integer right factor, and
-    empty-basis and trivial-ring boundaries. Preservation for arbitrary projective
-    coefficients and Hausdorffness reflection are outside these results.
+    on the coefficients or a finiteness hypothesis. Basis change remains a type
+    contract without a proof or an exported construction of its realization.
+    Finite-basis Hausdorff preservation and its canonical finite-free
+    specialization follow from the continuous finite-product coordinates, with
+    independent carrier and index universes over an arbitrary commutative ring
+    with a supplied topology. They require no coefficient topology, finiteness
+    of the right factor or continuity of ring multiplication. Their separation
+    examples use the nonfree integer module ZMod 3, nonzero pure and mixed tensors,
+    the noncompact Hausdorff integer right factor, and empty-basis and trivial-ring
+    boundaries. Preservation for arbitrary projective coefficients and
+    Hausdorffness reflection are outside these results.
+    Tensoring a compact topological module with a finitely generated algebraic
+    coefficient module preserves compactness, over a commutative ring with a
+    supplied topology and independent carrier universes. A finite spanning
+    family gives a continuous surjection from a finite power of the right factor.
+    The nonfree integer-module example uses ZMod 3 and multiplication to detect
+    a nonzero pure tensor and instantiates this compactness result.
     Finite-subset capture in one homomorphism range per finite subset bounds the
     Krull dimension of a commutative semiring by the supremum of the source
     dimensions, without injectivity or a directed-system assumption. The dimension
