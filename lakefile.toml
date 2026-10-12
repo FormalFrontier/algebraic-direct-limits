@@ -20,6 +20,7 @@ name = "AlgebraicDirectLimits"
 name = "AlgebraicDirectLimitsExamples"
 roots = [
   "AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits",
+  "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCapture",
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.TensorProduct"
 ]
@@ -27,4 +28,4 @@ roots = [
 [[lean_lib]]
 name = "ReadinessTests"
 srcDir = "tests"
-globs = ["CofinalGroupCompletionClient", "GradedStabilizationClient", "MonoidalGroupCompletionClient", "ReadinessClient", "ReadinessTests"]
+globs = ["CofinalGroupCompletionClient", "FiniteCaptureClient", "GradedStabilizationClient", "MonoidalGroupCompletionClient", "ReadinessClient", "ReadinessTests"]

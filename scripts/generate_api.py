@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # Authors: Formal Frontier Agents
-"""Generate this library's Markdown API from pinned native doc-gen4 records.
+"""Check the partial API reference or adapt supplied doc-gen4 display records.
 
-This is a deliberately fixed-library adapter, not a general documentation
-certifier, a Lean parser, or a proof check. Native generation receipts remain
-separate review evidence. See docs/README.md for the reproduction contract.
+This fixed-library adapter validates documentation, not Lean proofs or the
+origin of supplied records. See docs/README.md for its display contract.
 """
 import argparse
 import hashlib
@@ -13,9 +12,7 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
-import subprocess
 
-TOOL = "97d4ecdfc8e09e7f511724c25e303d448de6a3db"
 MODULE_PATHS = {
     **{"AlgebraicDirectLimits." + name: "AlgebraicDirectLimits/" + name + ".lean"
        for name in ("CofinalSequence", "CofinalGroupCompletion", "GradedStabilization",
@@ -26,12 +23,32 @@ MODULE_PATHS = {
         "ReadinessClient", "ReadinessTests")},
 }
 MODULES = tuple(MODULE_PATHS)
-INPUTS = tuple(MODULE_PATHS.values()) + (
-    "lean-toolchain", "lakefile.toml", "lake-manifest.json")
+INPUTS = tuple(MODULE_PATHS.values())
 HERE = Path(__file__).resolve().parent
 EXPECTED = json.loads((HERE / "api_inventory.json").read_bytes())
 NOTES = json.loads((HERE / "api_notes.json").read_bytes())
 GITHUB_SOURCE = "https://github.com/FormalFrontier/algebraic-direct-limits/blob/"
+
+API_INTRO = """# API reference
+
+This reference contains 73 library display sites and 23 boundary-client sites.
+Import `AlgebraicDirectLimits` for the library; the test-target modules are separate.
+The selection covers seven library modules, not every API or private/generated declaration.
+Display-site counts are not a complete kernel-declaration census.
+
+Headers below use native doc-gen4 display signatures, not complete declarations
+with proof bodies. All visible tokens, including implicit parameters and
+noncomputable/abbrev modifiers, are retained; whitespace alone is normalized.
+Pretty-printing uses each source namespace, notation and type inference;
+consult the linked source for suppressed inferred types and universe conventions.
+These displayed fragments are not promised to elaborate alone in a fresh namespace.
+Source links are relative to this same checkout.
+
+The selected modules and names are indexed in [api-manifest.json](api-manifest.json).
+See the [reference overview](README.md) and the [mathematical guide](Guide.md).
+Where no source docstring exists, a separately authored **API note** is labeled explicitly.
+
+"""
 
 
 def require(ok, message):
@@ -44,7 +61,7 @@ def digest(raw):
 
 
 def source_range(info, revision, path, sources):
-    """Validate the pinned native GitHub linker, not remote URL availability."""
+    """Validate supplied GitHub source links, not remote URL availability."""
     line_count = len(sources[path].splitlines())
     require(type(info["line"]) is int and 0 < info["line"] <= line_count,
             "invalid native source line")
@@ -55,34 +72,6 @@ def source_range(info, revision, path, sources):
     start, end = map(int, match.groups())
     require(start == info["line"] and start <= end <= line_count,
             "native GitHub range disagrees with source line/bounds")
-
-
-def manifest_source_binding(manifest, revision, sources):
-    """Reproduction without development ancestry; metadata is not an attestation."""
-    require(type(manifest.get("format")) is int and manifest["format"] == 1
-            and manifest.get("docgen_revision") == TOOL,
-            "unsupported provenance manifest")
-    require(manifest.get("analyzed_source_revision") == revision and
-            manifest.get("modules") == list(MODULES), "manifest source selection differs")
-    require(manifest.get("inputs") == {p: digest(sources[p]) for p in sorted(INPUTS)},
-            "source/pin drift from recorded manifest")
-
-
-def git_source_available(root, revision):
-    """Only a source-only tree or Git's explicit missing result permits fallback."""
-    marker = root / ".git"
-    if not marker.exists() and not marker.is_symlink():
-        return False
-    probe = subprocess.run(["git", "--no-replace-objects", "cat-file", "--batch-check"],
-                           input=(revision + "\n").encode(), cwd=root,
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    require(probe.returncode == 0, "cannot inspect selected Git object; refusing fallback")
-    line = probe.stdout.decode().strip()
-    if line == revision + " missing":
-        return False
-    require(re.fullmatch(re.escape(revision) + r" commit [0-9]+", line) is not None,
-            "selected Git object is not a commit")
-    return True
 
 
 class Header(HTMLParser):
@@ -132,7 +121,7 @@ class Header(HTMLParser):
 def render(records, revision, sources):
     require(re.fullmatch(r"[0-9a-f]{40}", revision) is not None, "full source revision required")
     require(set(records) == set(MODULES), "shipped module records differ")
-    require(set(sources) == set(INPUTS), "source/pin inventory differs")
+    require(set(sources) == set(INPUTS), "source inventory differs")
     require(len(EXPECTED) == 96 and len(NOTES) == 33 and set(NOTES) <= set(EXPECTED),
             "bounded documentation inventory differs")
     rows = []
@@ -165,21 +154,7 @@ def render(records, revision, sources):
                              doc=info["doc"].strip(), path=path, line=info["line"]))
     require(found == EXPECTED, "missing public declaration")
     rows.sort(key=lambda row: (MODULES.index(row["module"]), row["line"], row["name"]))
-    lines = ["# Generated API reference", "",
-             "This reference contains 73 native library display sites and 23 boundary-client sites.",
-             "Import `AlgebraicDirectLimits` for the library; the test-target modules are separate.",
-             "Private/generated proof declarations still require the separate complete audit.",
-             "Native display-site counts are not a complete kernel-declaration census.", "",
-             "Headers below are native doc-gen4 display signatures, not complete declarations",
-             "with proof bodies. All native visible tokens, including implicit parameters and",
-             "noncomputable/abbrev modifiers, are retained; whitespace alone is normalized.",
-             "Native pretty-printing uses each source namespace, notation and type inference;",
-             "consult the linked source for suppressed inferred types and universe conventions.",
-             "These displayed fragments are not promised to elaborate alone in a fresh namespace.",
-             "Source links are relative to this same checkout.", "",
-             "The source/pin hashes and generation provenance are in [api-manifest.json](api-manifest.json).",
-             "See [generation instructions](README.md) and the [mathematical guide](Guide.md).",
-             "Where no source docstring exists, a separately authored **API note** is labeled explicitly.", ""]
+    lines = API_INTRO.splitlines()
     previous = None
     for row in rows:
         if row["module"] != previous:
@@ -196,57 +171,103 @@ def render(records, revision, sources):
             lines += ["**API note (not a source docstring):** " + note, ""]
         lines += [f"[Source](../{row['path']}#L{row['line']}) (native range begins at line {row['line']}).", ""]
     markdown = "\n".join(lines).encode()
-    manifest = dict(format=1, generator="scripts/generate_api.py", docgen_revision=TOOL,
-                    analyzed_source_revision=revision, modules=list(MODULES),
-                    module_paths=MODULE_PATHS, library_display_sites=73,
-                    boundary_client_display_sites=23,
-                    documentation_inputs={str(p.relative_to(HERE.parent)): digest(p.read_bytes())
-                        for p in (HERE / "generate_api.py", HERE / "api_inventory.json", HERE / "api_notes.json")},
-                    inputs={p: digest(sources[p]) for p in sorted(sources)},
-                    public_declarations=[r["name"] for r in rows],
-                    native_record_sha256={m: digest(json.dumps(records[m], sort_keys=True).encode())
-                                          for m in MODULES},
-                    api_sha256=digest(markdown), proof_certification=False)
-    return markdown, (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()
+    return markdown, display_manifest(markdown, [r["name"] for r in rows])
+
+
+def display_manifest(markdown, names):
+    """Index only the displayed selection; no producer receipts or source pins."""
+    require(len(EXPECTED) == 96 and len(names) == 96 and len(set(names)) == 96
+            and set(names) == set(EXPECTED), "display inventory differs")
+    modules = [m for m in MODULES if any(EXPECTED[n]["module"] == m for n in names)]
+    require(sum(EXPECTED[n]["module"].startswith("AlgebraicDirectLimits.") for n in names) == 73
+            and len(modules) == 9, "display module/count inventory differs")
+    manifest = dict(format=2, modules=modules,
+                    module_paths={m: MODULE_PATHS[m] for m in modules},
+                    library_display_sites=73, boundary_client_display_sites=23,
+                    public_declarations=names, api_sha256=digest(markdown),
+                    proof_certification=False)
+    return (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()
+
+
+def check_documents(markdown, manifest, sources):
+    """Data-only checks of the shipped display contract, without native records."""
+    require(set(sources) == set(INPUTS), "source inventory differs")
+    require(len(EXPECTED) == 96 and len(NOTES) == 33 and set(NOTES) <= set(EXPECTED),
+            "bounded documentation inventory differs")
+    text = markdown.decode()
+    require(text.startswith(API_INTRO), "API overview differs")
+    parts = re.split(r"^## ([^\n]+)\n\nScope: ([^\n]+)\.\n\n",
+                     text[len(API_INTRO):], flags=re.M)
+    require(parts[0] == "" and len(parts) > 1, "API module sections differ")
+    block = re.compile(
+        r"### ([^\n]+)\n\n```lean\n([^\n]+)\n```\n\n(.*?)\n\n"
+        r"\[Source\]\(\.\./([^)#]+)#L([1-9][0-9]*)\) "
+        r"\(native range begins at line \5\)\.\n(?:\n|$)", re.S)
+    names, modules = [], []
+    for i in range(1, len(parts), 3):
+        module, scope, body = parts[i:i + 3]
+        require(module in MODULES and module not in modules, "API module differs")
+        modules.append(module)
+        expected_scope = ("library" if module.startswith("AlgebraicDirectLimits.")
+                          else "boundary client (not re-exported by library root)")
+        require(scope == expected_scope, "API scope differs")
+        offset, positions = 0, []
+        for match in block.finditer(body):
+            require(match.start() == offset, "unrecognized API content")
+            offset = match.end()
+            name, header, doc, path, line = match.groups()
+            require(name in EXPECTED and name not in names and
+                    EXPECTED[name]["module"] == module, "API name/module differs")
+            require(digest(header.encode()) == EXPECTED[name]["header_sha256"],
+                    "API display signature differs")
+            require(path == MODULE_PATHS[module] and
+                    int(line) <= len(sources[path].splitlines()), "API source link differs")
+            if name in NOTES:
+                require(doc == "**API note (not a source docstring):** " + NOTES[name],
+                        "API note differs")
+            else:
+                require(bool(doc.strip()) and not doc.startswith("**API note"),
+                        "API source docstring missing")
+            names.append(name)
+            positions.append((int(line), name))
+        require(offset == len(body) and positions and positions == sorted(positions),
+                "API content/order differs")
+    require(set(names) == set(EXPECTED), "API display inventory differs")
+    require(modules == [m for m in MODULES if any(EXPECTED[n]["module"] == m for n in names)],
+            "API module order differs")
+    require(manifest == display_manifest(markdown, names), "API manifest differs")
+    return len(names)
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--native-data", type=Path, required=True,
-                   help="native fromDb output doc-data directory")
-    p.add_argument("--source-revision", required=True)
+    p.add_argument("--native-data", type=Path,
+                   help="supplied fromDb output doc-data directory")
+    p.add_argument("--source-revision", help="full revision in supplied source links")
     p.add_argument("--check", action="store_true", help="compare, never write")
     args = p.parse_args()
-    require(re.fullmatch(r"[0-9a-f]{40}", args.source_revision) is not None,
-            "full source revision required")
     root = Path(__file__).resolve().parent.parent
     sources = {path: (root / path).read_bytes() for path in INPUTS}
-    # A public release has independent ancestry: its analyzed development commit
-    # need not be present. Prefer the exact Git object when available, otherwise
-    # require the already committed complete source/pin manifest. Neither branch
-    # attests that supplied JSON was genuinely produced by the native tool.
-    if git_source_available(root, args.source_revision):
-        for path, raw in sources.items():
-            old = subprocess.check_output(["git", "--no-replace-objects", "show",
-                                           args.source_revision + ":" + path], cwd=root)
-            require(old == raw, "source/pin drift from analyzed revision: " + path)
-        binding = "git-object"
-    else:
-        manifest = json.loads((root / "docs/api-manifest.json").read_bytes())
-        manifest_source_binding(manifest, args.source_revision, sources)
-        binding = "committed-source-hashes"
+    if args.native_data is None:
+        require(args.check and args.source_revision is None,
+                "use --check alone, or supply --native-data and --source-revision")
+        count = check_documents((root / "docs/API.md").read_bytes(),
+                                (root / "docs/api-manifest.json").read_bytes(), sources)
+        print(json.dumps(dict(status="matched", display_sites=count)))
+        return
+    require(args.source_revision is not None, "source revision required for supplied records")
     records = {m: json.loads((args.native_data / ("declaration-data-" + m + ".bmp")).read_bytes())
                for m in MODULES}
     api, manifest = render(records, args.source_revision, sources)
+    check_documents(api, manifest, sources)
     for name, raw in [("API.md", api), ("api-manifest.json", manifest)]:
         target = root / "docs" / name
         if args.check:
             require(target.read_bytes() == raw, "generated file differs: " + name)
         else:
             target.write_bytes(raw)
-    print(json.dumps(dict(status="matched" if args.check else "generated",
-                          declarations=len(EXPECTED), api_sha256=digest(api),
-                          source_binding=binding, release_acceptance=False)))
+    print(json.dumps(dict(status="matched" if args.check else "rendered",
+                          display_sites=len(EXPECTED), api_sha256=digest(api))))
 
 
 if __name__ == "__main__":

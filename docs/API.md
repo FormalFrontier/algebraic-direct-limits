@@ -1,20 +1,20 @@
-# Generated API reference
+# API reference
 
-This reference contains 73 native library display sites and 23 boundary-client sites.
+This reference contains 73 library display sites and 23 boundary-client sites.
 Import `AlgebraicDirectLimits` for the library; the test-target modules are separate.
-Private/generated proof declarations still require the separate complete audit.
-Native display-site counts are not a complete kernel-declaration census.
+The selection covers seven library modules, not every API or private/generated declaration.
+Display-site counts are not a complete kernel-declaration census.
 
-Headers below are native doc-gen4 display signatures, not complete declarations
-with proof bodies. All native visible tokens, including implicit parameters and
+Headers below use native doc-gen4 display signatures, not complete declarations
+with proof bodies. All visible tokens, including implicit parameters and
 noncomputable/abbrev modifiers, are retained; whitespace alone is normalized.
-Native pretty-printing uses each source namespace, notation and type inference;
+Pretty-printing uses each source namespace, notation and type inference;
 consult the linked source for suppressed inferred types and universe conventions.
 These displayed fragments are not promised to elaborate alone in a fresh namespace.
 Source links are relative to this same checkout.
 
-The source/pin hashes and generation provenance are in [api-manifest.json](api-manifest.json).
-See [generation instructions](README.md) and the [mathematical guide](Guide.md).
+The selected modules and names are indexed in [api-manifest.json](api-manifest.json).
+See the [reference overview](README.md) and the [mathematical guide](Guide.md).
 Where no source docstring exists, a separately authored **API note** is labeled explicitly.
 
 ## AlgebraicDirectLimits.CofinalSequence

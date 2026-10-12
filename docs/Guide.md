@@ -4,8 +4,8 @@ Import `AlgebraicDirectLimits` for the public aggregate, or one mathematical lea
 from the root README. All constructions use the pinned mathlib's native objects;
 there is no alternative encoding of colimits, tensors, localizations or group
 completions. Consult the Lean files for exact formal signatures and proofs.
-The [generated API reference](API.md) supplies native displayed signatures and
-relative source links; its [generation record](README.md) explains display limits.
+The [partial API reference](API.md) supplies displayed signatures and relative
+source links; its [overview](README.md) explains the selection and display limits.
 
 ## Varying scalar directed limits
 

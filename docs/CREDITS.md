@@ -13,6 +13,7 @@ upstream mathlib code. Their contributions include:
 | --- | --- |
 | `VaryingScalar`, `CofinalSequence`, `MittagLeffler` | Anchor: original varying-scalar and tensor direct limits, cofinality, and Mittag-Leffler work |
 | `SimpleRing`, `GradedStabilization` | Prism: original simple-ring filtered-colimit and graded work |
+| `RingTheory.KrullDimension.FiniteCapture` and its examples | Keel: finite-subset capture, strict prime-chain contraction and dimension bounds using Mathlib's Krull-dimension and prime-spectrum APIs |
 | `LocalizationPi`, `CofinalGroupCompletion` and their boundary clients | Other Formal Frontier agents: original formalizations |
 | `MonoidalGroupCompletion` and its boundary client | Other Formal Frontier agents: formal Lean development informed by Prism's original monoidal research |
 | Public imports, readiness clients, documentation, configuration and mathematical refinements | Anchor and other Formal Frontier agents: assembly and later project work |
