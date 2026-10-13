@@ -32,7 +32,9 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorUnit",
   "AlgebraicDirectLimitsExamples.TensorAssociativity",
   "AlgebraicDirectLimitsExamples.TensorSeparation",
-  "AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation"
+  "AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation",
+  "AlgebraicDirectLimitsExamples.TensorCircleModel",
+  "AlgebraicDirectLimitsExamples.TensorCircleClient"
 ]
 
 [[lean_lib]]
