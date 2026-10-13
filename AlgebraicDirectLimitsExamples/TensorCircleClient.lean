@@ -9,7 +9,7 @@ public import AlgebraicDirectLimits.Topology.TensorCircle.Detector
 public import AlgebraicDirectLimits.Topology.TensorCircle.RationalAngles
 
 /-!
-# The rational-circle tensor and its algebraic detector
+# Non-Hausdorffness of the rational-circle tensor
 
 This file combines the rational coefficient module, the usual real circle, the
 algebraic rational-quotient detector and the dense family of rational angles.
@@ -24,12 +24,19 @@ generator, in contrast with the integer angles, which are already zero in the
 circle. `rationalCircle_properties` collects the supporting properties of these
 fixed modules and maps without extra hypotheses.
 
+`not_t2Space_rationalCircleTensor` proves that this one-sided tensor is not
+Hausdorff. If it were Hausdorff, the continuous generator and the zero map would
+agree everywhere because they agree on the dense rational angles. This would
+contradict the nonzero generator value at `[√2]`. Thus flat rational coefficients
+do not preserve tensor Hausdorffness, even with a compact Hausdorff right factor.
+
 ## Implementation notes
 
 The detector target is purely algebraic: no topology or continuity is supplied
 for it. Only the incoming tensor generator is asserted continuous. Rational
 scalars act on the coefficient and the rational quotient, not on the circle.
-No separation property of the tensor is asserted here.
+The non-Hausdorffness proof uses continuity of the generator and density of the
+rational angles, not continuity of the detector.
 
 ## References
 
@@ -44,6 +51,8 @@ No separation property of the tensor is asserted here.
   a fundamental interval, and its ordered-field API for the half-angle boundary.
   The providers reuse Mathlib's localization flatness, integer tensor balancing,
   algebraic quotients, rational density and irrationality of `Real.sqrt 2`.
+* Mathlib's `Continuous.ext_on` in `Topology.Separation.Hausdorff`, by
+  Johannes Hölzl and Mario Carneiro, for equality of continuous maps on a dense set.
 -/
 
 @[expose] public section
@@ -162,5 +171,29 @@ theorem rationalCircle_properties :
     circleTensorGenerator_apply, AddCircle.denseRange_rationalAngle,
     TensorProduct.tmul_rationalAngle_eq_zero, circleTensorGenerator_rationalAngle,
     circleTensorDetector_irrationalGenerator_ne_zero, irrationalGenerator_ne_zero⟩
+
+/-- The integer tensor of rational coefficients with the usual real circle is not
+Hausdorff for the finest topological-module topology of `TopModuleCat.tensorLeftObj`.
+Thus flat rational coefficients do not preserve Hausdorffness, even when the circle
+is compact Hausdorff and its integer action is jointly continuous.
+
+This is the rational-circle conclusion of the proof route credited above to
+Formal Frontier Agents (Lantern), using the cited circle, rational-angle and
+algebraic detector APIs and their Mathlib foundations. -/
+theorem not_t2Space_rationalCircleTensor : ¬ T2Space rationalCircleTensor := by
+  intro h
+  let : T2Space rationalCircleTensor := h
+  have hzero : (circleTensorGenerator : circleModule → rationalCircleTensor) =
+      fun _ ↦ 0 := by
+    apply Continuous.ext_on AddCircle.denseRange_rationalAngle
+      circleTensorGenerator_continuous continuous_const
+    rintro _ ⟨q, rfl⟩
+    exact circleTensorGenerator_rationalAngle q
+  apply irrationalGenerator_ne_zero
+  calc
+    irrationalGenerator =
+        circleTensorGenerator ((Real.sqrt 2 : ℝ) : AddCircle (1 : ℝ)) := by
+      rw [irrationalGenerator_eq_tmul, circleTensorGenerator_apply]
+    _ = 0 := congrFun hzero _
 
 end TensorCircleExamples

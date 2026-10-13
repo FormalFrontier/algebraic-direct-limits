@@ -13,8 +13,11 @@ project:
     scalar restriction, linear continuity for coinduced topological modules,
     continuous finite-basis coordinates for one-sided tensor products,
     continuous tensor universal properties, the scalar tensor unit, continuous
-    associativity, compactness for finitely generated tensor coefficients, and
-    arbitrary-basis and projective tensor Hausdorffness preservation.
+    associativity, compactness for finitely generated tensor coefficients,
+    arbitrary-basis and projective tensor Hausdorffness preservation, and
+    a rational-circle counterexample to flat-coefficient tensor Hausdorff
+    preservation, with an algebraic quotient detector and dense rational-angle
+    tensor-vanishing laws.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -47,13 +50,36 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Twenty mathematical modules, a public re-export, fourteen example modules
-    and six test modules (five standalone clients and their aggregate). The examples
+    Twenty-two mathematical leaf modules and a public re-export (23 library
+    modules), sixteen example modules and six test modules (five standalone
+    clients and their aggregate): 45 modules in the default targets. The
+    rational-circle library modules are separate imports, reached by the circle
+    clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
     dimensions including proper subsemiring traces, coinduced modules, integer-pair
     tensors, tensor-Hom, the scalar unit, scalar restriction, tensor separation,
     infinite-basis and nonfree projective coefficients, tensor associativity with
-    nonfree torsion and empty coefficients, and finite torsion tensor compactness.
+    nonfree torsion and empty coefficients, finite torsion tensor compactness,
+    and rational coefficients with the usual real circle.
+    The rational-circle model uses the algebraic integer module of rational
+    numbers, flat by Mathlib's localization theorem, and the compact Hausdorff
+    circle of period one with its jointly continuous integer action. The canonical
+    one-sided tensor has continuous fixed-coefficient generators. Its
+    integer-linear detector has the purely algebraic target of real numbers
+    modulo the rational span of one and detects the nonzero pure tensor with
+    coefficient one and circle class of the square root of two. All rational
+    angles are dense in the usual circle, each has its positive denominator as an integer
+    annihilator, and every rational coefficient tensored with any rational angle
+    is zero. Integer balancing divides only the rational coefficient. The
+    half-angle is nonzero in the circle but is killed by the generator at one;
+    a twelve-conjunct theorem combines the fixed model's supporting properties
+    without additional hypotheses. The circle tensor is not Hausdorff: otherwise
+    the continuous generator at one and the zero map would agree everywhere by
+    equality on dense rational angles, contradicting its nonzero value at the
+    square root of two. This refutes Hausdorff preservation for flat coefficients
+    even with a compact Hausdorff right factor and jointly continuous integer
+    action. No rational action on the circle or topology or continuity for the
+    detector target is asserted.
     Scalar restriction along a continuous ring homomorphism between arbitrary
     rings retains each topological module's topology, with functorial
     continuous-linear maps, natural identity/composition comparisons and both
@@ -137,8 +163,8 @@ status:
     type equivalence, not an additive equivalence; cancellation is required
     only for the degree target in its surjective/equivalence results. This is
     not a full theory or a source-coverage assessment. Full categorical tensor
-    coherence, a pentagon construction, flat-coefficient preservation, completed
-    tensor products are outside this API.
+    coherence, a pentagon construction and completed tensor products are outside
+    this API.
   sorry_count: 0
   sorry_in_definitions: 0
 review:

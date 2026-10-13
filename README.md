@@ -4,8 +4,9 @@ Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 
 This library works with mathlib's native directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
-[public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`,
-or import any of the twenty mathematical modules individually.
+[public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`
+for the core APIs, or import the linked mathematical modules individually.
+The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
@@ -34,6 +35,17 @@ or import any of the twenty mathematical modules individually.
   Carrier and basis-index universes are independent; no coefficient topology or
   continuity of ring multiplication is required. See the
   [infinite-basis and nonfree projective examples](AlgebraicDirectLimitsExamples/ProjectiveTensorSeparation.lean).
+- **Flat coefficients need not preserve tensor Hausdorffness.**
+  [`TensorCircleExamples.not_t2Space_rationalCircleTensor`](AlgebraicDirectLimitsExamples/TensorCircleClient.lean)
+  proves that `ℚ ⊗[ℤ] AddCircle (1 : ℝ)` is not Hausdorff for the finest
+  topological-module topology making every fixed-coefficient generator continuous.
+  The rational coefficient module is flat, and the usual real circle is compact
+  Hausdorff with jointly continuous integer action. The continuous generator at
+  coefficient `1` kills every rational angle, a dense family, but is nonzero at
+  `[√2]`. No topology on the coefficients, rational action on the circle or
+  continuity of the algebraic detector is used. See the
+  [model](AlgebraicDirectLimitsExamples/TensorCircleModel.lean) and
+  [detailed counterexample](docs/Results.md#supporting-rational-circle-results).
 - **Varying scalars and tensor products.**
   [`DirectLimit.VaryingScalar.tensorProductEquiv`](AlgebraicDirectLimits/VaryingScalar.lean#L429)
   identifies the tensor product of two module limits over a *varying*
@@ -93,10 +105,10 @@ or import any of the twenty mathematical modules individually.
   [module](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) and
   [client](tests/MonoidalGroupCompletionClient.lean#L169).
 
-The [full result descriptions](docs/Results.md) retain the hypotheses, examples
-and limitations for the entire library, including scalar restriction,
-one-sided tensor topology, compactness and separation, cofinality,
-localization, group completion and graded stabilization.
+The [selected detailed result descriptions](docs/Results.md) retain hypotheses,
+examples and limitations for the results described there. They also describe the
+[rational-circle counterexample and supporting APIs](docs/Results.md#supporting-rational-circle-results),
+including the algebraic detector, nonzero irrational tensor and rational-angle laws.
 
 ## Using the library
 
@@ -133,8 +145,9 @@ infinite-product inverse or surjectivity; finite-coordinate equivalences and
 finite-sum inverses remain finite-only. Projective Hausdorff preservation does
 not imply reflection or finite generation. The compactness theorem assumes finitely
 generated coefficients and a compact right factor. Full categorical tensor
-coherence, a pentagon construction, arbitrary-flat preservation and completed
-tensor products are outside this API. Basis change remains a type contract.
+coherence, a pentagon construction and completed tensor products are outside
+this API. The rational-circle counterexample rules out Hausdorff preservation
+for arbitrary flat coefficients. Basis change remains a type contract.
 
 ## Modules
 
@@ -149,6 +162,10 @@ tensor products are outside this API. Basis change remains a type contract.
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
 | [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products and naturality in three factors |
 | [`Topology.TensorSeparation`](AlgebraicDirectLimits/Topology/TensorSeparation.lean) | Arbitrary-basis and projective Hausdorff preservation |
+| [`Topology.TensorCircle.Detector`](AlgebraicDirectLimits/Topology/TensorCircle/Detector.lean) | Algebraic rational-quotient detector and a nonzero irrational pure tensor |
+| [`Topology.TensorCircle.RationalAngles`](AlgebraicDirectLimits/Topology/TensorCircle/RationalAngles.lean) | Dense rational angles, positive integer annihilators and vanishing rational pure tensors |
+| [`AlgebraicDirectLimitsExamples.TensorCircleModel`](AlgebraicDirectLimitsExamples/TensorCircleModel.lean) | Flat rational coefficients, the usual compact Hausdorff circle and its continuous tensor generator |
+| [`AlgebraicDirectLimitsExamples.TensorCircleClient`](AlgebraicDirectLimitsExamples/TensorCircleClient.lean) | Non-Hausdorff rational-circle tensor, detector and generator laws, a nonzero killed half-angle and combined supporting properties |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
 | [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
 | [`SimpleRing`](AlgebraicDirectLimits/SimpleRing.lean) | Filtered colimits of simple rings |
@@ -169,7 +186,8 @@ those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
 `Topology.Restriction`, `Topology.TensorHom`, `Topology.TensorUnit`,
 `Topology.TensorAssociativity`, `Topology.TensorCompactness`,
-`Topology.TensorSeparation`,
+`Topology.TensorSeparation`, `Topology.TensorCircle.Detector`,
+`Topology.TensorCircle.RationalAngles`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
 `RingTheory.KrullDimension.DirectedUnion`, aggregate/test roots or all
 private/generated declarations.
@@ -193,9 +211,11 @@ lake --wfail build
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
-which imports the registered standalone clients. They include all twenty
-mathematical modules, fourteen example modules and six test modules. To check one
-module or client after the cache succeeds:
+which imports the registered standalone clients. Together these targets cover
+22 mathematical leaf modules plus the public aggregate (23 library modules),
+16 example modules and six test modules: 45 modules in all. The circle library
+modules are imported by the circle clients, not by the public aggregate.
+To check one module or client after the cache succeeds:
 
 ```sh
 lake --wfail build AlgebraicDirectLimits.MonoidalGroupCompletion
@@ -269,6 +289,13 @@ Mario Carneiro's ideal API. Related general idempotent-ideal mathematics is
 provided by [Projective Modules](https://github.com/FormalFrontier/projective-modules),
 including Prism's work; no dependency on that library or new general ideal API
 is introduced here.
+The rational-circle constructions and non-Hausdorffness proof follow Formal
+Frontier Agents (Lantern), *Rational coefficients do not preserve tensor
+Hausdorffness*, and its stock API companion. They reuse Mathlib's localization
+flatness, Oliver Nash's additive circle, integer tensor balancing, rational cast
+density, irrationality of `Real.sqrt 2` and uniqueness of continuous maps on a
+dense set; the four linked circle modules give the detailed contributor and
+proof-route credits.
 The [Apache-2.0 license](LICENSE) covers original project material;
 mathlib and the other separately maintained dependencies keep their own licenses
 and notices. Collective author credit alone does not establish legal ownership

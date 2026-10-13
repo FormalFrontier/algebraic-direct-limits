@@ -83,26 +83,12 @@ theorem t2Space_tensorLeftObj [Module.Projective R C] [T2Space M] :
     t2Space_tensorLeftObj_of_basis R F M
       (Finsupp.basisSingleOne : Module.Basis C R F)
   have hπs : π.comp (show C →ₗ[R] F from s) = (LinearMap.id : C →ₗ[R] C) := hs
-  have hsplit : p.comp i = ContinuousLinearMap.id R (tensorLeftObj R C M) := by
-    calc
-      p.comp i = tensorMapCLM R (C := C) (D := C) (M := M) (N := M)
-          (π.comp (show C →ₗ[R] F from s))
-          ((ContinuousLinearMap.id R M).comp (ContinuousLinearMap.id R M)) :=
-        (tensorMapCLM_comp R (C := C) (D := F) (E := C)
-          (M := M) (N := M) (P := M) s π
-          (ContinuousLinearMap.id R M) (ContinuousLinearMap.id R M)).symm
-      _ = tensorMapCLM R (C := C) (D := C) (M := M) (N := M)
-          (LinearMap.id : C →ₗ[R] C) (ContinuousLinearMap.id R M) :=
-        congrArg₂ (fun (a : C →ₗ[R] C) (g : M →L[R] M) ↦
-          tensorMapCLM R (C := C) (D := C) (M := M) (N := M) a g)
-          hπs (ContinuousLinearMap.id_comp (ContinuousLinearMap.id R M))
-      _ = ContinuousLinearMap.id R (tensorLeftObj R C M) :=
-        tensorMapCLM_id R (C := C) (M := M)
-  have hleft : Function.LeftInverse p i := by
-    intro x
-    exact (ContinuousLinearMap.comp_apply p i x).symm.trans
-      ((DFunLike.congr_fun hsplit x).trans
-        (ContinuousLinearMap.id_apply (R₁ := R) (M₁ := tensorLeftObj R C M) x))
+  have hsplit : p.comp i = ContinuousLinearMap.id R (tensorLeftObj R C M) :=
+    tensorMapCLM_comp_eq_id R (C := C) (D := F) (M := M) (N := M) s π
+      (ContinuousLinearMap.id R M) (ContinuousLinearMap.id R M) hπs
+      (ContinuousLinearMap.id_comp (ContinuousLinearMap.id R M))
+  have hleft : Function.LeftInverse p i :=
+    ContinuousLinearMap.leftInverse_of_comp hsplit
   exact T2Space.of_injective_continuous hleft.injective i.continuous
 
 end TopModuleCat

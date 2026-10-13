@@ -273,6 +273,152 @@ theorem integerFirstContinuousCoordinate_doubling_first :
           (0 : Fin 2)
     _ = 2 := doubledFirstTensor_coordinate_zero
 
+/-- The first projection retracts the proper inclusion of integer coefficients. -/
+theorem integerPair_fst_comp_inl :
+    (LinearMap.fst ℤ ℤ ℤ : integerPairCoefficients →ₗ[ℤ] ModuleCat.of ℤ ℤ).comp
+        (LinearMap.inl ℤ ℤ ℤ) =
+      (LinearMap.id : ModuleCat.of ℤ ℤ →ₗ[ℤ] ModuleCat.of ℤ ℤ) :=
+  LinearMap.fst_comp_inl ℤ ℤ ℤ
+
+/-- The inclusion into the first integer coordinate misses `(0, 1)`. -/
+theorem integerPair_inl_not_surjective :
+    ¬ Function.Surjective
+      (LinearMap.inl ℤ ℤ ℤ : ModuleCat.of ℤ ℤ →ₗ[ℤ] integerPairCoefficients) := by
+  intro h
+  obtain ⟨n, hn⟩ := h (0, 1)
+  have h₁ := congrArg Prod.snd hn
+  change (0 : ℤ) = 1 at h₁
+  exact zero_ne_one h₁
+
+/-- Tensoring the first-coordinate inclusion with the integer identity remains split. -/
+theorem integerTensorPair_leftInverse :
+    Function.LeftInverse
+      (TopModuleCat.tensorMapCLM ℤ (C := integerPairCoefficients) (D := ModuleCat.of ℤ ℤ)
+        (M := integerModule) (N := integerModule)
+        (LinearMap.fst ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule))
+      (TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+        (M := integerModule) (N := integerModule)
+        (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)) := by
+  apply ContinuousLinearMap.leftInverse_of_comp
+  exact TopModuleCat.tensorMapCLM_comp_eq_id ℤ
+    (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+    (M := integerModule) (N := integerModule)
+    (LinearMap.inl ℤ ℤ ℤ) (LinearMap.fst ℤ ℤ ℤ)
+    (ContinuousLinearMap.id ℤ integerModule) (ContinuousLinearMap.id ℤ integerModule)
+    integerPair_fst_comp_inl
+    (ContinuousLinearMap.id_comp (ContinuousLinearMap.id ℤ integerModule))
+
+/-- The tensor inclusion sends `1 ⊗ 1` to the existing first generator. -/
+theorem integerTensorPair_inl_tmul_one :
+    TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+        (M := integerModule) (N := integerModule)
+        (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)
+        ((1 : ℤ) ⊗ₜ[ℤ] (1 : integerModule)) = firstGeneratorTensor := by
+  have hmap :
+      TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+        (M := integerModule) (N := integerModule)
+        (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)
+        ((1 : ℤ) ⊗ₜ[ℤ] (1 : integerModule)) =
+      (show TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule from
+        ((1, 0) : integerPairCoefficients) ⊗ₜ[ℤ] (1 : integerModule)) := by
+    simpa only [LinearMap.inl_apply, ContinuousLinearMap.id_apply] using
+      (TopModuleCat.tensorMapCLM_tmul ℤ (C := ModuleCat.of ℤ ℤ)
+        (D := integerPairCoefficients) (M := integerModule) (N := integerModule)
+        (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)
+        (1 : ℤ) (1 : integerModule))
+  have hgen :
+      (show TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule from
+        ((1, 0) : integerPairCoefficients) ⊗ₜ[ℤ] (1 : integerModule)) =
+      firstGeneratorTensor :=
+    (TopModuleCat.tensorGenerator_apply ℤ integerPairCoefficients integerModule (1, 0) 1).symm
+  exact Eq.trans (α := TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule)
+    hmap hgen
+
+/-- The source tensor `1 ⊗ 1` is nonzero, detected by the independently nonzero image. -/
+theorem integerTensor_tmul_one_ne_zero :
+    (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule from
+      (1 : ℤ) ⊗ₜ[ℤ] (1 : integerModule)) ≠ 0 := by
+  intro h
+  let I : TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule →L[ℤ]
+      TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule :=
+    TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+      (M := integerModule) (N := integerModule)
+      (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)
+  have himage :
+      I (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule from
+        (1 : ℤ) ⊗ₜ[ℤ] (1 : integerModule)) = firstGeneratorTensor :=
+    integerTensorPair_inl_tmul_one
+  have hzero :
+      I (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule from
+        (1 : ℤ) ⊗ₜ[ℤ] (1 : integerModule)) = 0 :=
+    (congrArg (fun z : TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule ↦
+      I z) h).trans I.map_zero
+  exact firstGeneratorTensor_ne_zero (himage.symm.trans hzero)
+
+/-- The split tensor inclusion has a nonzero value on `1 ⊗ 1`. -/
+theorem integerTensorPair_inl_tmul_one_ne_zero :
+    TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+        (M := integerModule) (N := integerModule)
+        (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)
+        ((1 : ℤ) ⊗ₜ[ℤ] (1 : integerModule)) ≠ 0 := by
+  rw [integerTensorPair_inl_tmul_one]
+  exact firstGeneratorTensor_ne_zero
+
+/-- The tensor inclusion is proper: the second coordinate vanishes on its whole image
+but is `1` on `(0, 1) ⊗ 1`. -/
+theorem integerTensorPair_inl_not_surjective :
+    ¬ Function.Surjective
+      (TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+        (M := integerModule) (N := integerModule)
+        (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)) := by
+  let I : TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule →L[ℤ]
+      TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule :=
+    TopModuleCat.tensorMapCLM ℤ (C := ModuleCat.of ℤ ℤ) (D := integerPairCoefficients)
+      (M := integerModule) (N := integerModule)
+      (LinearMap.inl ℤ ℤ ℤ) (ContinuousLinearMap.id ℤ integerModule)
+  change ¬ Function.Surjective I
+  let q : TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule →L[ℤ]
+      integerModule :=
+    (ContinuousLinearMap.proj (R := ℤ)
+      (φ := fun _ : Fin 2 ↦ integerModule) (1 : Fin 2)).comp
+        integerPairContinuousCoordinates.toContinuousLinearMap
+  have hqI (z : TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule) :
+      q (I z) = 0 := by
+    induction z using TensorProduct.inductionOn with
+    | tmul n m =>
+      change integerPairContinuousCoordinates (I (n ⊗ₜ[ℤ] m)) 1 = 0
+      dsimp only [I]
+      rw [TopModuleCat.tensorMapCLM_tmul, LinearMap.inl_apply,
+        ContinuousLinearMap.id_apply]
+      change TopModuleCat.tensorCoordinateContinuousLinearEquiv ℤ
+        integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ)
+        (((n, 0) : integerPairCoefficients) ⊗ₜ[ℤ] m) (1 : Fin 2) = 0
+      simpa only [congrFun (Module.Basis.coe_finTwoProd_repr ((n, 0) : ℤ × ℤ))
+        (1 : Fin 2), Matrix.cons_val_one, Matrix.cons_val_zero, zero_smul] using
+        (TopModuleCat.tensorCoordinateContinuousLinearEquiv_tmul_apply ℤ
+          integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ)
+          ((n, 0) : integerPairCoefficients) m (1 : Fin 2))
+    | add x y hx hy =>
+      have hadd : q (I (x + y)) = q (I x) + q (I y) :=
+        (q.comp I).map_add
+          (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule from x)
+          (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) integerModule from y)
+      exact hadd.trans
+        ((congrArg₂ (fun a b : integerModule ↦ a + b) hx hy).trans
+          (add_zero (0 : integerModule)))
+  have hqw : q (((0, 1) : integerPairCoefficients) ⊗ₜ[ℤ] (1 : integerModule)) = 1 := by
+    change TopModuleCat.tensorCoordinateContinuousLinearEquiv ℤ
+      integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ)
+      (((0, 1) : integerPairCoefficients) ⊗ₜ[ℤ] (1 : integerModule)) (1 : Fin 2) = 1
+    simpa only [congrFun (Module.Basis.coe_finTwoProd_repr ((0, 1) : ℤ × ℤ))
+      (1 : Fin 2), Matrix.cons_val_one, Matrix.cons_val_zero, one_smul] using
+      (TopModuleCat.tensorCoordinateContinuousLinearEquiv_tmul_apply ℤ
+        integerPairCoefficients integerModule (Module.Basis.finTwoProd ℤ)
+        ((0, 1) : integerPairCoefficients) (1 : integerModule) (1 : Fin 2))
+  intro h
+  obtain ⟨z, hz⟩ := h (((0, 1) : integerPairCoefficients) ⊗ₜ[ℤ] (1 : integerModule))
+  exact zero_ne_one ((hqI z).symm.trans ((congrArg q hz).trans hqw))
+
 section ContinuousBoundaries
 
 universe uι

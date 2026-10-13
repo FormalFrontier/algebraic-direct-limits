@@ -1,6 +1,6 @@
 # Mathematical results
 
-The full descriptions below include hypotheses, examples and limitations.
+These selected detailed descriptions include hypotheses, examples and limitations.
 See the [library overview](../README.md#headline-results) for a selection,
 [usage and reproduction](../README.md#using-the-library) for installation,
 and the [mathematical guide](Guide.md) for explanations. Consult the linked
@@ -65,6 +65,17 @@ Lean modules for the exact statements and proofs.
   [infinite-basis and nonfree projective models](../AlgebraicDirectLimitsExamples/ProjectiveTensorSeparation.lean).
   The compactness theorem is separate and assumes finitely generated coefficients
   and a compact right factor; projectivity alone does not supply finite generation.
+- **Flat coefficients need not preserve tensor Hausdorffness.**
+  [`TensorCircleExamples.not_t2Space_rationalCircleTensor`](../AlgebraicDirectLimitsExamples/TensorCircleClient.lean)
+  proves that the integer tensor of `ℚ` with the usual real circle of period one
+  is not Hausdorff for `TopModuleCat.tensorLeftObj`'s finest topological-module
+  topology making all fixed-coefficient generators continuous. The coefficient
+  module is flat and the circle is compact Hausdorff with jointly continuous
+  integer action. The continuous generator at coefficient one vanishes on every
+  rational angle but not at `[√2]`; Hausdorffness would force equality with zero
+  everywhere by density. The detector remains purely algebraic, and no rational
+  action on the circle is used. See the
+  [counterexample and supporting results](#supporting-rational-circle-results).
 - **Continuous tensor universal property.**
   [`TopModuleCat.tensorHomLinearEquiv`](../AlgebraicDirectLimits/Topology/TensorHom.lean)
   identifies continuous linear maps `C ⊗[R] M →L[R] N` with algebraic linear
@@ -257,8 +268,56 @@ Lean modules for the exact statements and proofs.
   [boundary client](../tests/GradedStabilizationClient.lean#L125).
 
 The library does not supply full categorical tensor coherence or a pentagon
-construction, preservation for arbitrary flat coefficients, completed tensor
-products, infinite-product surjectivity, or a complete theory of limits.
-Basis change remains a type contract.
+construction, completed tensor products, infinite-product surjectivity, or a
+complete theory of limits. Hausdorff preservation for arbitrary flat coefficients
+is ruled out by the rational-circle counterexample. Basis change remains a type
+contract.
+
+## Supporting rational-circle results
+
+The [model](../AlgebraicDirectLimitsExamples/TensorCircleModel.lean) fixes
+`TensorCircleExamples.rationalCoefficients : ModuleCat ℤ` to be `ℚ`, flat by
+Mathlib's stock localization theorem `IsLocalization.flat`. Its `circleModule`
+is the usual quotient `AddCircle (1 : ℝ)`, compact and Hausdorff with jointly
+continuous integer scalar multiplication. The canonical `rationalCircleTensor`
+is `TopModuleCat.tensorLeftObj ℤ rationalCoefficients circleModule`: the finest
+integer-topological-module topology making every fixed-coefficient generator
+continuous. In particular, `circleTensorGenerator` is the continuous integer-linear
+map `m ↦ 1 ⊗ₜ[ℤ] m`. No coefficient topology or global tensor topology instance
+is introduced.
+
+The [algebraic detector](../AlgebraicDirectLimits/Topology/TensorCircle/Detector.lean)
+has target `AddCircle.RationalQuotient = ℝ ⧸ Submodule.span ℚ {(1 : ℝ)}`.
+The detector is the tensor lift of an integer-balanced bilinear map and sends
+`q ⊗ [x]` to the class of `(q : ℝ) * x`.
+The [client's `circleTensorDetector_tmul`](../AlgebraicDirectLimitsExamples/TensorCircleClient.lean)
+gives the pure-tensor law for every `q : ℚ` and `m : circleModule`; its
+`circleTensorDetector_tmul_coe` gives the real-representative formula, and
+`circleTensorDetector_comp_generator` identifies the linear composite at
+coefficient one with `AddCircle.toRationalQuotient`.
+The same client proves that the detector of `irrationalGenerator` is the nonzero
+class of `Real.sqrt 2`, and that the actual tensor `1 ⊗ [Real.sqrt 2]` is nonzero,
+in `circleTensorDetector_irrationalGenerator_ne_zero` and `irrationalGenerator_ne_zero`.
+
+The [rational-angle laws](../AlgebraicDirectLimits/Topology/TensorCircle/RationalAngles.lean)
+prove `AddCircle.denseRange_rationalAngle` in the usual circle topology. Each
+rational angle has its positive integer denominator as an annihilator, and
+`TensorProduct.tmul_rationalAngle_eq_zero` gives
+`c ⊗ₜ[ℤ] AddCircle.rationalAngle q = 0` for **all** `c q : ℚ`.
+The balancing argument divides only the rational coefficient, not the circle point.
+`TopModuleCat.tensorGenerator_rationalAngle` gives the corresponding law for
+every fixed-coefficient continuous generator. The client's `rationalAngle_boundaries`
+also exhibits the nonzero half-angle killed by `circleTensorGenerator`.
+
+The client's `TensorCircleExamples.rationalCircle_properties` combines twelve
+supporting properties of these fixed modules and maps without additional hypotheses.
+The same client proves `TensorCircleExamples.not_t2Space_rationalCircleTensor`:
+this tensor is not Hausdorff. If it were Hausdorff, Mathlib's
+`Continuous.ext_on` would make the generator at one equal to the zero map, since both
+are continuous and agree on the dense range of `AddCircle.rationalAngle`.
+Evaluation at `[√2]` contradicts `irrationalGenerator_ne_zero`. The model and its
+twelve supporting properties have no extra hypotheses. The detector and its
+target remain purely algebraic, with no topology or continuity asserted;
+rational scalars act on the coefficients and quotient, not on the circle.
 
 Return to the [library overview](../README.md).

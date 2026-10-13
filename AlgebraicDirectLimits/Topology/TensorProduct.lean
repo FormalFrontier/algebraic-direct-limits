@@ -298,6 +298,17 @@ theorem tensorMapCLM_comp (f : C →ₗ[R] D) (f' : D →ₗ[R] E)
       (TensorProduct.map f' g'.toLinearMap).comp (TensorProduct.map f g.toLinearMap)
   exact TensorProduct.map_comp f' g'.toLinearMap f g.toLinearMap
 
+/-- Tensor maps preserve split retractions in both factors: tensoring a linear
+inclusion and a continuous linear inclusion with their respective retractions
+gives a split retraction on the one-sided tensor product. -/
+theorem tensorMapCLM_comp_eq_id (f : C →ₗ[R] D) (r : D →ₗ[R] C)
+    (g : M →L[R] N) (s : N →L[R] M)
+    (hf : r.comp f = (LinearMap.id : C →ₗ[R] C))
+    (hg : s.comp g = ContinuousLinearMap.id R M) :
+    (tensorMapCLM R r s).comp (tensorMapCLM R f g) =
+      ContinuousLinearMap.id R (tensorLeftObj R C M) := by
+  rw [← tensorMapCLM_comp, hf, hg, tensorMapCLM_id]
+
 /-- Exact algebraic agreement uniquely determines the continuous tensor map. -/
 theorem tensorMapCLM_unique (f : C →ₗ[R] D) (g : M →L[R] N)
     (t : tensorLeftObj R C M →L[R] tensorLeftObj R D N)
