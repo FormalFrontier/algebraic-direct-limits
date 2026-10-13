@@ -51,8 +51,8 @@ automation:
 status:
   scope: >-
     Twenty-three mathematical leaf modules and a public re-export (24 library
-    modules), seventeen example modules and six test modules (five standalone
-    clients and their aggregate): 47 modules in the default targets. The
+    modules), eighteen example modules and six test modules (five standalone
+    clients and their aggregate): 48 modules in the default targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union

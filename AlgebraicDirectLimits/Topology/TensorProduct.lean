@@ -348,6 +348,86 @@ theorem exists_tensorMapCLM (f : C →ₗ[R] D) (g : M →L[R] N) :
     t''.toLinearMap = TensorProduct.map (f'.comp f) (g'.comp g).toLinearMap →
       t'' = t'.comp t)
 
+section MapLinearity
+
+/-- The continuous tensor map is zero when its algebraic left-factor map is zero. -/
+@[simp]
+theorem tensorMapCLM_zero_left (g : M →L[R] N) :
+    tensorMapCLM R (0 : C →ₗ[R] D) g = 0 := by
+  apply ContinuousLinearMap.coe_injective
+  simp only [tensorMapCLM_toLinearMap, ContinuousLinearMap.toLinearMap_zero]
+  change (TensorProduct.map (0 : C →ₗ[R] D) g.toLinearMap :
+    TensorProduct R C M →ₗ[R] TensorProduct R D N) = 0
+  exact TensorProduct.map_zero_left (M := C) (M₂ := D) g.toLinearMap
+
+/-- The continuous tensor map is zero when its continuous right-factor map is zero. -/
+@[simp]
+theorem tensorMapCLM_zero_right (f : C →ₗ[R] D) :
+    tensorMapCLM R f (0 : M →L[R] N) = 0 := by
+  apply ContinuousLinearMap.coe_injective
+  simp only [tensorMapCLM_toLinearMap, ContinuousLinearMap.toLinearMap_zero]
+  change (TensorProduct.map f (0 : M →ₗ[R] N) :
+    TensorProduct R C M →ₗ[R] TensorProduct R D N) = 0
+  exact TensorProduct.map_zero_right (N := M) (N₂ := N) f
+
+/-- Addition in the algebraic left-factor map becomes addition of continuous tensor maps. -/
+theorem tensorMapCLM_add_left (f₁ f₂ : C →ₗ[R] D) (g : M →L[R] N) :
+    tensorMapCLM R (f₁ + f₂) g = tensorMapCLM R f₁ g + tensorMapCLM R f₂ g := by
+  apply ContinuousLinearMap.coe_injective
+  simp only [tensorMapCLM_toLinearMap, ContinuousLinearMap.toLinearMap_add]
+  change (TensorProduct.map (f₁ + f₂) g.toLinearMap :
+    TensorProduct R C M →ₗ[R] TensorProduct R D N) =
+      TensorProduct.map f₁ g.toLinearMap + TensorProduct.map f₂ g.toLinearMap
+  exact TensorProduct.map_add_left f₁ f₂ g.toLinearMap
+
+/-- Addition in the continuous right-factor map becomes addition of continuous tensor maps. -/
+theorem tensorMapCLM_add_right (f : C →ₗ[R] D) (g₁ g₂ : M →L[R] N) :
+    tensorMapCLM R f (g₁ + g₂) = tensorMapCLM R f g₁ + tensorMapCLM R f g₂ := by
+  apply ContinuousLinearMap.coe_injective
+  simp only [tensorMapCLM_toLinearMap, ContinuousLinearMap.toLinearMap_add]
+  change (TensorProduct.map f (g₁.toLinearMap + g₂.toLinearMap) :
+    TensorProduct R C M →ₗ[R] TensorProduct R D N) =
+      TensorProduct.map f g₁.toLinearMap + TensorProduct.map f g₂.toLinearMap
+  exact TensorProduct.map_add_right f g₁.toLinearMap g₂.toLinearMap
+
+/-- Scalar multiplication in the algebraic left-factor map scales the continuous tensor map. -/
+theorem tensorMapCLM_smul_left (r : R) (f : C →ₗ[R] D) (g : M →L[R] N) :
+    tensorMapCLM R (r • f) g = r • tensorMapCLM R f g := by
+  apply ContinuousLinearMap.coe_injective
+  simp only [tensorMapCLM_toLinearMap, ContinuousLinearMap.toLinearMap_smul]
+  change (TensorProduct.map (r • f) g.toLinearMap :
+    TensorProduct R C M →ₗ[R] TensorProduct R D N) = r • TensorProduct.map f g.toLinearMap
+  exact TensorProduct.map_smul_left r f g.toLinearMap
+
+/-- Scalar multiplication in the continuous right-factor map scales the continuous tensor map. -/
+theorem tensorMapCLM_smul_right (r : R) (f : C →ₗ[R] D) (g : M →L[R] N) :
+    tensorMapCLM R f (r • g) = r • tensorMapCLM R f g := by
+  apply ContinuousLinearMap.coe_injective
+  simp only [tensorMapCLM_toLinearMap, ContinuousLinearMap.toLinearMap_smul]
+  change (TensorProduct.map f (r • g.toLinearMap) :
+    TensorProduct R C M →ₗ[R] TensorProduct R D N) = r • TensorProduct.map f g.toLinearMap
+  exact TensorProduct.map_smul_right r f g.toLinearMap
+
+/-- A finite sum of algebraic left-factor maps gives the sum of their continuous tensor maps. -/
+theorem tensorMapCLM_sum_left {ι : Type uI} (s : Finset ι)
+    (f : ι → C →ₗ[R] D) (g : M →L[R] N) :
+    tensorMapCLM R (∑ i ∈ s, f i) g = ∑ i ∈ s, tensorMapCLM R (f i) g := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp only [Finset.sum_empty, tensorMapCLM_zero_left]
+  | insert i s hi ih => simp only [Finset.sum_insert hi, tensorMapCLM_add_left, ih]
+
+/-- A finite sum of continuous right-factor maps gives the sum of their continuous tensor maps. -/
+theorem tensorMapCLM_sum_right {ι : Type uI} (s : Finset ι)
+    (f : C →ₗ[R] D) (g : ι → M →L[R] N) :
+    tensorMapCLM R f (∑ i ∈ s, g i) = ∑ i ∈ s, tensorMapCLM R f (g i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp only [Finset.sum_empty, tensorMapCLM_zero_right]
+  | insert i s hi ih => simp only [Finset.sum_insert hi, tensorMapCLM_add_right, ih]
+
+end MapLinearity
+
 end TensorMaps
 
 section Coordinates
