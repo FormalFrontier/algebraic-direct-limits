@@ -19,6 +19,7 @@ public import AlgebraicDirectLimits.Topology.Coinduced
 public import AlgebraicDirectLimits.Topology.Restriction
 public import AlgebraicDirectLimits.Topology.TensorCompactness
 public import AlgebraicDirectLimits.Topology.TensorProduct
+public import AlgebraicDirectLimits.Topology.TensorProduct.Prod
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import AlgebraicDirectLimits.Topology.TensorUnit
 public import AlgebraicDirectLimits.Topology.TensorAssociativity

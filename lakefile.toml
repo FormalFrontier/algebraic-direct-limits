@@ -27,6 +27,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.Restriction",
   "AlgebraicDirectLimitsExamples.TensorProduct",
+  "AlgebraicDirectLimitsExamples.TensorProduct.Prod",
   "AlgebraicDirectLimitsExamples.TensorCompactness",
   "AlgebraicDirectLimitsExamples.TensorHom",
   "AlgebraicDirectLimitsExamples.TensorUnit",

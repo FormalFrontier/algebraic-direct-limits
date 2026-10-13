@@ -157,6 +157,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
 | [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps and finite-basis contracts |
+| [`Topology.TensorProduct.Prod`](AlgebraicDirectLimits/Topology/TensorProduct/Prod.lean) | Binary-product distribution for an algebraic coefficient module and two topological right factors over a commutative ring with a supplied topology; ordinary product topology, independent carrier universes and naturality in algebraic coefficient and continuous right-factor maps |
+| [`AlgebraicDirectLimitsExamples.TensorProduct.Prod`](AlgebraicDirectLimitsExamples/TensorProduct/Prod.lean) | Infinite-rank integer Finsupp coefficients and the usual real product, with independently supported tensors, reconstruction and map detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence and arbitrary product coordinates |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
@@ -184,8 +186,8 @@ the Lean modules give the exact signatures and hypotheses. The
 sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
-`Topology.Restriction`, `Topology.TensorHom`, `Topology.TensorUnit`,
-`Topology.TensorAssociativity`, `Topology.TensorCompactness`,
+`Topology.TensorProduct.Prod`, `Topology.Restriction`, `Topology.TensorHom`,
+`Topology.TensorUnit`, `Topology.TensorAssociativity`, `Topology.TensorCompactness`,
 `Topology.TensorSeparation`, `Topology.TensorCircle.Detector`,
 `Topology.TensorCircle.RationalAngles`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
@@ -212,8 +214,8 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-22 mathematical leaf modules plus the public aggregate (23 library modules),
-16 example modules and six test modules: 45 modules in all. The circle library
+23 mathematical leaf modules plus the public aggregate (24 library modules),
+17 example modules and six test modules: 47 modules in all. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 
