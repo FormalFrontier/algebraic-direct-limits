@@ -33,6 +33,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.DiscreteTensor",
   "AlgebraicDirectLimitsExamples.TensorCompactness",
   "AlgebraicDirectLimitsExamples.TensorHom",
+  "AlgebraicDirectLimitsExamples.TensorHomNaturality",
   "AlgebraicDirectLimitsExamples.TensorUnit",
   "AlgebraicDirectLimitsExamples.TensorAssociativity",
   "AlgebraicDirectLimitsExamples.TensorSeparation",

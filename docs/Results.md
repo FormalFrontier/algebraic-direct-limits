@@ -304,6 +304,68 @@ complete theory of limits. Hausdorff preservation for arbitrary flat coefficient
 is ruled out by the rational-circle counterexample. Basis change remains a type
 contract.
 
+## Tensor–Hom naturality
+
+In [`Topology.TensorHom`](../AlgebraicDirectLimits/Topology/TensorHom.lean),
+`tensorLiftCLM_comp_tensorMapCLM` states, for arbitrary
+`b : C →ₗ[R] (M →L[R] N)`, `a : D →ₗ[R] C` and `g : P →L[R] M`,
+
+```text
+tensorLiftCLM R ((ContinuousLinearMap.lcomp N g).comp (b.comp a)) =
+  (tensorLiftCLM R b).comp (tensorMapCLM R a g).
+```
+
+This is equality of entire maps `tensorLeftObj R D P →L[R] N`, with six
+independent scalar/coefficient/module carrier universes. Its algebraic-forgetting
+counterpart is Mathlib's `TensorProduct.lift_comp_map`, applied to the linearized
+continuous family, `a` and `g.toLinearMap`, with the opposite written orientation.
+The existing `tensorLiftCLM_toLinearMap`, `tensorMapCLM_toLinearMap` and
+`ContinuousLinearMap.toLinearMap_comp` supply the representation comparisons.
+The statement concerns the continuous representation of that algebraic law for
+the canonical one-sided topology, not a new algebraic theorem or a generalization
+of a normed tensor topology.
+
+`tensorCurry_comp` states, for arbitrary `f : tensorLeftObj R C M →L[R] N`
+and `h : N →L[R] P`,
+
+```text
+tensorCurry R (h.comp f) =
+  ((ContinuousLinearMap.llcomp R M N P).flip h).comp (tensorCurry R f).
+```
+
+This is equality of entire families `C →ₗ[R] (M →L[R] P)`, with five independent
+carrier universes and no extra coefficient object. Both statements use a
+commutative ring with a supplied topology, algebraic coefficient objects and
+full topological modules with jointly continuous scalar actions. Neither adds
+coefficient or Hom topologies, finite-generation, free, field, projective, basis,
+Hausdorffness, discrete-scalar or topological-ring assumptions. The existing
+lift-postcomposition and curry-input-precomposition theorems remain unchanged.
+
+The [naturality model module](../AlgebraicDirectLimitsExamples/TensorHomNaturality.lean)
+contains ten input declarations: regular integer coefficients, two integer-axis
+inclusions, integer target doubling, the ordinary real product module, basis-vector
+inclusions, real doubling, coordinate readouts, product-ring doubling and the
+ideal inclusion paired with the continuous regular identity. Six whole-map
+statements keep their families or outgoing maps arbitrary; three additional
+statements give variable mixed-tensor formulas.
+The integer model restricts different coefficient axes while doubling the right
+factor and target. The infinite model uses `ℕ →₀ ℤ`, the usual nondiscrete reals
+and ordinary Pi projections, not an infinite-product tensor equivalence. The
+ideal model uses the nonfree first-axis ideal over the componentwise ring
+`ℤ × ℤ`, its regular-to-ideal retraction and regular-module doubling. Three tuples
+combine existing proof values detecting nonzero and distinct tensors, nonfinite
+coefficients, nondiscrete right topology and nonfree nontrivial coefficients.
+The model formulas express coefficient restrictions and target postcomposition
+on arbitrary mixed tensors.
+
+The module follows the existing integer-dot and arbitrary-coordinate/ideal examples
+by Formal Frontier Agents, including Beacon's continuous-group-cohomology approach
+and Lantern's coordinate and split-cover mathematics. Mathlib's tensor naturality
+and universal-property APIs are by Kenny Lau and Mario Carneiro; the imported
+modules preserve the detailed credits for topological modules, continuous linear
+maps, Finsupp, basis, product and ideal constructions. No original source-text
+coverage is asserted.
+
 ## Supporting rational-circle results
 
 The [model](../AlgebraicDirectLimitsExamples/TensorCircleModel.lean) fixes

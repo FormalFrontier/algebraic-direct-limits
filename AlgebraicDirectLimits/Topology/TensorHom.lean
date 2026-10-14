@@ -300,6 +300,49 @@ theorem tensorCurry_comp_tensorMapCLM (f : tensorLeftObj R C M →L[R] N)
 
 end Composition
 
+section Composition
+
+/-- Lifting a family restricted in both inputs is precomposition by the tensor map. -/
+theorem tensorLiftCLM_comp_tensorMapCLM
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    {C : ModuleCat.{uC} R} {D : ModuleCat.{uD} R}
+    {M : TopModuleCat.{uM} R} {N : TopModuleCat.{uN} R}
+    {P : TopModuleCat.{uP} R}
+    (b : C →ₗ[R] (M →L[R] N)) (a : D →ₗ[R] C) (g : P →L[R] M) :
+    tensorLiftCLM R ((ContinuousLinearMap.lcomp N g).comp (b.comp a)) =
+      (tensorLiftCLM R b).comp (tensorMapCLM R a g) := by
+  apply tensorLeft_ext R
+  intro d p
+  calc
+    _ = b (a d) (g p) := tensorLiftCLM_tmul R _ d p
+    _ = _ :=
+      ((ContinuousLinearMap.comp_apply (tensorLiftCLM R b) (tensorMapCLM R a g)
+        (show tensorLeftObj R D P from d ⊗ₜ[R] p)).trans
+          ((congrArg (tensorLiftCLM R b) (tensorMapCLM_tmul R a g d p)).trans
+            (tensorLiftCLM_tmul R b (a d) (g p)))).symm
+
+/-- Currying a postcomposed outgoing map postcomposes every member of its family. -/
+theorem tensorCurry_comp
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    {C : ModuleCat.{uC} R}
+    {M : TopModuleCat.{uM} R} {N : TopModuleCat.{uN} R}
+    {P : TopModuleCat.{uP} R}
+    (f : tensorLeftObj R C M →L[R] N) (h : N →L[R] P) :
+    tensorCurry R (h.comp f) =
+      ((ContinuousLinearMap.llcomp R M N P).flip h).comp (tensorCurry R f) := by
+  apply LinearMap.ext
+  intro c
+  apply ContinuousLinearMap.ext
+  intro m
+  calc
+    _ = h (f (c ⊗ₜ[R] m)) :=
+      (tensorCurry_apply_apply R (h.comp f) c m).trans
+        (ContinuousLinearMap.comp_apply h f
+          (show tensorLeftObj R C M from c ⊗ₜ[R] m))
+    _ = _ := congrArg h (tensorCurry_apply_apply R f c m).symm
+
+end Composition
+
 section Coordinates
 
 variable (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) {ι : Type uι}

@@ -165,6 +165,28 @@ examples and limitations for the results described there. They also describe the
 [rational-circle counterexample and supporting APIs](docs/Results.md#supporting-rational-circle-results),
 including the algebraic detector, nonzero irrational tensor and rational-angle laws.
 
+## Tensor–Hom naturality
+
+[`tensorLiftCLM_comp_tensorMapCLM`](AlgebraicDirectLimits/Topology/TensorHom.lean)
+states that lifting a family after coefficient and continuous right-input
+precomposition equals precomposing its lift by the tensor map.
+[`tensorCurry_comp`](AlgebraicDirectLimits/Topology/TensorHom.lean) states that
+currying after outgoing postcomposition postcomposes the entire curried family.
+These are whole-map equalities for arbitrary bundled maps, over a commutative
+ring with a supplied topology and topological modules with jointly continuous
+scalar actions. Their six and five carrier universes, respectively, are
+independent; no coefficient or Hom topology, finiteness, freeness or separation
+hypothesis is added.
+
+The [naturality examples](AlgebraicDirectLimitsExamples/TensorHomNaturality.lean)
+state six whole-map specializations and three variable mixed-tensor formulas,
+using integer axis restrictions and doubling, infinite integer coefficients
+with usual real right factors and product-coordinate readouts, and a nonfree
+ideal over `ℤ × ℤ`. The module constructs
+the input maps with existing linear/continuous constructors and combines
+existing nonzero, distinct, nonfinite, nondiscrete and nonfree proof values.
+See the [detailed statements and algebraic comparison](docs/Results.md#tensorhom-naturality).
+
 ## Using the library
 
 To use the library in another project with a matching Lean toolchain, add this
@@ -223,7 +245,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.TensorDiscrete`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean) | Joint scalar continuity at bottom and discrete canonical tensors with arbitrary algebraic coefficients and a discrete right module |
 | [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
-| [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence and arbitrary product coordinates |
+| [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence, arbitrary product coordinates and lift/curry naturality |
+| [`AlgebraicDirectLimitsExamples.TensorHomNaturality`](AlgebraicDirectLimitsExamples/TensorHomNaturality.lean) | Integer-axis, infinite-real-coordinate and nonfree-ideal naturality laws, variable mixed-tensor formulas and nonzero control values |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
 | [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products, three-factor naturality and whole lift/curry compatibility |
 | [`Topology.TensorSeparation`](AlgebraicDirectLimits/Topology/TensorSeparation.lean) | Arbitrary-basis and projective Hausdorff preservation |
@@ -283,7 +306,7 @@ The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
 27 mathematical leaf modules plus the public aggregate (28 library modules),
-22 example modules and seven test modules: 57 modules in all. The circle library
+23 example modules and seven test modules: 58 modules in all. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 
@@ -355,7 +378,10 @@ Its local universe adapters reuse Mathlib's module and continuous-linear `ULift`
 APIs directly. The continuous tensor universal property and scalar unit reuse
 Kenny Lau and Mario Carneiro's Mathlib algebraic tensor lift, lift equivalence
 and scalar unit; continuity is supplied by the fixed-coefficient generator
-criterion. The modules name the contributors to their continuous-linear APIs.
+criterion. The complementary lift-precomposition statement represents Mathlib's
+`TensorProduct.lift_comp_map` in the continuous map space for the existing
+one-sided topology, rather than asserting a new algebraic naturality theorem.
+The modules name the contributors to their continuous-linear APIs.
 The arbitrary-basis/projective preservation follows Lantern's split-cover
 mathematics, reusing Kevin Buzzard and Antoine Labelle's projective-module API,
 Mathlib's Finsupp and tensor-basis APIs, Johan Commelin's infinite-basis finiteness

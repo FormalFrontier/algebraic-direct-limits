@@ -58,8 +58,8 @@ automation:
 status:
   scope: >-
     Twenty-seven mathematical leaf modules and a public re-export (28 library
-    modules), twenty-two example modules and seven test modules (six standalone
-    clients and their aggregate): 57 modules in the default targets. The
+    modules), twenty-three example modules and seven test modules (six standalone
+    clients and their aggregate): 58 modules in the default targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
@@ -114,7 +114,15 @@ status:
     supported outputs and unequal-weight detectors. Continuous linear maps out
     of the tensor correspond to algebraic linear families of continuous linear
     maps on the right factor, with explicit lift/curry constructions and
-    naturality. The scalar tensor unit equips Mathlib's algebraic left identity
+    naturality. Two complementary whole-map naturality laws describe lift
+    after both-input precomposition and curry after outgoing postcomposition,
+    with six whole-map and three variable mixed-value example conclusions.
+    Their input maps use complete existing constructors;
+    three tuples retain existing nonzero, distinct, nonfinite, nondiscrete and
+    nonfree control proof values. The lift-precomposition statement is the
+    continuous representation of Mathlib's algebraic lift_comp_map law for the
+    canonical one-sided topology. The scalar tensor unit equips Mathlib's
+    algebraic left identity
     with continuity and the generator at one as inverse. Both constructions
     allow independent carrier universes over a commutative ring with a supplied
     topology and jointly continuous right-factor actions, without a topology
@@ -263,7 +271,8 @@ review:
     Discrete scalar extension retains separate scalar views and has characteristic
     action, map, unit and underlying-module comparisons, with matrix/countable-
     product and same-ring swapping rank-one clients.
-    This does not assert source-author endorsement or
+    The two complementary tensor-Hom naturality laws and nine example
+    conclusions are included. This does not assert source-author endorsement or
     complete formal coverage of a source. API documentation is partial;
     see docs/CREDITS.md and docs/README.md.
 acknowledgements: >-
