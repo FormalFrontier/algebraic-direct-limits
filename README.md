@@ -65,6 +65,16 @@ The rational-circle modules listed below are separate imports.
   `c ⊗ m` to `φ(m) * c`; on the nonzero unit, the two actions of `(1, 0)` have
   images `(0, 1)` and `(1, 0)`. The extended regular-input projection is nonzero
   and differs from the identity.
+- **Finite-generation boundary for tensor compactness.**
+  Over `R = ZMod 2`, the algebraic coefficient module `C = ℕ →₀ R` is
+  countably free and projective but not finitely generated. The discrete right
+  self-module `M = R` is nontrivial, compact and Hausdorff, yet
+  [`TensorNoncompactness.not_compactSpace_tensor`](AlgebraicDirectLimitsExamples/TensorNoncompactness.lean)
+  shows that their one-sided tensor is not compact. The right unitor gives a
+  homeomorphism with an infinite discrete comparison module retaining `C`'s
+  action; no topology on `C` is an input. Thus finite generation cannot in
+  general be omitted from compactness preservation, even for free/projective
+  coefficients.
 - **Varying scalars and tensor products.**
   [`DirectLimit.VaryingScalar.tensorProductEquiv`](AlgebraicDirectLimits/VaryingScalar.lean#L429)
   identifies the tensor product of two module limits over a *varying*
@@ -163,7 +173,11 @@ Arbitrary product coordinates detect equality, but do not supply an
 infinite-product inverse or surjectivity; finite-coordinate equivalences and
 finite-sum inverses remain finite-only. Projective Hausdorff preservation does
 not imply reflection or finite generation. The compactness theorem assumes finitely
-generated coefficients and a compact right factor. Full categorical tensor
+generated coefficients and a compact right factor. The
+[noncompact tensor example](AlgebraicDirectLimitsExamples/TensorNoncompactness.lean)
+shows that finite generation cannot in general be omitted, even with countably
+free/projective coefficients and a nontrivial compact Hausdorff right factor.
+Full categorical tensor
 coherence, a pentagon construction and completed tensor products are outside
 this API. The rational-circle counterexample rules out Hausdorff preservation
 for arbitrary flat coefficients. Basis change remains a type contract.
@@ -241,7 +255,7 @@ The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
 26 mathematical leaf modules plus the public aggregate (27 library modules),
-19 example modules and seven test modules: 53 modules in all. The circle library
+20 example modules and seven test modules: 54 modules in all. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 

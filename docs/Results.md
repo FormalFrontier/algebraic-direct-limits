@@ -136,6 +136,19 @@ Lean modules for the exact statements and proofs.
   [torsion example](../AlgebraicDirectLimitsExamples/TensorCompactness.lean), which
   uses `ZMod 3` over the integers, with a nonfree coefficient module and a
   nonzero pure tensor detected by multiplication.
+
+  Finite generation cannot in general be omitted, even for free/projective
+  coefficients and a nontrivial compact Hausdorff right factor. Over
+  `R = ZMod 2`, the algebraic module `C = ℕ →₀ R` is countably free and
+  projective but not finitely generated, while the discrete right self-module
+  `M = R`, with its multiplication action, is nontrivial, compact and Hausdorff.
+  Nevertheless,
+  [`TensorNoncompactness.not_compactSpace_tensor`](../AlgebraicDirectLimitsExamples/TensorNoncompactness.lean)
+  shows that their one-sided tensor is not compact. The right unitor gives a
+  homeomorphism with an infinite discrete comparison module `D` retaining
+  `C`'s algebraic module and action; its topology is not an input on `C`.
+  If the tensor were compact, `D` would be compact and discrete, hence finite,
+  contradicting the injection from `ℕ` given by the images of the basis tensors.
 - **Varying scalars and tensor products.**
   [`DirectLimit.VaryingScalar.tensorProductEquiv`](../AlgebraicDirectLimits/VaryingScalar.lean#L429)
   identifies the tensor product of two module limits over a *varying*

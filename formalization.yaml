@@ -16,6 +16,7 @@ project:
     one-sided tensor products, continuous tensor universal properties,
     the scalar tensor unit, continuous
     associativity, compactness for finitely generated tensor coefficients,
+    noncompactness with infinite free coefficients,
     arbitrary-basis and projective tensor Hausdorffness preservation,
     scalar extension by discrete coefficient algebras with separate base-linear
     and coefficient-linear views, a continuous unit and functorial continuous maps,
@@ -55,8 +56,8 @@ automation:
 status:
   scope: >-
     Twenty-six mathematical leaf modules and a public re-export (27 library
-    modules), nineteen example modules and seven test modules (six standalone
-    clients and their aggregate): 53 modules in the default targets. The
+    modules), twenty example modules and seven test modules (six standalone
+    clients and their aggregate): 54 modules in the default targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
@@ -66,7 +67,8 @@ status:
     coefficients and usual real right factors,
     infinite-basis and nonfree projective coefficients, tensor associativity with
     nonfree torsion and empty coefficients, finite torsion tensor compactness,
-    and rational coefficients with the usual real circle.
+    noncompact tensors with infinite free coefficients and a compact
+    Hausdorff right factor, and rational coefficients with the usual real circle.
     The rational-circle model uses the algebraic integer module of rational
     numbers, flat by Mathlib's localization theorem, and the compact Hausdorff
     circle of period one with its jointly continuous integer action. The canonical
@@ -163,6 +165,16 @@ status:
     freeness nor compactness of the scalar ring is required.
     The nonfree integer-module example uses ZMod 3 and multiplication to detect
     a nonzero pure tensor and instantiates this compactness result.
+    Finite generation cannot in general be omitted, even for free/projective
+    coefficients and a nontrivial compact Hausdorff right factor. Over R = ZMod 2,
+    the algebraic coefficient module C = ℕ →₀ R is countably free and projective
+    but not finitely generated. The discrete right self-module M = R is
+    nontrivial, compact and Hausdorff, yet
+    [TensorNoncompactness.not_compactSpace_tensor](AlgebraicDirectLimitsExamples/TensorNoncompactness.lean)
+    shows that their one-sided tensor is not compact. The right unitor gives a
+    homeomorphism with an infinite discrete comparison module D retaining C's
+    algebraic module and action, not a coefficient-topology input. Compactness
+    would make D finite, contradicting the injection from ℕ given by basis tensors.
     Finite-subset capture in one homomorphism range per finite subset bounds the
     Krull dimension of a commutative semiring by the supremum of the source
     dimensions, without injectivity or a directed-system assumption. The dimension
