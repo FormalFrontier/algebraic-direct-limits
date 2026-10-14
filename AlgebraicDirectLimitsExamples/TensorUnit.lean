@@ -7,6 +7,9 @@ module
 public import AlgebraicDirectLimits.Topology.TensorUnit
 public import Mathlib.Topology.Instances.Int
 
+public import Mathlib.Topology.Connected.PathConnected
+public import AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation
+
 /-!
 # The scalar tensor unit on integer pairs
 
@@ -167,5 +170,97 @@ theorem integerPairUnit_doubling :
     integerPairUnit.toContinuousLinearMap.comp integerPairTensorDoubling =
       integerPairDoubling.comp integerPairUnit.toContinuousLinearMap := by
   exact TopModuleCat.tensorUnitContinuousLinearEquiv_naturality ℤ integerPairDoubling
+
+end TensorUnitExamples
+
+/-!
+# Exploratory scalar tensor-unit proofs on the reals
+
+The statements below concern the reals with their usual topology and canonical
+jointly continuous integer action. They describe all-input scalar evaluation,
+two-way inverse recovery, a nonzero tensor, path-connectedness and nondiscreteness
+of the one-sided scalar tensor. Their proof attempts have not been checked and
+remain exploratory, not completed formalization.
+
+## References
+
+These applications reuse the continuous tensor unit and the real module in
+`ProjectiveTensorSeparationExamples`. The unit follows the Formal Frontier Agents'
+one-sided tensor development, including Beacon's original topological ideas, and
+Mathlib's algebraic unit by Kenny Lau and Mario Carneiro and topological modules
+by Richard Hill and Andrew Yang. The existing real model retains its contributors'
+credit. The path-connectedness formulation follows Patrick Massot's real
+interpolation paths and homeomorphism transport in Mathlib.
+-/
+
+namespace TensorUnitExamples
+
+open ProjectiveTensorSeparationExamples
+
+/-- The real tensor unit evaluates every integer pure tensor and recovers it from its image. -/
+theorem realTensorUnit_action (n : ℤ) (x : realModule) :
+    TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule
+        ((n : ℤ) ⊗ₜ[ℤ] (x : realModule)) = n • x ∧
+      (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm (n • x) =
+        (n : ℤ) ⊗ₜ[ℤ] (x : realModule) := by
+  have h := TopModuleCat.tensorUnitContinuousLinearEquiv_tmul ℤ realModule n x
+  refine ⟨h, ?_⟩
+  exact (congrArg (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm
+    h.symm).trans
+      ((TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm_apply_apply
+        ((n : ℤ) ⊗ₜ[ℤ] (x : realModule)))
+
+/-- The real tensor unit has the coefficient-one inverse and recovers both real and tensor
+inputs. -/
+theorem realTensorUnit_inverse (x : realModule)
+    (y : TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule) :
+    (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm x =
+        (1 : ℤ) ⊗ₜ[ℤ] (x : realModule) ∧
+      TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule
+          ((TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm x) = x ∧
+      (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm
+          (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule y) = y := by
+  exact ⟨TopModuleCat.tensorUnitContinuousLinearEquiv_symm_apply ℤ realModule x,
+    (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).apply_symm_apply x,
+    (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm_apply_apply y⟩
+
+/-- The inverse image of real one is a nonzero pure tensor whose unit image is nonzero. -/
+theorem realTensorUnit_one :
+    (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm (1 : realModule) =
+        (1 : ℤ) ⊗ₜ[ℤ] (1 : realModule) ∧
+      TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule
+          ((1 : ℤ) ⊗ₜ[ℤ] (1 : realModule)) = (1 : realModule) ∧
+      TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule
+          ((1 : ℤ) ⊗ₜ[ℤ] (1 : realModule)) ≠ 0 ∧
+      ((1 : ℤ) ⊗ₜ[ℤ] (1 : realModule) :
+        TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule) ≠ 0 := by
+  have hi := TopModuleCat.tensorUnitContinuousLinearEquiv_symm_apply ℤ realModule
+    (1 : realModule)
+  have hv : TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule
+      ((1 : ℤ) ⊗ₜ[ℤ] (1 : realModule)) = (1 : realModule) :=
+    (TopModuleCat.tensorUnitContinuousLinearEquiv_tmul ℤ realModule 1 1).trans
+      (one_smul ℤ (1 : realModule))
+  refine ⟨hi, hv, ?_, ?_⟩
+  · rw [hv]
+    exact (one_ne_zero : (1 : ℝ) ≠ 0)
+  · intro h
+    apply (one_ne_zero : (1 : ℝ) ≠ 0)
+    apply (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm.injective
+    exact hi.trans (h.trans
+      (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).symm.map_zero.symm)
+
+/-- The one-sided scalar tensor of the usual reals is path-connected. -/
+theorem realTensorUnit_pathConnectedSpace :
+    PathConnectedSpace (TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule) := by
+  exact Homeomorph.pathConnectedSpace
+    (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).toHomeomorph.symm
+
+/-- The one-sided scalar tensor of the usual reals is not discrete. -/
+theorem realTensorUnit_not_discrete :
+    ¬ DiscreteTopology (TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule) := by
+  intro h
+  exact realModule_not_discrete
+    ((Homeomorph.discreteTopology_iff
+      (TopModuleCat.tensorUnitContinuousLinearEquiv ℤ realModule).toHomeomorph).mp h)
 
 end TensorUnitExamples

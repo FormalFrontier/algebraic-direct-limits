@@ -119,6 +119,12 @@ status:
     allow independent carrier universes over a commutative ring with a supplied
     topology and jointly continuous right-factor actions, without a topology
     on the coefficients or a finiteness hypothesis.
+    Five further statements for the scalar tensor unit on the usual reals
+    formulate its all-input action, two-way inverse recovery, nonzero-one control,
+    path-connectedness and nondiscreteness. Their proof attempts have not been
+    checked and remain exploratory, not completed results. These five statements
+    have no syntactic proof admissions; their supporting module, topology and
+    scalar action use the existing constructions.
     The binary-product tensor equivalence distributes an algebraic coefficient
     module over two topological right factors, using their ordinary product
     topology over a commutative ring with a supplied topology. Its underlying
