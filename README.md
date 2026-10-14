@@ -2,7 +2,7 @@
 
 Authors: Formal Frontier Agents. License: [Apache-2.0](LICENSE).
 
-This library works with mathlib's native directed limits, localizations,
+This library works with mathlib's directed limits, localizations,
 Grothendieck group completions and categorical colimits. Import the
 [public aggregate](AlgebraicDirectLimits.lean) with `import AlgebraicDirectLimits`
 for the core APIs, or import the linked mathematical modules individually.
@@ -10,6 +10,19 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Discrete right-factor tensors.**
+  [`TensorProduct.continuousSMul_bot_of_discrete_right`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean)
+  gives joint scalar continuity on the algebraic tensor with bottom topology, and
+  [`TopModuleCat.discreteTopology_tensorLeftObj`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean)
+  gives discreteness of the canonical one-sided tensor. The ring is commutative
+  with a supplied topology, the coefficients are purely algebraic, and the right
+  topological module has a jointly continuous action and discrete topology.
+  Scalar, coefficient and right-factor universes are independent; no discrete
+  scalar topology, coefficient topology, finiteness, freeness or projectivity is
+  required. The [examples](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) give
+  non-finitely-generated mod-two coefficients and a discrete integer module over
+  the nondiscrete ring `ℤ × ℝ`, with nonzero and distinct tensor detectors.
+  The unitors used for detection are algebraic; their continuity is not asserted.
 - **Continuous tensor universal property.**
   [`TopModuleCat.tensorHomLinearEquiv`](AlgebraicDirectLimits/Topology/TensorHom.lean)
   identifies continuous linear maps `C ⊗[R] M →L[R] N` with algebraic linear
@@ -194,6 +207,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Map`](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) | Infinite-rank integer coefficient projections with nonzero two-term inputs, distinct supported outputs, unequal weights, and whole-map finite-sum laws |
 | [`Topology.TensorProduct.Prod`](AlgebraicDirectLimits/Topology/TensorProduct/Prod.lean) | Binary-product distribution for an algebraic coefficient module and two topological right factors over a commutative ring with a supplied topology; ordinary product topology, independent carrier universes and naturality in algebraic coefficient and continuous right-factor maps |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Prod`](AlgebraicDirectLimitsExamples/TensorProduct/Prod.lean) | Infinite-rank integer Finsupp coefficients and the usual real product, with independently supported tensors, reconstruction and map detectors |
+| [`Topology.TensorDiscrete`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean) | Joint scalar continuity at bottom and discrete canonical tensors with arbitrary algebraic coefficients and a discrete right module |
+| [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence and arbitrary product coordinates |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
@@ -225,7 +240,7 @@ sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `Order.DirectedSystem`, `RingTheory.DirectLimit`,
 `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
-`Topology.TensorProduct.Prod`, `Topology.Restriction`,
+`Topology.TensorDiscrete`, `Topology.TensorProduct.Prod`, `Topology.Restriction`,
 `Topology.DiscreteScalarExtension`, `Topology.TensorHom`, `Topology.TensorUnit`,
 `Topology.TensorAssociativity`, `Topology.TensorCompactness`,
 `Topology.TensorSeparation`, `Topology.TensorCircle.Detector`,
@@ -254,8 +269,8 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-26 mathematical leaf modules plus the public aggregate (27 library modules),
-20 example modules and seven test modules: 54 modules in all. The circle library
+27 mathematical leaf modules plus the public aggregate (28 library modules),
+21 example modules and seven test modules: 56 modules in all. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 
@@ -279,7 +294,7 @@ countable indices. The present countable-*cofinal*-subset theorem has a differen
 index hypothesis and is not a claim of verbatim translation or source coverage.
 The [Stacks Project, Algebra, Section 10.8](https://stacks.math.columbia.edu/tag/07N7)
 provides mathematical background on filtered colimits; specific source
-correspondences, if any, require separate assessment. The modules reuse native
+correspondences, if any, require separate assessment. The modules reuse
 constructions in [mathlib4](https://github.com/leanprover-community/mathlib4),
 including `Mathlib.Algebra.Colimit.DirectLimit`,
 `Mathlib.CategoryTheory.Filtered.Final`,
@@ -337,6 +352,10 @@ Mario Carneiro's ideal API. Related general idempotent-ideal mathematics is
 provided by [Projective Modules](https://github.com/FormalFrontier/projective-modules),
 including Prism's work; no dependency on that library or new general ideal API
 is introduced here.
+The discrete-right tensor statements generalize the Continuous Group Cohomology
+discrete-tensor scalar provider to arbitrary algebraic coefficients and reuse
+Mathlib's discrete-topology continuity APIs by Johannes Hölzl, Mario Carneiro
+and Mitchell Lee.
 The rational-circle constructions and non-Hausdorffness proof follow Formal
 Frontier Agents (Lantern), *Rational coefficients do not preserve tensor
 Hausdorffness*, and its stock API companion. They reuse Mathlib's localization

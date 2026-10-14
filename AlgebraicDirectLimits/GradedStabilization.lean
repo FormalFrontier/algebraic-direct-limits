@@ -17,7 +17,7 @@ import Mathlib.Tactic.Abel
 
 Let `d : M →+ A` be a homomorphism of additive commutative monoids and `u : M`.
 The degree fibers `d m = n • d u` form a natural-indexed directed system whose
-transition maps add copies of `u`. Their native set-valued direct limit maps to
+transition maps add copies of `u`. Their set-valued direct limit maps to
 the kernel of the homomorphism induced by `d` on Grothendieck additive groups,
 sending a representative `(n, m)` to `of m - n • of u`.
 
@@ -52,7 +52,7 @@ variable {M : Type uM} [AddCommMonoid M] {A : Type uA} [AddCommMonoid A]
     congr 1
     omega⟩⟩
 
-/-- The degree fibers and stabilization maps form a native directed system. -/
+/-- The degree fibers and stabilization maps form a directed system. -/
 instance degreeDirectedSystem (d : M →+ A) (u : M) :
     DirectedSystem (degreeFiber d u) (transition d u · · ·) where
   map_self := by
@@ -68,7 +68,7 @@ instance degreeDirectedSystem (d : M →+ A) (u : M) :
     congr 2
     omega
 
-/-- The native completion homomorphism induced by degree. -/
+/-- The homomorphism on Grothendieck additive groups induced by degree. -/
 @[expose] noncomputable def inducedDegree (d : M →+ A) :
     GrothendieckAddGroup M →+ GrothendieckAddGroup A :=
   lift ((of (M := A)).comp d)
@@ -80,7 +80,7 @@ theorem inducedDegree_of (d : M →+ A) (m : M) :
     ((of (M := A)).comp d)
   exact congrArg (fun f : M →+ GrothendieckAddGroup A => f m) h
 
-/-- The induced degree computation in the native localization simp normal form. -/
+/-- The induced degree homomorphism on canonical additive-localization images. -/
 @[simp] theorem inducedDegree_addMonoidOf (d : M →+ A) (m : M) :
     inducedDegree d (AddLocalization.addMonoidOf ⊤ m) =
       AddLocalization.addMonoidOf ⊤ (d m) :=
@@ -108,7 +108,7 @@ theorem normalizedAt_transition (d : M →+ A) (u : M) (n k : ℕ) (h : n ≤ k)
   rw [hk]
   abel
 
-/-- The descended normalized map, using the native set-valued direct limit. -/
+/-- The normalized map from the set-valued direct limit to the completion kernel. -/
 @[expose] noncomputable def normalization (d : M →+ A) (u : M) :
     DirectLimit (degreeFiber d u) (transition d u) → (inducedDegree d).ker :=
   DirectLimit.lift (transition d u) (normalizedAt d u)
@@ -206,7 +206,7 @@ theorem normalization_surjective [IsCancelAdd A] (d : M →+ A) (u : M)
   apply Subtype.ext
   exact hn.symm
 
-/-- The native direct limit is equivalent to the native completion kernel. -/
+/-- The degree-fiber direct limit is equivalent to the Grothendieck completion kernel. -/
 @[expose] noncomputable def normalizationEquiv [IsCancelAdd A] (d : M →+ A) (u : M)
     (hu : (AddSubmonoid.multiples u).saturation = ⊤) :
     DirectLimit (degreeFiber d u) (transition d u) ≃ (inducedDegree d).ker :=

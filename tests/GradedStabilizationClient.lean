@@ -9,7 +9,7 @@ public import AlgebraicDirectLimits
 public import Mathlib.Algebra.Group.PUnit
 public import Mathlib.Algebra.Group.Int.Defs
 
-/-! Public-root client for native graded stabilization, including noncancellative boundaries. -/
+/-! Public-root client for graded stabilization, including noncancellative boundaries. -/
 
 set_option warningAsError true
 
@@ -34,7 +34,7 @@ private theorem induced_degree_simp {M : Type v} [AddCommMonoid M]
     inducedDegree d (of m) = of (d m) := by
   simp
 
-private theorem induced_degree_native_simp {M : Type v} [AddCommMonoid M]
+private theorem induced_degree_localization_simp {M : Type v} [AddCommMonoid M]
     {A : Type w} [AddCommMonoid A] (d : M →+ A) (m : M) :
     inducedDegree d (AddLocalization.addMonoidOf ⊤ m) =
       AddLocalization.addMonoidOf ⊤ (d m) := by
@@ -52,14 +52,14 @@ private theorem normalization_equiv_representative_simp {M : Type v} [AddCommMon
     (normalizationEquiv d u hu ⟦⟨n, m⟩⟧).1 = of m.1 - n • of u := by
   simp
 
-private noncomputable def nativeKernelEquiv {M : Type v} [AddCommMonoid M]
+private noncomputable def stabilizationKernelEquiv {M : Type v} [AddCommMonoid M]
     {A : Type w} [AddCommMonoid A]
     [IsCancelAdd A] (d : M →+ A) (u : M)
     (hu : (AddSubmonoid.multiples u).saturation = ⊤) :
     DirectLimit (degreeFiber d u) (transition d u) ≃ (inducedDegree d).ker :=
   normalizationEquiv d u hu
 
-private theorem nativeKernelEquiv_symm_apply {M : Type v} [AddCommMonoid M]
+private theorem stabilizationKernelEquiv_symm_apply {M : Type v} [AddCommMonoid M]
     {A : Type w} [AddCommMonoid A]
     [IsCancelAdd A] (d : M →+ A) (u : M)
     (hu : (AddSubmonoid.multiples u).saturation = ⊤)
@@ -67,7 +67,7 @@ private theorem nativeKernelEquiv_symm_apply {M : Type v} [AddCommMonoid M]
     (normalizationEquiv d u hu).symm (normalizationEquiv d u hu x) = x :=
   (normalizationEquiv d u hu).symm_apply_apply x
 
-private theorem nativeKernelEquiv_apply_symm {M : Type v} [AddCommMonoid M]
+private theorem stabilizationKernelEquiv_apply_symm {M : Type v} [AddCommMonoid M]
     {A : Type w} [AddCommMonoid A]
     [IsCancelAdd A] (d : M →+ A) (u : M)
     (hu : (AddSubmonoid.multiples u).saturation = ⊤) (z : (inducedDegree d).ker) :
@@ -175,7 +175,7 @@ theorem product_diagonal_cofinal :
 noncomputable def componentwiseEquiv :=
   normalizationEquiv (AddMonoidHom.id (ℕ × ℕ)) (1, 1) product_diagonal_cofinal
 
-/-- Native cross-stage equality does not require cancellation of the degree target. -/
+/-- Cross-stage equality does not require cancellation of the degree target. -/
 theorem arbitrary_target_cross_stage {A : Type w} [AddCommMonoid A] :
     (⟦⟨0, ⟨Additive.ofMul 1, by simp⟩⟩⟧ :
       DirectLimit (degreeFiber (0 : Additive ℕ →+ A) (Additive.ofMul 0))

@@ -30,6 +30,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorProduct",
   "AlgebraicDirectLimitsExamples.TensorProduct.Map",
   "AlgebraicDirectLimitsExamples.TensorProduct.Prod",
+  "AlgebraicDirectLimitsExamples.DiscreteTensor",
   "AlgebraicDirectLimitsExamples.TensorCompactness",
   "AlgebraicDirectLimitsExamples.TensorHom",
   "AlgebraicDirectLimitsExamples.TensorUnit",

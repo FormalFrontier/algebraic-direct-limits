@@ -1,7 +1,7 @@
 # Mathematical guide
 
 Import `AlgebraicDirectLimits` for the public aggregate, or one mathematical leaf
-from the root README. All constructions use the pinned mathlib's native objects;
+from the root README. All constructions use the pinned mathlib's objects;
 there is no alternative encoding of colimits, tensors, localizations or group
 completions. Consult the Lean files for exact formal signatures and proofs.
 The [partial API reference](API.md) supplies displayed signatures and relative
@@ -205,10 +205,10 @@ injective. None of these conclusions requires cancellation in `M`.
 ## Monoidal object classes and actual image cofinality
 
 `CategoryTheory.MonoidalGroupCompletion.objectClass X` is the class of an
-object in the native `Additive (Skeleton C)`; its equality criterion is
+object in the `Additive (Skeleton C)`; its equality criterion is
 isomorphism of objects. This needs only a category. The tensor/unit formulas
 require a monoidal category but no braiding. For a strong monoidal functor
-`F : C ⥤ D`, `skeletonMap F` is the native skeleton monoid hom in additive
+`F : C ⥤ D`, `skeletonMap F` is the skeleton monoid hom in additive
 notation; `imageSubmonoid F` is its *actual image* in the target skeleton.
 `mem_imageSubmonoid_iff` recovers an actual source object from any image class.
 
@@ -220,14 +220,14 @@ faithfulness is required here, in `exists_object_denominator`, or in
 identify equality of completed object classes by tensoring both representatives
 with one `F.obj X`. No cancellation or essential surjectivity is assumed.
 
-If both categories are braided, `completionMap F` is precisely the native
+If both categories are braided, `completionMap F` is precisely the
 Grothendieck lift of `of.comp (skeletonMap F)`. Its generator law,
 identity/composition laws for independent category universes, and invariance
 under ordinary natural isomorphism are in the module. Full faithfulness yields
 `imageEquiv F`, an additive equivalence onto the actual image, and the exact
 homomorphism equation `completionMap_factorization F`. Together with cofinality
 this proves `completionMap_injective F`; `completionRangeEquiv F` identifies the
-source completion with the map's native subgroup *range*, not necessarily
+source completion with the map's subgroup *range*, not necessarily
 the entire target group. See `tests/MonoidalGroupCompletionClient.lean` for
 identity, equivalence, terminal, noncancellative and proper-image examples.
 

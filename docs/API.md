@@ -118,7 +118,7 @@ Stabilization by the missing natural number of copies of `u`.
 instance Algebra.GrothendieckAddGroup.GradedStabilization.degreeDirectedSystem {M : Type uM} [AddCommMonoid M] {A : Type uA} [AddCommMonoid A] (d : M →+ A) (u : M) : DirectedSystem (degreeFiber d u) fun (x1 x2 : ℕ) (x3 : x1 ≤ x2) => ⇑(transition d u x1 x2 x3)
 ```
 
-The degree fibers and stabilization maps form a native directed system.
+The degree fibers and stabilization maps form a directed system.
 
 [Source](../AlgebraicDirectLimits/GradedStabilization.lean#L55) (native range begins at line 55).
 
@@ -128,7 +128,7 @@ The degree fibers and stabilization maps form a native directed system.
 noncomputable def Algebra.GrothendieckAddGroup.GradedStabilization.inducedDegree {M : Type uM} [AddCommMonoid M] {A : Type uA} [AddCommMonoid A] (d : M →+ A) : GrothendieckAddGroup M →+ GrothendieckAddGroup A
 ```
 
-The native completion homomorphism induced by degree.
+The homomorphism on Grothendieck additive groups induced by degree.
 
 [Source](../AlgebraicDirectLimits/GradedStabilization.lean#L71) (native range begins at line 71).
 
@@ -148,7 +148,7 @@ The induced degree homomorphism sends a canonical image to its degree image.
 theorem Algebra.GrothendieckAddGroup.GradedStabilization.inducedDegree_addMonoidOf {M : Type uM} [AddCommMonoid M] {A : Type uA} [AddCommMonoid A] (d : M →+ A) (m : M) : (inducedDegree d) ((AddLocalization.addMonoidOf ⊤) m) = (AddLocalization.addMonoidOf ⊤) (d m)
 ```
 
-The induced degree computation in the native localization simp normal form.
+The induced degree homomorphism on canonical additive-localization images.
 
 [Source](../AlgebraicDirectLimits/GradedStabilization.lean#L83) (native range begins at line 83).
 
@@ -178,7 +178,7 @@ Stabilization preserves the normalized element of the completion kernel.
 noncomputable def Algebra.GrothendieckAddGroup.GradedStabilization.normalization {M : Type uM} [AddCommMonoid M] {A : Type uA} [AddCommMonoid A] (d : M →+ A) (u : M) : DirectLimit (degreeFiber d u) (transition d u) → ↥(inducedDegree d).ker
 ```
 
-The descended normalized map, using the native set-valued direct limit.
+The normalized map from the set-valued direct limit to the completion kernel.
 
 [Source](../AlgebraicDirectLimits/GradedStabilization.lean#L111) (native range begins at line 111).
 
@@ -268,7 +268,7 @@ Target cancellation recovers the exact degree-fiber condition.
 noncomputable def Algebra.GrothendieckAddGroup.GradedStabilization.normalizationEquiv {M : Type uM} [AddCommMonoid M] {A : Type uA} [AddCommMonoid A] [IsCancelAdd A] (d : M →+ A) (u : M) (hu : (AddSubmonoid.multiples u).saturation = ⊤) : DirectLimit (degreeFiber d u) (transition d u) ≃ ↥(inducedDegree d).ker
 ```
 
-The native direct limit is equivalent to the native completion kernel.
+The degree-fiber direct limit is equivalent to the Grothendieck completion kernel.
 
 [Source](../AlgebraicDirectLimits/GradedStabilization.lean#L209) (native range begins at line 209).
 
@@ -1026,6 +1026,6 @@ Normalization for the componentwise degree on pairs of natural numbers.
 theorem AlgebraicDirectLimits.Tests.GradedStabilization.arbitrary_target_cross_stage {A : Type w} [AddCommMonoid A] : ⟦⟨0, ⟨Additive.ofMul 1, ⋯⟩⟩⟧ = ⟦⟨1, ⟨Additive.ofMul 0, ⋯⟩⟩⟧
 ```
 
-Native cross-stage equality does not require cancellation of the degree target.
+Cross-stage equality does not require cancellation of the degree target.
 
 [Source](../tests/GradedStabilizationClient.lean#L178) (native range begins at line 178).

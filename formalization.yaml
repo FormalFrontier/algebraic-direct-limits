@@ -17,6 +17,7 @@ project:
     the scalar tensor unit, continuous
     associativity, compactness for finitely generated tensor coefficients,
     noncompactness with infinite free coefficients,
+    discreteness for tensors with a discrete right factor,
     arbitrary-basis and projective tensor Hausdorffness preservation,
     scalar extension by discrete coefficient algebras with separate base-linear
     and coefficient-linear views, a continuous unit and functorial continuous maps,
@@ -55,9 +56,9 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Twenty-six mathematical leaf modules and a public re-export (27 library
-    modules), twenty example modules and seven test modules (six standalone
-    clients and their aggregate): 54 modules in the default targets. The
+    Twenty-seven mathematical leaf modules and a public re-export (28 library
+    modules), twenty-one example modules and seven test modules (six standalone
+    clients and their aggregate): 56 modules in the default targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
@@ -120,6 +121,16 @@ status:
     equivalence is Mathlib's algebraic product equivalence; projection, inclusion,
     inverse reconstruction and naturality laws retain independent carrier
     universes without a finiteness or separation hypothesis.
+    For a discrete right topological module, the scalar action on the algebraic
+    tensor is jointly continuous at bottom topology, and the canonical one-sided
+    tensor topology is discrete. The commutative ring has a supplied topology;
+    scalar, coefficient and right-factor universes are independent. Neither
+    discrete scalars nor a topology, finite generation, freeness or projectivity
+    of the coefficient module is required. The examples retain mod-two integer
+    coefficients that are not finitely generated, and the usual nondiscrete
+    product ring of integers and reals, acting jointly on a discrete integer module through
+    its first projection. Algebraic unitors detect nonzero, distinct and mixed
+    tensors; continuity of those unitors is not asserted.
     The algebraic associator becomes a continuous linear equivalence between
     the supplied one-sided tensor topologies, with pure-tensor formulas,
     inverse identities, threefold extensionality and naturality in all three
@@ -204,7 +215,7 @@ status:
     An empty-index example shows why nonemptiness is needed.
     Filtered commutative-ring colimits give limits of prime spectra in topological
     spaces, without injective transition maps or separation hypotheses. Monoidal group completion
-    uses the native skeleton and its actual image, with cofinal denominators,
+    uses the skeleton and its actual image, with cofinal denominators,
     stabilization and an injective induced map under full faithfulness.
     Graded normalization is a
     type equivalence, not an additive equivalence; cancellation is required

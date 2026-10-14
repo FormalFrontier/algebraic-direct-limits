@@ -35,7 +35,7 @@ universe u₁ u₂ u₃ v₁ v₂ v₃
 
 variable {C : Type u₁} [Category.{v₁} C]
 
-/-- An object as an element of the native additive skeleton. -/
+/-- An object as an element of the additive skeleton. -/
 def objectClass (X : C) : Additive (Skeleton C) := Additive.ofMul (toSkeleton X)
 
 theorem objectClass_surjective : Function.Surjective (objectClass (C := C)) := by
@@ -59,7 +59,7 @@ theorem objectClass_unit : objectClass (𝟙_ C) = 0 :=
 variable {D : Type u₂} [Category.{v₂} D] [MonoidalCategory D]
 variable (F : C ⥤ D) [F.Monoidal]
 
-/-- The native skeleton monoid hom, transported to additive notation. -/
+/-- The skeleton monoid homomorphism, transported to additive notation. -/
 def skeletonMap : Additive (Skeleton C) →+ Additive (Skeleton D) :=
   (Skeleton.monoidHom F).toAdditive
 
@@ -144,7 +144,7 @@ private theorem completion_hom_ext {A G : Type*} [AddCommMonoid A] [AddCommGroup
 
 variable [BraidedCategory C]
 
-/-- The literal native Grothendieck lift of the given functor's skeleton map. -/
+/-- The Grothendieck lift of the given functor's skeleton map. -/
 def completionMap : GrothendieckAddGroup (Additive (Skeleton C)) →+
     GrothendieckAddGroup (Additive (Skeleton D)) :=
   lift (of.comp (skeletonMap F))
@@ -234,7 +234,7 @@ theorem completionMap_injective
   exact (lift_subtype_injective (imageSubmonoid F)
     ((saturation_eq_top_iff F).mpr h)).comp (lift_imageEquiv_injective F)
 
-/-- Additive equivalence with the native subgroup range of the induced map. -/
+/-- Additive equivalence with the subgroup range of the induced map. -/
 def completionRangeEquiv
     (h : ∀ Y : D, ∃ Z : D, ∃ X : C, Nonempty (Y ⊗ Z ≅ F.obj X)) :
     GrothendieckAddGroup (Additive (Skeleton C)) ≃+ (completionMap F).range :=

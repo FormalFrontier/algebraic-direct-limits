@@ -269,7 +269,7 @@ Lean modules for the exact statements and proofs.
   [client](../tests/MonoidalGroupCompletionClient.lean#L169).
 - **Graded stabilization.** For `d : M →+ A` and `u : M`,
   [normalization](../AlgebraicDirectLimits/GradedStabilization.lean#L112)
-  sends the native limit of fibers `d m = n • d u` to the kernel of the induced
+  sends the limit of fibers `d m = n • d u` to the kernel of the induced
   group-completion degree map. Top saturation of the multiples of `u` gives
   [injectivity](../AlgebraicDirectLimits/GradedStabilization.lean#L158);
   **cancellation in the degree target `A` only** additionally gives
