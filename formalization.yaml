@@ -15,7 +15,8 @@ project:
     continuous finite-basis coordinates and binary-product distribution for
     one-sided tensor products, continuous tensor universal properties,
     the scalar tensor unit, continuous
-    associativity, compactness for finitely generated tensor coefficients,
+    associativity with whole continuous lift/curry compatibility,
+    compactness for finitely generated tensor coefficients,
     noncompactness with infinite free coefficients,
     discreteness for tensors with a discrete right factor,
     arbitrary-basis and projective tensor Hausdorffness preservation,
@@ -67,9 +68,12 @@ status:
     tensor separation and binary-product distribution with infinite integer
     coefficients and usual real right factors,
     infinite-basis and nonfree projective coefficients, tensor associativity with
-    nonfree torsion and empty coefficients, finite torsion tensor compactness,
-    noncompact tensors with infinite free coefficients and a compact
-    Hausdorff right factor, and rational coefficients with the usual real circle.
+    nonfree torsion and empty coefficients, continuous lift/curry compatibility
+    with mixed coordinate detectors, infinite integer coefficients and usual
+    real factors, and nonfree first-axis ideal coefficients,
+    finite torsion tensor compactness, noncompact tensors with infinite free
+    coefficients and a compact Hausdorff right factor,
+    and rational coefficients with the usual real circle.
     The rational-circle model uses the algebraic integer module of rational
     numbers, flat by Mathlib's localization theorem, and the compact Hausdorff
     circle of period one with its jointly continuous integer action. The canonical
@@ -134,7 +138,16 @@ status:
     The algebraic associator becomes a continuous linear equivalence between
     the supplied one-sided tensor topologies, with pure-tensor formulas,
     inverse identities, threefold extensionality and naturality in all three
-    factors, without finiteness, freeness or separation assumptions.
+    factors, without finiteness, freeness or separation assumptions. The flat
+    continuous lift of any two-coefficient linear family agrees with its
+    iterated lift after the canonical associator, and currying after
+    reassociation is the algebraic lift of the twice-curried family. These whole
+    map and family identities retain five independent carrier universes over a
+    commutative ring with a supplied topology and jointly continuous right and
+    target scalar actions, without a topology on coefficients or Hom modules.
+    Mixed coordinate clients distinguish nonzero functionals and lifts and
+    preserve boundary property values for infinite integer coefficients with
+    usual real factors and nonfree first-axis ideal coefficients.
     Basis change remains a type contract without a proof or an exported
     construction of its realization. The arbitrary product-coordinate map is
     constructed from the continuous tensor lift and Pi construction. Its

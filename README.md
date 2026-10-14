@@ -35,6 +35,19 @@ The rational-circle modules listed below are separate imports.
   [integer-pair examples](AlgebraicDirectLimitsExamples/TensorHom.lean), including
   a nonzero cross tensor annihilated by the dot pairing but detected by a second
   pairing.
+- **Continuous lift and curry compatibility with reassociation.**
+  [`TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
+  identifies the flat continuous lift of any two-coefficient linear family
+  with its iterated lift composed with the canonical tensor associator.
+  [`TopModuleCat.tensorCurry_comp_tensorAssoc`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
+  describes the whole curried family of any outgoing continuous linear map
+  after reassociation. The ring is commutative with a supplied topology; both
+  coefficients are algebraic and the right and target modules have jointly
+  continuous scalar actions, with independent carrier universes. No coefficient
+  or Hom topology, finiteness, freeness or separation hypothesis is needed.
+  The [examples](AlgebraicDirectLimitsExamples/TensorAssociativity.lean)
+  include distinct nonzero coordinate lifts, infinite integer coefficients
+  with usual real factors, and a nonfree ideal over a product ring.
 - **Arbitrary product coordinates and projective Hausdorff preservation.**
   Over a commutative ring with a supplied topology, let `C` be an algebraic
   coefficient module and `M` a Hausdorff topological module with jointly
@@ -212,7 +225,7 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence and arbitrary product coordinates |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
-| [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products and naturality in three factors |
+| [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products, three-factor naturality and whole lift/curry compatibility |
 | [`Topology.TensorSeparation`](AlgebraicDirectLimits/Topology/TensorSeparation.lean) | Arbitrary-basis and projective Hausdorff preservation |
 | [`Topology.TensorCircle.Detector`](AlgebraicDirectLimits/Topology/TensorCircle/Detector.lean) | Algebraic rational-quotient detector and a nonzero irrational pure tensor |
 | [`Topology.TensorCircle.RationalAngles`](AlgebraicDirectLimits/Topology/TensorCircle/RationalAngles.lean) | Dense rational angles, positive integer annihilators and vanishing rational pure tensors |

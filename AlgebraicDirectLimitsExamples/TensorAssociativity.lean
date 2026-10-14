@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import AlgebraicDirectLimits.Topology.TensorAssociativity
+public import AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation
 public import Mathlib.Algebra.Algebra.Bilinear
 public import Mathlib.Data.ZMod.Basic
 public import Mathlib.LinearAlgebra.Prod
@@ -978,3 +979,552 @@ theorem emptyCoefficient_boundary :
     exact ⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩
 
 end TensorAssociativityExamples
+
+namespace TensorAssociativityExamples.CurriedLifts
+
+/-- A scalar-valued continuous family obtained from two algebraic linear forms
+and a continuous linear functional on the right factor. -/
+noncomputable def coordinateFamily
+    (p q : (ℤ × ℤ) →ₗ[ℤ] ℤ)
+    (r : integerPairModule →L[ℤ] integerModule) :
+    integerPairCoefficients →ₗ[ℤ]
+      integerPairCoefficients →ₗ[ℤ] (integerPairModule →L[ℤ] integerModule) :=
+  p.smulRight (q.smulRight r)
+
+/-- The flat continuous lift of the scalar coordinate family. -/
+noncomputable def flatCoordinateLift
+    (p q : (ℤ × ℤ) →ₗ[ℤ] ℤ)
+    (r : integerPairModule →L[ℤ] integerModule) : PairLeft →L[ℤ] integerModule :=
+  TopModuleCat.tensorLiftCLM ℤ
+    (C := ModuleCat.of ℤ (integerPairCoefficients ⊗[ℤ] integerPairCoefficients))
+    (M := integerPairModule) (N := integerModule)
+    (TensorProduct.lift (coordinateFamily p q r))
+
+/-- The iterated continuous lift of the scalar coordinate family. -/
+noncomputable def nestedCoordinateLift
+    (p q : (ℤ × ℤ) →ₗ[ℤ] ℤ)
+    (r : integerPairModule →L[ℤ] integerModule) : PairRight →L[ℤ] integerModule :=
+  TopModuleCat.tensorLiftCLM ℤ (C := integerPairCoefficients)
+    (M := TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerPairModule)
+    (N := integerModule)
+    ((TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+      integerPairModule integerModule).symm.toLinearMap.comp (coordinateFamily p q r))
+
+/-- Forgetting the two coordinate lifts recovers the algebraic detectors. -/
+theorem coordinateLifts_toLinearMap
+    (p q : (ℤ × ℤ) →ₗ[ℤ] ℤ)
+    (r : integerPairModule →L[ℤ] integerModule) :
+    (flatCoordinateLift p q r).toLinearMap = leftDetector p q r.toLinearMap ∧
+      (nestedCoordinateLift p q r).toLinearMap = rightDetector p q r.toLinearMap := by
+  have hfamily (c d : integerPairCoefficients) (m : integerPairModule) :
+      coordinateFamily p q r c d m = p c * (q d * r m) := by
+    calc
+      _ = (p c • (q.smulRight r)) d m :=
+        congrArg (fun k : integerPairCoefficients →ₗ[ℤ]
+          (integerPairModule →L[ℤ] integerModule) ↦ k d m)
+          (LinearMap.smulRight_apply p (q.smulRight r) c)
+      _ = (p c • ((q.smulRight r) d)) m :=
+        congrArg (fun k : integerPairModule →L[ℤ] integerModule ↦ k m)
+          (LinearMap.smul_apply (p c) (q.smulRight r) d)
+      _ = p c • ((q.smulRight r) d m) :=
+        _root_.smul_apply ((q.smulRight r) d) (p c) m
+      _ = p c • ((q d • r) m) :=
+        congrArg (fun k : integerPairModule →L[ℤ] integerModule ↦ p c • k m)
+          (LinearMap.smulRight_apply q r d)
+      _ = p c • (q d • r m) :=
+        congrArg (fun z : integerModule ↦ p c • z) (_root_.smul_apply r (q d) m)
+      _ = p c * (q d * r m) := by rw [smul_eq_mul, smul_eq_mul]
+  constructor
+  · apply TensorProduct.ext_threefold
+    intro c d m
+    calc
+      flatCoordinateLift p q r (show PairLeft from (c ⊗ₜ[ℤ] d) ⊗ₜ[ℤ] m) =
+          coordinateFamily p q r c d m :=
+        (TopModuleCat.tensorLiftCLM_tmul ℤ
+          (C := ModuleCat.of ℤ (integerPairCoefficients ⊗[ℤ] integerPairCoefficients))
+          (M := integerPairModule) (N := integerModule)
+          (TensorProduct.lift (coordinateFamily p q r)) (c ⊗ₜ[ℤ] d) m).trans
+            (congrArg (fun k : integerPairModule →L[ℤ] integerModule ↦ k m)
+              (TensorProduct.lift.tmul (f' := coordinateFamily p q r) c d))
+      _ = p c * (q d * r m) := hfamily c d m
+      _ = (p c * q d) * r m := (mul_assoc (p c) (q d) (r m)).symm
+      _ = leftDetector p q r.toLinearMap ((c ⊗ₜ[ℤ] d) ⊗ₜ[ℤ] m) :=
+        (leftDetector_tmul p q r.toLinearMap c d m).symm
+  · apply TensorProduct.ext_threefold'
+    intro c d m
+    calc
+      nestedCoordinateLift p q r (show PairRight from c ⊗ₜ[ℤ] (d ⊗ₜ[ℤ] m)) =
+          ((TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+            integerPairModule integerModule).symm.toLinearMap.comp
+              (coordinateFamily p q r)) c
+                (show TopModuleCat.tensorLeftObj ℤ integerPairCoefficients
+                  integerPairModule from d ⊗ₜ[ℤ] m) :=
+        TopModuleCat.tensorLiftCLM_tmul ℤ (C := integerPairCoefficients)
+          (M := TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerPairModule)
+          (N := integerModule)
+          ((TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+            integerPairModule integerModule).symm.toLinearMap.comp (coordinateFamily p q r))
+          c (show TopModuleCat.tensorLeftObj ℤ integerPairCoefficients
+            integerPairModule from d ⊗ₜ[ℤ] m)
+      _ = (TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+          integerPairModule integerModule).symm (coordinateFamily p q r c)
+            (show TopModuleCat.tensorLeftObj ℤ integerPairCoefficients
+              integerPairModule from d ⊗ₜ[ℤ] m) :=
+        congrArg (fun k : TopModuleCat.tensorLeftObj ℤ integerPairCoefficients
+          integerPairModule →L[ℤ] integerModule ↦
+            k (show TopModuleCat.tensorLeftObj ℤ integerPairCoefficients
+              integerPairModule from d ⊗ₜ[ℤ] m))
+          ((LinearMap.comp_apply
+            (TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+              integerPairModule integerModule).symm.toLinearMap (coordinateFamily p q r) c).trans
+                (congrFun (LinearEquiv.coe_toLinearMap
+                  (TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+                    integerPairModule integerModule).symm) (coordinateFamily p q r c)))
+      _ = coordinateFamily p q r c d m :=
+        TopModuleCat.tensorHomLinearEquiv_symm_apply_tmul ℤ
+          (C := integerPairCoefficients) (M := integerPairModule) (N := integerModule)
+          (coordinateFamily p q r c) d m
+      _ = p c * (q d * r m) := hfamily c d m
+      _ = rightDetector p q r.toLinearMap (c ⊗ₜ[ℤ] (d ⊗ₜ[ℤ] m)) :=
+        (rightDetector_tmul p q r.toLinearMap c d m).symm
+
+/-- Whole lift and curry compatibility preserves algebraic detector values on
+all flat and nested tensors, not only pure triples. -/
+theorem coordinateLifts_detected
+    (p q : (ℤ × ℤ) →ₗ[ℤ] ℤ)
+    (r : integerPairModule →L[ℤ] integerModule) (z : PairLeft) (w : PairRight) :
+    flatCoordinateLift p q r =
+        (nestedCoordinateLift p q r).comp integerPairAssoc.toContinuousLinearMap ∧
+      TopModuleCat.tensorCurry ℤ
+          ((nestedCoordinateLift p q r).comp integerPairAssoc.toContinuousLinearMap) =
+        TensorProduct.lift
+          ((TopModuleCat.tensorHomLinearEquiv ℤ integerPairCoefficients
+            integerPairModule integerModule).toLinearMap.comp
+              (TopModuleCat.tensorCurry ℤ (nestedCoordinateLift p q r))) ∧
+      flatCoordinateLift p q r z =
+        rightDetector p q r.toLinearMap (integerPairAssoc z) ∧
+      nestedCoordinateLift p q r w =
+        leftDetector p q r.toLinearMap (integerPairAssoc.symm w) := by
+  have hlift : flatCoordinateLift p q r =
+      (nestedCoordinateLift p q r).comp integerPairAssoc.toContinuousLinearMap :=
+    TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc ℤ
+      integerPairCoefficients integerPairCoefficients integerPairModule integerModule
+      (coordinateFamily p q r)
+  refine ⟨hlift, ?_, ?_, ?_⟩
+  · exact TopModuleCat.tensorCurry_comp_tensorAssoc ℤ
+      integerPairCoefficients integerPairCoefficients integerPairModule integerModule
+      (nestedCoordinateLift p q r)
+  · calc
+      flatCoordinateLift p q r z = nestedCoordinateLift p q r (integerPairAssoc z) :=
+        DFunLike.congr_fun hlift z
+      _ = rightDetector p q r.toLinearMap (integerPairAssoc z) :=
+        DFunLike.congr_fun (coordinateLifts_toLinearMap p q r).2 (integerPairAssoc z)
+  · calc
+      nestedCoordinateLift p q r w = flatCoordinateLift p q r (integerPairAssoc.symm w) := by
+        simpa only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe,
+          ContinuousLinearEquiv.apply_symm_apply] using
+            (DFunLike.congr_fun hlift (integerPairAssoc.symm w)).symm
+      _ = leftDetector p q r.toLinearMap (integerPairAssoc.symm w) :=
+        DFunLike.congr_fun (coordinateLifts_toLinearMap p q r).1 (integerPairAssoc.symm w)
+
+/-- Mixed tensors retain both varying right coordinates, and the weighted
+coordinate functional reads three on the mixed unit specimen. -/
+theorem coordinateLifts_mixed_variables (s t : ℤ) :
+    flatCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)
+        (mixedLeft (s, t)) = s ∧
+      nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)
+        (mixedRight (s, t)) = s ∧
+      flatCoordinateLift p2 p1 (ContinuousLinearMap.snd ℤ ℤ ℤ)
+        (mixedLeft (s, t)) = t ∧
+      nestedCoordinateLift p2 p1 (ContinuousLinearMap.snd ℤ ℤ ℤ)
+        (mixedRight (s, t)) = t ∧
+      TopModuleCat.tensorCurry ℤ
+        ((nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).comp
+          integerPairAssoc.toContinuousLinearMap) mixedCoefficient (s, t) = s ∧
+      (nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) +
+        (2 : ℤ) • nestedCoordinateLift p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ))
+          (mixedRight e1) = 3 := by
+  have hflat12 :
+      (flatCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).toLinearMap =
+        leftDetection12 :=
+    (coordinateLifts_toLinearMap p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).1
+  have hnested12 :
+      (nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).toLinearMap =
+        rightDetection12 :=
+    (coordinateLifts_toLinearMap p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).2
+  have hflat212 :
+      (flatCoordinateLift p2 p1 (ContinuousLinearMap.snd ℤ ℤ ℤ)).toLinearMap =
+        leftDetector p2 p1 p2 :=
+    (coordinateLifts_toLinearMap p2 p1 (ContinuousLinearMap.snd ℤ ℤ ℤ)).1
+  have hnested212 :
+      (nestedCoordinateLift p2 p1 (ContinuousLinearMap.snd ℤ ℤ ℤ)).toLinearMap =
+        rightDetector p2 p1 p2 :=
+    (coordinateLifts_toLinearMap p2 p1 (ContinuousLinearMap.snd ℤ ℤ ℤ)).2
+  refine ⟨(DFunLike.congr_fun hflat12 _).trans
+      (integerPair_variable_coordinates s t).2.1,
+    (DFunLike.congr_fun hnested12 _).trans
+      (integerPair_variable_coordinates s t).2.2.1,
+    (DFunLike.congr_fun hflat212 _).trans
+      (integerPair_variable_coordinates s t).2.2.2.1,
+    (DFunLike.congr_fun hnested212 _).trans
+      (integerPair_variable_coordinates s t).2.2.2.2, ?_, ?_⟩
+  · rw [TopModuleCat.tensorCurry_apply_apply]
+    change nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)
+      (integerPairAssoc (mixedLeft (s, t))) = s
+    rw [(integerPair_variable_coordinates s t).1]
+    exact (DFunLike.congr_fun hnested12 _).trans
+      (integerPair_variable_coordinates s t).2.2.1
+  · have hnested21 :
+        (nestedCoordinateLift p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ)).toLinearMap =
+          rightDetection21 :=
+      (coordinateLifts_toLinearMap p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ)).2
+    change nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) (mixedRight e1) +
+      (2 : ℤ) • nestedCoordinateLift p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ)
+        (mixedRight e1) = 3
+    exact (congrArg₂ (fun a b : ℤ ↦ a + (2 : ℤ) • b)
+      (DFunLike.congr_fun hnested12 (mixedRight e1))
+      (DFunLike.congr_fun hnested21 (mixedRight e1))).trans
+        integerPair_mixed.2.2.2.2.2.2
+
+/-- Two different nonzero coefficient functionals and their outgoing lifts are
+distinguished by the supplied pure triple; mixed lifts are also nonzero. -/
+theorem coordinateLifts_nonzero_distinct :
+    coordinateFamily p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) e1 e2 e1 = 1 ∧
+      coordinateFamily p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ) e1 e2 e1 = 0 ∧
+      flatCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) leftTriple = 1 ∧
+      nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) rightTriple = 1 ∧
+      coordinateFamily p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) ≠
+        coordinateFamily p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ) ∧
+      nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) ≠
+        nestedCoordinateLift p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ) ∧
+      flatCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) (mixedLeft e1) ≠ 0 ∧
+      nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) (mixedRight e1) ≠ 0 := by
+  have hfamily12 :
+      coordinateFamily p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) e1 e2 e1 = 1 := by
+    simp [coordinateFamily, LinearMap.smulRight_apply, p1, p2, e1, e2]
+  have hfamily21 :
+      coordinateFamily p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ) e1 e2 e1 = 0 := by
+    simp [coordinateFamily, LinearMap.smulRight_apply, p1, p2, e1, e2]
+  have hflat : flatCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) leftTriple = 1 :=
+    (DFunLike.congr_fun
+      (coordinateLifts_toLinearMap p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).1
+      leftTriple).trans integerPair_nonzero.1
+  have hnested :
+      nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) rightTriple = 1 :=
+    (DFunLike.congr_fun
+      (coordinateLifts_toLinearMap p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).2
+      rightTriple).trans integerPair_nonzero.2.1
+  have hnested21 :
+      nestedCoordinateLift p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ) rightTriple = 0 := by
+    calc
+      _ = rightDetector p2 p1 p1 rightTriple :=
+        DFunLike.congr_fun
+          (coordinateLifts_toLinearMap p2 p1 (ContinuousLinearMap.fst ℤ ℤ ℤ)).2 rightTriple
+      _ = 0 := (rightDetector_tmul p2 p1 p1 e1 e2 e1).trans
+        (by simp [p1, p2, e1, e2])
+  have hflatMixed :
+      flatCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) (mixedLeft e1) = 1 :=
+    (DFunLike.congr_fun
+      (coordinateLifts_toLinearMap p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).1
+      (mixedLeft e1)).trans integerPair_mixed.2.2.1
+  have hnestedMixed :
+      nestedCoordinateLift p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ) (mixedRight e1) = 1 :=
+    (DFunLike.congr_fun
+      (coordinateLifts_toLinearMap p1 p2 (ContinuousLinearMap.fst ℤ ℤ ℤ)).2
+      (mixedRight e1)).trans integerPair_mixed.2.2.2.2.1
+  refine ⟨hfamily12, hfamily21, hflat, hnested, ?_, ?_, ?_, ?_⟩
+  · intro h
+    have hvalue := congrArg
+      (fun b : integerPairCoefficients →ₗ[ℤ]
+        integerPairCoefficients →ₗ[ℤ] (integerPairModule →L[ℤ] integerModule) ↦
+          b e1 e2 e1) h
+    exact one_ne_zero (hfamily12.symm.trans (hvalue.trans hfamily21))
+  · intro h
+    have hvalue := congrArg (fun f : PairRight →L[ℤ] integerModule ↦ f rightTriple) h
+    exact one_ne_zero (hnested.symm.trans (hvalue.trans hnested21))
+  · intro h
+    exact one_ne_zero (hflatMixed.symm.trans h)
+  · intro h
+    exact one_ne_zero (hnestedMixed.symm.trans h)
+
+open ProjectiveTensorSeparationExamples
+
+/-- The flat tensor with infinite integer coefficients, regular inner coefficients
+and the usual real right factor. -/
+noncomputable abbrev InfiniteFlat := TopModuleCat.tensorLeftObj ℤ
+  (ModuleCat.of ℤ (infiniteCoefficients ⊗[ℤ] ModuleCat.of ℤ ℤ)) realModule
+
+/-- The corresponding nested tensor with the usual real right factor. -/
+noncomputable abbrev InfiniteNested := TopModuleCat.tensorLeftObj ℤ infiniteCoefficients
+  (TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule)
+
+/-- The first infinite coefficient coordinate, followed by two scalar actions on reals. -/
+noncomputable def infiniteRealFamily : infiniteCoefficients →ₗ[ℤ]
+    ModuleCat.of ℤ ℤ →ₗ[ℤ] (realModule →L[ℤ] realModule) :=
+  (infiniteBasis.coord 0).smulRight
+    ((LinearMap.id : ℤ →ₗ[ℤ] ℤ).smulRight (ContinuousLinearMap.id ℤ realModule))
+
+/-- The flat lift of the first-coordinate real family. -/
+noncomputable def infiniteRealFlatLift : InfiniteFlat →L[ℤ] realModule :=
+  TopModuleCat.tensorLiftCLM ℤ
+    (C := ModuleCat.of ℤ (infiniteCoefficients ⊗[ℤ] ModuleCat.of ℤ ℤ))
+    (M := realModule) (N := realModule) (TensorProduct.lift infiniteRealFamily)
+
+/-- The iterated lift of the first-coordinate real family. -/
+noncomputable def infiniteRealNestedLift : InfiniteNested →L[ℤ] realModule :=
+  TopModuleCat.tensorLiftCLM ℤ (C := infiniteCoefficients)
+    (M := TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule) (N := realModule)
+    ((TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+      realModule realModule).symm.toLinearMap.comp infiniteRealFamily)
+
+/-- Lift and curry compatibility acts nontrivially with nonfinite coefficients
+and a nondiscrete supplied right factor. -/
+theorem infiniteReal_lift_curry_controls (x : InfiniteFlat) (y : InfiniteNested) :
+    ¬ Module.Finite ℤ infiniteCoefficients ∧ ¬ DiscreteTopology realModule ∧
+      (infiniteRealFlatLift x = infiniteRealNestedLift
+        (TopModuleCat.tensorAssocContinuousLinearEquiv ℤ infiniteCoefficients
+          (ModuleCat.of ℤ ℤ) realModule x) ∧
+       infiniteRealNestedLift y = infiniteRealFlatLift
+        ((TopModuleCat.tensorAssocContinuousLinearEquiv ℤ infiniteCoefficients
+          (ModuleCat.of ℤ ℤ) realModule).symm y) ∧
+       TopModuleCat.tensorCurry ℤ
+          (infiniteRealNestedLift.comp
+            (TopModuleCat.tensorAssocContinuousLinearEquiv ℤ infiniteCoefficients
+              (ModuleCat.of ℤ ℤ) realModule).toContinuousLinearMap) =
+         TensorProduct.lift
+          ((TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+            realModule realModule).toLinearMap.comp
+              (TopModuleCat.tensorCurry ℤ infiniteRealNestedLift)) ∧
+       infiniteRealFamily (integerBasisVector 0) 1 1 = 1 ∧
+       infiniteRealFlatLift ((integerBasisVector 0 ⊗ₜ[ℤ] (1 : ℤ)) ⊗ₜ[ℤ]
+         (1 : realModule)) = 1 ∧
+       infiniteRealNestedLift (integerBasisVector 0 ⊗ₜ[ℤ]
+         ((1 : ℤ) ⊗ₜ[ℤ] (1 : realModule))) = 1) :=
+  ⟨infiniteCoefficients_not_finite, realModule_not_discrete, by
+    let α : InfiniteFlat ≃L[ℤ] InfiniteNested :=
+      TopModuleCat.tensorAssocContinuousLinearEquiv ℤ infiniteCoefficients
+        (ModuleCat.of ℤ ℤ) realModule
+    have hlift : infiniteRealFlatLift = infiniteRealNestedLift.comp α.toContinuousLinearMap :=
+      TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc ℤ infiniteCoefficients
+        (ModuleCat.of ℤ ℤ) realModule realModule infiniteRealFamily
+    have hb : integerBasisVector 0 = infiniteBasis 0 := by
+      simp [integerBasisVector, infiniteBasis]
+    have hcoord : infiniteBasis.coord 0 (integerBasisVector 0) = 1 := by
+      simp [hb, Module.Basis.coord_apply]
+    have hfamily : infiniteRealFamily (integerBasisVector 0) 1 1 = 1 := by
+      simp only [infiniteRealFamily, LinearMap.smulRight_apply,
+        LinearMap.id_apply, ContinuousLinearMap.id_apply, hcoord, one_smul]
+    refine ⟨?_, ?_, ?_, hfamily, ?_, ?_⟩
+    · calc
+        infiniteRealFlatLift x =
+            (infiniteRealNestedLift.comp α.toContinuousLinearMap) x :=
+          DFunLike.congr_fun hlift x
+        _ = infiniteRealNestedLift (α.toContinuousLinearMap x) :=
+          ContinuousLinearMap.comp_apply infiniteRealNestedLift α.toContinuousLinearMap x
+        _ = infiniteRealNestedLift (α x) :=
+          congrArg infiniteRealNestedLift (ContinuousLinearEquiv.coe_apply α x)
+    · calc
+        infiniteRealNestedLift y = infiniteRealNestedLift (α (α.symm y)) :=
+          congrArg infiniteRealNestedLift (α.apply_symm_apply y).symm
+        _ = (infiniteRealNestedLift.comp α.toContinuousLinearMap) (α.symm y) :=
+          ((ContinuousLinearMap.comp_apply infiniteRealNestedLift
+            α.toContinuousLinearMap (α.symm y)).trans
+              (congrArg infiniteRealNestedLift
+                (ContinuousLinearEquiv.coe_apply α (α.symm y)))).symm
+        _ = infiniteRealFlatLift (α.symm y) :=
+          (DFunLike.congr_fun hlift (α.symm y)).symm
+    · exact TopModuleCat.tensorCurry_comp_tensorAssoc ℤ infiniteCoefficients
+        (ModuleCat.of ℤ ℤ) realModule realModule infiniteRealNestedLift
+    · calc
+        infiniteRealFlatLift
+            (show InfiniteFlat from (integerBasisVector 0 ⊗ₜ[ℤ] (1 : ℤ)) ⊗ₜ[ℤ]
+              (1 : realModule)) = infiniteRealFamily (integerBasisVector 0) 1 1 :=
+          (TopModuleCat.tensorLiftCLM_tmul ℤ
+            (C := ModuleCat.of ℤ (infiniteCoefficients ⊗[ℤ] ModuleCat.of ℤ ℤ))
+            (M := realModule) (N := realModule) (TensorProduct.lift infiniteRealFamily)
+            (integerBasisVector 0 ⊗ₜ[ℤ] (1 : ℤ)) (1 : realModule)).trans
+              (congrArg (fun k : realModule →L[ℤ] realModule ↦ k (1 : realModule))
+                (TensorProduct.lift.tmul (f' := infiniteRealFamily)
+                  (integerBasisVector 0) (1 : ℤ)))
+        _ = 1 := hfamily
+    · calc
+        infiniteRealNestedLift
+            (show InfiniteNested from integerBasisVector 0 ⊗ₜ[ℤ]
+              ((1 : ℤ) ⊗ₜ[ℤ] (1 : realModule))) =
+            ((TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+              realModule realModule).symm.toLinearMap.comp infiniteRealFamily)
+                (integerBasisVector 0)
+                (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule from
+                  (1 : ℤ) ⊗ₜ[ℤ] (1 : realModule)) :=
+          TopModuleCat.tensorLiftCLM_tmul ℤ (C := infiniteCoefficients)
+            (M := TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule) (N := realModule)
+            ((TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+              realModule realModule).symm.toLinearMap.comp infiniteRealFamily)
+            (integerBasisVector 0)
+            (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule from
+              (1 : ℤ) ⊗ₜ[ℤ] (1 : realModule))
+        _ = (TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+            realModule realModule).symm (infiniteRealFamily (integerBasisVector 0))
+              (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule from
+                (1 : ℤ) ⊗ₜ[ℤ] (1 : realModule)) :=
+          congrArg (fun k : TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ)
+            realModule →L[ℤ] realModule ↦
+              k (show TopModuleCat.tensorLeftObj ℤ (ModuleCat.of ℤ ℤ) realModule from
+                (1 : ℤ) ⊗ₜ[ℤ] (1 : realModule)))
+            ((LinearMap.comp_apply
+              (TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+                realModule realModule).symm.toLinearMap infiniteRealFamily
+                  (integerBasisVector 0)).trans
+                    (congrFun (LinearEquiv.coe_toLinearMap
+                      (TopModuleCat.tensorHomLinearEquiv ℤ (ModuleCat.of ℤ ℤ)
+                        realModule realModule).symm) (infiniteRealFamily (integerBasisVector 0))))
+        _ = infiniteRealFamily (integerBasisVector 0) 1 1 :=
+          TopModuleCat.tensorHomLinearEquiv_symm_apply_tmul ℤ
+            (C := ModuleCat.of ℤ ℤ) (M := realModule) (N := realModule)
+            (infiniteRealFamily (integerBasisVector 0)) (1 : ℤ) (1 : realModule)
+        _ = 1 := hfamily⟩
+
+/-- The flat tensor with the first-axis ideal and regular inner/right factors. -/
+noncomputable abbrev IdealFlat := TopModuleCat.tensorLeftObj productRing
+  (ModuleCat.of productRing
+    (firstAxisCoefficients ⊗[productRing] ModuleCat.of productRing productRing)) productModule
+
+/-- The corresponding nested tensor with regular inner/right factors. -/
+noncomputable abbrev IdealNested := TopModuleCat.tensorLeftObj productRing firstAxisCoefficients
+  (TopModuleCat.tensorLeftObj productRing (ModuleCat.of productRing productRing) productModule)
+
+/-- The ideal inclusion, followed by two regular scalar actions. -/
+noncomputable def idealFamily : firstAxisCoefficients →ₗ[productRing]
+    ModuleCat.of productRing productRing →ₗ[productRing]
+      (productModule →L[productRing] productModule) :=
+  firstAxisIdeal.subtype.smulRight
+    ((LinearMap.id : productRing →ₗ[productRing] productRing).smulRight
+      (ContinuousLinearMap.id productRing productModule))
+
+/-- The flat lift of the ideal-inclusion family. -/
+noncomputable def idealFlatLift : IdealFlat →L[productRing] productModule :=
+  TopModuleCat.tensorLiftCLM productRing
+    (C := ModuleCat.of productRing
+      (firstAxisCoefficients ⊗[productRing] ModuleCat.of productRing productRing))
+    (M := productModule) (N := productModule) (TensorProduct.lift idealFamily)
+
+/-- The iterated lift of the ideal-inclusion family. -/
+noncomputable def idealNestedLift : IdealNested →L[productRing] productModule :=
+  TopModuleCat.tensorLiftCLM productRing (C := firstAxisCoefficients)
+    (M := TopModuleCat.tensorLeftObj productRing
+      (ModuleCat.of productRing productRing) productModule)
+    (N := productModule)
+    ((TopModuleCat.tensorHomLinearEquiv productRing (ModuleCat.of productRing productRing)
+      productModule productModule).symm.toLinearMap.comp idealFamily)
+
+/-- The compatibility laws give nonzero idempotent values with nonfree coefficients,
+while retaining the ideal detector `firstAxisTensorValue` as a separate continuous map. -/
+theorem ideal_lift_curry_controls (x : IdealFlat) (y : IdealNested) :
+    ¬ Module.Free productRing firstAxisCoefficients ∧ firstAxisElement ≠ 0 ∧
+      firstAxisTensorValue firstAxisTensor = firstAxisIdempotent ∧
+      (idealFlatLift x = idealNestedLift
+        (TopModuleCat.tensorAssocContinuousLinearEquiv productRing firstAxisCoefficients
+          (ModuleCat.of productRing productRing) productModule x) ∧
+       idealNestedLift y = idealFlatLift
+        ((TopModuleCat.tensorAssocContinuousLinearEquiv productRing firstAxisCoefficients
+          (ModuleCat.of productRing productRing) productModule).symm y) ∧
+       TopModuleCat.tensorCurry productRing
+          (idealNestedLift.comp
+            (TopModuleCat.tensorAssocContinuousLinearEquiv productRing firstAxisCoefficients
+              (ModuleCat.of productRing productRing) productModule).toContinuousLinearMap) =
+         TensorProduct.lift
+          ((TopModuleCat.tensorHomLinearEquiv productRing (ModuleCat.of productRing productRing)
+            productModule productModule).toLinearMap.comp
+              (TopModuleCat.tensorCurry productRing idealNestedLift)) ∧
+       idealFamily firstAxisElement 1 1 = firstAxisIdempotent ∧
+       idealFlatLift ((firstAxisElement ⊗ₜ[productRing] (1 : productRing)) ⊗ₜ[productRing]
+         (1 : productModule)) = firstAxisIdempotent ∧
+       idealNestedLift (firstAxisElement ⊗ₜ[productRing]
+         ((1 : productRing) ⊗ₜ[productRing] (1 : productModule))) = firstAxisIdempotent) :=
+  ⟨firstAxisCoefficients_not_free, firstAxisElement_ne_zero, firstAxisTensorValue_first,
+    by
+      let α : IdealFlat ≃L[productRing] IdealNested :=
+        TopModuleCat.tensorAssocContinuousLinearEquiv productRing firstAxisCoefficients
+          (ModuleCat.of productRing productRing) productModule
+      have hlift : idealFlatLift = idealNestedLift.comp α.toContinuousLinearMap :=
+        TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc productRing firstAxisCoefficients
+          (ModuleCat.of productRing productRing) productModule productModule idealFamily
+      have hfamily : idealFamily firstAxisElement 1 1 = firstAxisIdempotent := by
+        simp [idealFamily, LinearMap.smulRight_apply, firstAxisElement, smul_eq_mul]
+      refine ⟨?_, ?_, ?_, hfamily, ?_, ?_⟩
+      · calc
+          idealFlatLift x = (idealNestedLift.comp α.toContinuousLinearMap) x :=
+            DFunLike.congr_fun hlift x
+          _ = idealNestedLift (α.toContinuousLinearMap x) :=
+            ContinuousLinearMap.comp_apply idealNestedLift α.toContinuousLinearMap x
+          _ = idealNestedLift (α x) :=
+            congrArg idealNestedLift (ContinuousLinearEquiv.coe_apply α x)
+      · calc
+          idealNestedLift y = idealNestedLift (α (α.symm y)) :=
+            congrArg idealNestedLift (α.apply_symm_apply y).symm
+          _ = (idealNestedLift.comp α.toContinuousLinearMap) (α.symm y) :=
+            ((ContinuousLinearMap.comp_apply idealNestedLift
+              α.toContinuousLinearMap (α.symm y)).trans
+                (congrArg idealNestedLift
+                  (ContinuousLinearEquiv.coe_apply α (α.symm y)))).symm
+          _ = idealFlatLift (α.symm y) := (DFunLike.congr_fun hlift (α.symm y)).symm
+      · exact TopModuleCat.tensorCurry_comp_tensorAssoc productRing firstAxisCoefficients
+          (ModuleCat.of productRing productRing) productModule productModule idealNestedLift
+      · calc
+          idealFlatLift
+              (show IdealFlat from (firstAxisElement ⊗ₜ[productRing] (1 : productRing))
+                ⊗ₜ[productRing] (1 : productModule)) =
+              idealFamily firstAxisElement 1 1 :=
+            (TopModuleCat.tensorLiftCLM_tmul productRing
+              (C := ModuleCat.of productRing
+                (firstAxisCoefficients ⊗[productRing] ModuleCat.of productRing productRing))
+              (M := productModule) (N := productModule) (TensorProduct.lift idealFamily)
+              (firstAxisElement ⊗ₜ[productRing] (1 : productRing)) (1 : productModule)).trans
+                (congrArg (fun k : productModule →L[productRing] productModule ↦
+                  k (1 : productModule))
+                  (TensorProduct.lift.tmul (f' := idealFamily)
+                    firstAxisElement (1 : productRing)))
+          _ = firstAxisIdempotent := hfamily
+      · calc
+          idealNestedLift
+              (show IdealNested from firstAxisElement ⊗ₜ[productRing]
+                ((1 : productRing) ⊗ₜ[productRing] (1 : productModule))) =
+              ((TopModuleCat.tensorHomLinearEquiv productRing (ModuleCat.of productRing productRing)
+                productModule productModule).symm.toLinearMap.comp idealFamily) firstAxisElement
+                  (show TopModuleCat.tensorLeftObj productRing
+                    (ModuleCat.of productRing productRing) productModule from
+                      (1 : productRing) ⊗ₜ[productRing] (1 : productModule)) :=
+            TopModuleCat.tensorLiftCLM_tmul productRing (C := firstAxisCoefficients)
+              (M := TopModuleCat.tensorLeftObj productRing
+                (ModuleCat.of productRing productRing) productModule) (N := productModule)
+              ((TopModuleCat.tensorHomLinearEquiv productRing (ModuleCat.of productRing productRing)
+                productModule productModule).symm.toLinearMap.comp idealFamily) firstAxisElement
+              (show TopModuleCat.tensorLeftObj productRing
+                (ModuleCat.of productRing productRing) productModule from
+                  (1 : productRing) ⊗ₜ[productRing] (1 : productModule))
+          _ = (TopModuleCat.tensorHomLinearEquiv productRing (ModuleCat.of productRing productRing)
+              productModule productModule).symm (idealFamily firstAxisElement)
+                (show TopModuleCat.tensorLeftObj productRing
+                  (ModuleCat.of productRing productRing) productModule from
+                    (1 : productRing) ⊗ₜ[productRing] (1 : productModule)) :=
+            congrArg (fun k : TopModuleCat.tensorLeftObj productRing
+              (ModuleCat.of productRing productRing) productModule →L[productRing] productModule ↦
+                k (show TopModuleCat.tensorLeftObj productRing
+                  (ModuleCat.of productRing productRing) productModule from
+                    (1 : productRing) ⊗ₜ[productRing] (1 : productModule)))
+              ((LinearMap.comp_apply
+                (TopModuleCat.tensorHomLinearEquiv productRing
+                  (ModuleCat.of productRing productRing) productModule
+                    productModule).symm.toLinearMap
+                    idealFamily firstAxisElement).trans
+                    (congrFun (LinearEquiv.coe_toLinearMap
+                      (TopModuleCat.tensorHomLinearEquiv productRing
+                        (ModuleCat.of productRing productRing) productModule productModule).symm)
+                          (idealFamily firstAxisElement)))
+          _ = idealFamily firstAxisElement 1 1 :=
+            TopModuleCat.tensorHomLinearEquiv_symm_apply_tmul productRing
+              (C := ModuleCat.of productRing productRing) (M := productModule) (N := productModule)
+              (idealFamily firstAxisElement) (1 : productRing) (1 : productModule)
+          _ = firstAxisIdempotent := hfamily⟩
+
+end TensorAssociativityExamples.CurriedLifts

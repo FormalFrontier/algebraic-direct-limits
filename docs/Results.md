@@ -124,6 +124,24 @@ Lean modules for the exact statements and proofs.
   threefold extensionality, inverse identities and naturality in all three
   factors require no finiteness, freeness or separation hypothesis. See the
   [mixed integer-pair, nonfree torsion and empty-coefficient examples](../AlgebraicDirectLimitsExamples/TensorAssociativity.lean).
+- **Continuous lift and curry compatibility with reassociation.**
+  For algebraic `R`-modules `C,D` and topological `R`-modules `M,N`,
+  [`TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc`](../AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
+  says that the flat continuous lift of every family
+  `b : C →ₗ[R] D →ₗ[R] (M →L[R] N)` equals its iterated lift composed with
+  the canonical associator. For every outgoing continuous linear map on
+  `C ⊗[R] (D ⊗[R] M)`,
+  [`TopModuleCat.tensorCurry_comp_tensorAssoc`](../AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
+  identifies the whole curried family after reassociation with the algebraic
+  lift of its twice-curried family. The scalar ring is commutative with a
+  supplied topology; right and target scalar actions are jointly continuous.
+  The five carrier universes are independent, with no coefficient or Hom
+  topology, finiteness, freeness, discreteness or separation hypothesis.
+  The [clients](../AlgebraicDirectLimitsExamples/TensorAssociativity.lean)
+  compare the continuous lifts with algebraic coordinate detectors on arbitrary
+  tensors, vary both right coordinates, distinguish nonzero functionals and
+  lifts, and retain boundary controls for infinite integer coefficients with
+  usual real factors and for a nonfree first-axis ideal over `ℤ × ℤ`.
 - **Compactness with finitely generated coefficients.**
   [`TopModuleCat.compactSpace_tensorLeftObj`](../AlgebraicDirectLimits/Topology/TensorCompactness.lean)
   gives compactness of the one-sided tensor when its algebraic coefficient

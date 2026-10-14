@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import AlgebraicDirectLimits.Topology.TensorProduct
+public import AlgebraicDirectLimits.Topology.TensorHom
 public import Mathlib.LinearAlgebra.TensorProduct.Associator
 
 /-!
@@ -406,5 +407,160 @@ theorem tensorAssocContinuousLinearEquiv_naturality
               TensorProduct.map (TensorProduct.map f g) h.toLinearMap
                 ((c ⊗ₜ[R] d) ⊗ₜ[R] m)))))
   exact Eq.trans hleft (Eq.trans halgebraic hright.symm)
+
+end TopModuleCat
+
+namespace TopModuleCat
+
+section LiftCurry
+
+/-- Lifting a family linear in two algebraic coefficients agrees with iterated
+continuous lifting followed by tensor reassociation. -/
+theorem tensorLiftCLM_lift_eq_comp_tensorAssoc
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R)
+    (M : TopModuleCat.{uM} R) (N : TopModuleCat.{uN} R)
+    (b : C →ₗ[R] D →ₗ[R] (M →L[R] N)) :
+    (tensorLiftCLM R
+      (C := ModuleCat.of R (C ⊗[R] D)) (M := M) (N := N)
+      (TensorProduct.lift b) :
+        tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M →L[R] N) =
+      (tensorLiftCLM R (C := C) (M := tensorLeftObj R D M) (N := N)
+        ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b)).comp
+          (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap := by
+  apply tensorAssoc_ext R C D M
+  intro c d m
+  have hflat :
+      tensorLiftCLM R
+          (C := ModuleCat.of R (C ⊗[R] D)) (M := M) (N := N)
+          (TensorProduct.lift b)
+          (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+            (c ⊗ₜ[R] d) ⊗ₜ[R] m) = b c d m :=
+    (tensorLiftCLM_tmul R
+      (C := ModuleCat.of R (C ⊗[R] D)) (M := M) (N := N)
+      (TensorProduct.lift b) (c ⊗ₜ[R] d) m).trans
+        (congrArg (fun k : M →L[R] N ↦ k m)
+          (TensorProduct.lift.tmul (f' := b) c d))
+  have hnested :
+      tensorLiftCLM R (C := C) (M := tensorLeftObj R D M) (N := N)
+          ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b)
+          (show tensorLeftObj R C (tensorLeftObj R D M) from
+            c ⊗ₜ[R] (d ⊗ₜ[R] m)) = b c d m := by
+    calc
+      _ = ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b) c
+          (show tensorLeftObj R D M from d ⊗ₜ[R] m) :=
+        tensorLiftCLM_tmul R (C := C) (M := tensorLeftObj R D M) (N := N)
+          ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b) c
+          (show tensorLeftObj R D M from d ⊗ₜ[R] m)
+      _ = (tensorHomLinearEquiv R D M N).symm (b c)
+          (show tensorLeftObj R D M from d ⊗ₜ[R] m) :=
+        congrArg (fun k : tensorLeftObj R D M →L[R] N ↦
+          k (show tensorLeftObj R D M from d ⊗ₜ[R] m))
+          ((LinearMap.comp_apply
+            (tensorHomLinearEquiv R D M N).symm.toLinearMap b c).trans
+              (congrFun (LinearEquiv.coe_toLinearMap
+                (tensorHomLinearEquiv R D M N).symm) (b c)))
+      _ = b c d m := tensorHomLinearEquiv_symm_apply_tmul R
+        (C := D) (M := M) (N := N) (b c) d m
+  have hassoc :
+      (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap
+          (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+            (c ⊗ₜ[R] d) ⊗ₜ[R] m) =
+        (show tensorLeftObj R C (tensorLeftObj R D M) from
+          c ⊗ₜ[R] (d ⊗ₜ[R] m)) :=
+    (ContinuousLinearEquiv.coe_apply (tensorAssocContinuousLinearEquiv R C D M)
+      (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+        (c ⊗ₜ[R] d) ⊗ₜ[R] m)).trans
+          (tensorAssocContinuousLinearEquiv_tmul R C D M c d m)
+  calc
+    _ = b c d m := hflat
+    _ = tensorLiftCLM R (C := C) (M := tensorLeftObj R D M) (N := N)
+        ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b)
+        (show tensorLeftObj R C (tensorLeftObj R D M) from
+          c ⊗ₜ[R] (d ⊗ₜ[R] m)) := hnested.symm
+    _ = tensorLiftCLM R (C := C) (M := tensorLeftObj R D M) (N := N)
+        ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b)
+        ((tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap
+          (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+            (c ⊗ₜ[R] d) ⊗ₜ[R] m)) :=
+      congrArg (tensorLiftCLM R (C := C) (M := tensorLeftObj R D M) (N := N)
+        ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b)) hassoc.symm
+    _ = _ := (ContinuousLinearMap.comp_apply
+      (tensorLiftCLM R (C := C) (M := tensorLeftObj R D M) (N := N)
+        ((tensorHomLinearEquiv R D M N).symm.toLinearMap.comp b))
+      (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap
+      (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+        (c ⊗ₜ[R] d) ⊗ₜ[R] m)).symm
+
+/-- Currying after tensor reassociation is the algebraic lift of the twice-curried
+family, with continuity retained in the right argument. -/
+theorem tensorCurry_comp_tensorAssoc
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R)
+    (M : TopModuleCat.{uM} R) (N : TopModuleCat.{uN} R)
+    (f : tensorLeftObj R C (tensorLeftObj R D M) →L[R] N) :
+    (tensorCurry R
+      (C := ModuleCat.of R (C ⊗[R] D)) (M := M) (N := N)
+      (f.comp (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap) :
+        ModuleCat.of R (C ⊗[R] D) →ₗ[R] (M →L[R] N)) =
+      TensorProduct.lift
+        ((tensorHomLinearEquiv R D M N).toLinearMap.comp
+          (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f)) := by
+  apply TensorProduct.ext'
+  intro c d
+  apply ContinuousLinearMap.ext
+  intro m
+  have hfamily :
+      ((tensorHomLinearEquiv R D M N).toLinearMap.comp
+        (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f)) c =
+      tensorHomLinearEquiv R D M N
+        (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f c) :=
+    (LinearMap.comp_apply (tensorHomLinearEquiv R D M N).toLinearMap
+      (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f) c).trans
+        (congrFun (LinearEquiv.coe_toLinearMap (tensorHomLinearEquiv R D M N))
+          (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f c))
+  calc
+    _ = (f.comp (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap)
+        (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+          (c ⊗ₜ[R] d) ⊗ₜ[R] m) :=
+      tensorCurry_apply_apply R
+        (C := ModuleCat.of R (C ⊗[R] D)) (M := M) (N := N)
+        (f.comp (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap)
+        (c ⊗ₜ[R] d) m
+    _ = f ((tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap
+        (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+          (c ⊗ₜ[R] d) ⊗ₜ[R] m)) :=
+      ContinuousLinearMap.comp_apply f
+        (tensorAssocContinuousLinearEquiv R C D M).toContinuousLinearMap
+        (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+          (c ⊗ₜ[R] d) ⊗ₜ[R] m)
+    _ = f (show tensorLeftObj R C (tensorLeftObj R D M) from
+        c ⊗ₜ[R] (d ⊗ₜ[R] m)) :=
+      congrArg f
+        ((ContinuousLinearEquiv.coe_apply (tensorAssocContinuousLinearEquiv R C D M)
+          (show tensorLeftObj R (ModuleCat.of R (C ⊗[R] D)) M from
+            (c ⊗ₜ[R] d) ⊗ₜ[R] m)).trans
+              (tensorAssocContinuousLinearEquiv_tmul R C D M c d m))
+    _ = tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f c
+        (show tensorLeftObj R D M from d ⊗ₜ[R] m) :=
+      (tensorCurry_apply_apply R (C := C) (M := tensorLeftObj R D M) (N := N)
+        f c (show tensorLeftObj R D M from d ⊗ₜ[R] m)).symm
+    _ = tensorHomLinearEquiv R D M N
+        (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f c) d m :=
+      (tensorHomLinearEquiv_apply_apply R (C := D) (M := M) (N := N)
+        (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f c) d m).symm
+    _ = ((tensorHomLinearEquiv R D M N).toLinearMap.comp
+        (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f)) c d m :=
+      congrArg (fun k : D →ₗ[R] (M →L[R] N) ↦ k d m) hfamily.symm
+    _ = (TensorProduct.lift
+        ((tensorHomLinearEquiv R D M N).toLinearMap.comp
+          (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f)))
+        (c ⊗ₜ[R] d) m :=
+      congrArg (fun k : M →L[R] N ↦ k m)
+        (TensorProduct.lift.tmul
+          (f' := (tensorHomLinearEquiv R D M N).toLinearMap.comp
+            (tensorCurry R (C := C) (M := tensorLeftObj R D M) (N := N) f)) c d).symm
+
+end LiftCurry
 
 end TopModuleCat
