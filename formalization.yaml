@@ -58,8 +58,8 @@ automation:
 status:
   scope: >-
     Twenty-seven mathematical leaf modules and a public re-export (28 library
-    modules), twenty-one example modules and seven test modules (six standalone
-    clients and their aggregate): 56 modules in the default targets. The
+    modules), twenty-two example modules and seven test modules (six standalone
+    clients and their aggregate): 57 modules in the default targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
@@ -119,12 +119,10 @@ status:
     allow independent carrier universes over a commutative ring with a supplied
     topology and jointly continuous right-factor actions, without a topology
     on the coefficients or a finiteness hypothesis.
-    Five further statements for the scalar tensor unit on the usual reals
-    formulate its all-input action, two-way inverse recovery, nonzero-one control,
-    path-connectedness and nondiscreteness. Their proof attempts have not been
-    checked and remain exploratory, not completed results. These five statements
-    have no syntactic proof admissions; their supporting module, topology and
-    scalar action use the existing constructions.
+    Scalar tensor-unit examples on the usual reals give all-input action,
+    two-way inverse recovery, a nonzero tensor at one, path-connectedness
+    and nondiscreteness. They use the existing module, topology and jointly
+    continuous integer action.
     The binary-product tensor equivalence distributes an algebraic coefficient
     module over two topological right factors, using their ordinary product
     topology over a commutative ring with a supplied topology. Its underlying
@@ -242,6 +240,13 @@ status:
     not a full theory or a source-coverage assessment. Full categorical tensor
     coherence, a pentagon construction and completed tensor products are outside
     this API.
+
+    The underlying linear equivalence of TopModuleCat.tensorProdLeft is
+    Mathlib's TensorProduct.prodLeft, without a topology on the coefficients.
+    Its two continuity fields, all characteristic and naturality laws, and
+    all coefficient-product client laws describe the projection product and
+    inclusion coproduct, with characteristic formulas and naturality in both
+    coefficient maps and the continuous right-factor map.
   sorry_count: 0
   sorry_in_definitions: 0
 review:

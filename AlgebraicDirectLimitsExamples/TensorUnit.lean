@@ -174,13 +174,12 @@ theorem integerPairUnit_doubling :
 end TensorUnitExamples
 
 /-!
-# Exploratory scalar tensor-unit proofs on the reals
+# Scalar tensor-unit examples on the reals
 
-The statements below concern the reals with their usual topology and canonical
+The examples below concern the reals with their usual topology and canonical
 jointly continuous integer action. They describe all-input scalar evaluation,
 two-way inverse recovery, a nonzero tensor, path-connectedness and nondiscreteness
-of the one-sided scalar tensor. Their proof attempts have not been checked and
-remain exploratory, not completed formalization.
+of the one-sided scalar tensor.
 
 ## References
 

@@ -283,7 +283,7 @@ The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
 27 mathematical leaf modules plus the public aggregate (28 library modules),
-21 example modules and seven test modules: 56 modules in all. The circle library
+22 example modules and seven test modules: 57 modules in all. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 

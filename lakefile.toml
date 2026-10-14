@@ -39,6 +39,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation",
   "AlgebraicDirectLimitsExamples.TensorCircleModel",
   "AlgebraicDirectLimitsExamples.TensorCircleClient",
+  "AlgebraicDirectLimitsExamples.CoefficientTensorProd",
   "AlgebraicDirectLimitsExamples.TensorNoncompactness"
 ]
 

@@ -6,6 +6,7 @@ module
 
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import Mathlib.LinearAlgebra.TensorProduct.Prod
+public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
 
 /-!
 # Binary products of one-sided topological tensors
@@ -16,22 +17,42 @@ module with the product of two topological modules. Its target is the ordinary
 product of the two one-sided tensor objects, with the product topology and action.
 The coefficient module has no topology, and all carrier universes are independent.
 
-The characteristic API describes the underlying equivalence, generators, arbitrary
-inverse reconstruction, projections, inclusions, uniqueness and naturality. The
-forward continuous linear map is the product of the tensor projections; the inverse
-is the coproduct of the tensor inclusions. Generic equivalence round trips and
-extensionality for maps out of the tensor are supplied by the existing APIs.
+The characteristic API for `tensorProdRight` describes the underlying equivalence,
+generators, arbitrary inverse reconstruction, projections, inclusions, uniqueness
+and naturality. The forward continuous linear map is the product of the tensor
+projections; the inverse is the coproduct of the tensor inclusions. Generic
+equivalence round trips and extensionality for maps out of the tensor are supplied
+by the existing APIs.
+
+`TopModuleCat.tensorProdLeft` has Mathlib's `TensorProduct.prodLeft` as its
+underlying linear equivalence, distributing an algebraic binary product of
+coefficients against a topological right module. Neither coefficient module
+carries a topology; the right module and the scalar ring retain their supplied
+topologies, with jointly continuous right scalar action and independent carriers.
+The module categories use additive groups and a commutative ring. Mathlib's
+algebraic equivalence also admits commutative semirings and an auxiliary scalar
+ring acting on both coefficient modules, with compatible scalar towers; that
+additional scalar action is not required on the right factor.
+
+## Implementation notes
+
+The forward map of `tensorProdLeft` is the product of the coefficient tensor
+projections, and its inverse is the coproduct of the coefficient tensor
+inclusions. Their agreement with the algebraic equivalence gives continuity
+in both directions and the characteristic and naturality formulas.
 
 ## References
 
 Mathlib's algebraic tensor-product distribution over binary products is due to
-Eric Wieser. Its tensor-map and scalar-tower APIs are due to Kenny Lau and Mario
-Carneiro. The one-sided topology, generators and linear continuity criterion follow
-Formal Frontier Agents' topological tensor development and the Continuous Group
-Cohomology formalization. Mathlib's topological-module category and coinduced
+Eric Wieser. Its tensor-map, unitor and scalar-tower APIs are due to Kenny Lau
+and Mario Carneiro. The one-sided topology, generators and linear continuity
+criterion follow Formal Frontier Agents' topological tensor development and the
+Continuous Group Cohomology formalization, including Beacon's original
+topological development. Mathlib's topological-module category and coinduced
 construction are due to Richard Hill and Andrew Yang. The continuous-linear-map
 and equivalence APIs are due to Jan-David Salchow, Sébastien Gouëzel, Jean Lo,
-Yury Kudryashov, Frédéric Dupuis and Heather Macbeth.
+Yury Kudryashov, Frédéric Dupuis and Heather Macbeth. This module is an original
+Formal Frontier contribution developed with AI assistance.
 -/
 
 @[expose] public section
@@ -416,5 +437,448 @@ theorem tensorProdRight_naturality (f : C →ₗ[R] D) (g : M →L[R] M') (h : N
         ((congrArg (tensorProdRight R D M' N') hmap).trans
           (tensorProdRight_tmul R D M' N' (f c) (g m) (h n)))
   exact hleft.trans hright.symm
+
+end TopModuleCat
+
+namespace TopModuleCat
+
+variable (R : Type uR) [CommRing R] [TopologicalSpace R]
+
+/-- Tensoring an algebraic product of coefficients with a topological right
+module distributes over the product. The underlying equivalence is
+`TensorProduct.prodLeft R R C D M`; no topology on the coefficients is used. -/
+noncomputable def tensorProdLeft (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R)
+    (M : TopModuleCat.{uM} R) :
+    tensorLeftObj R (ModuleCat.of R (C × D)) M ≃L[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M) where
+  toLinearEquiv := TensorProduct.prodLeft R R C D M
+  continuous_toFun := by
+    let f := (tensorMapCLM R (C := ModuleCat.of R (C × D)) (D := C)
+      (M := M) (N := M) (LinearMap.fst R C D) (ContinuousLinearMap.id R M)).prod
+      (tensorMapCLM R (C := ModuleCat.of R (C × D)) (D := D)
+        (M := M) (N := M) (LinearMap.snd R C D) (ContinuousLinearMap.id R M))
+    have heq : (TensorProduct.prodLeft R R C D M).toLinearMap = f.toLinearMap := by
+      apply TensorProduct.ext'
+      rintro ⟨c, d⟩ m
+      exact TensorProduct.prodLeft_tmul R R C D M c d m
+    exact f.continuous.congr (fun z ↦ (DFunLike.congr_fun heq z).symm)
+  continuous_invFun := by
+    let e : tensorLeftObj R (ModuleCat.of R (C × D)) M ≃ₗ[R]
+        (tensorLeftObj R C M × tensorLeftObj R D M) :=
+      TensorProduct.prodLeft R R C D M
+    let l := tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M)
+    let r := tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M)
+    let i := l.coprod r
+    have h : e.toLinearMap.comp i.toLinearMap =
+        LinearMap.id (R := R) (M := tensorLeftObj R C M × tensorLeftObj R D M) := by
+      apply LinearMap.prod_ext
+      · apply TensorProduct.ext'
+        intro c m
+        have hi : i (c ⊗ₜ[R] m, 0) =
+            (((c, 0) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+          (DFunLike.congr_fun (ContinuousLinearMap.coprod_comp_inl l r)
+            (c ⊗ₜ[R] m)).trans
+              (tensorMapCLM_tmul R (C := C) (D := ModuleCat.of R (C × D))
+                (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M) c m)
+        exact (congrArg e hi).trans
+          ((TensorProduct.prodLeft_tmul R R C D M c 0 m).trans
+            (congrArg (fun z : tensorLeftObj R D M ↦ (c ⊗ₜ[R] m, z))
+              (TensorProduct.zero_tmul (R := R) D m)))
+      · apply TensorProduct.ext'
+        intro d m
+        have hi : i (0, d ⊗ₜ[R] m) =
+            (((0, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+          (DFunLike.congr_fun (ContinuousLinearMap.coprod_comp_inr l r)
+            (d ⊗ₜ[R] m)).trans
+              (tensorMapCLM_tmul R (C := D) (D := ModuleCat.of R (C × D))
+                (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M) d m)
+        exact (congrArg e hi).trans
+          ((TensorProduct.prodLeft_tmul R R C D M 0 d m).trans
+            (congrArg (fun z : tensorLeftObj R C M ↦ (z, d ⊗ₜ[R] m))
+              (TensorProduct.zero_tmul (R := R) C m)))
+    have heq : e.symm.toLinearMap = i.toLinearMap := by
+      apply LinearMap.ext
+      intro p
+      apply e.injective
+      exact (e.apply_symm_apply p).trans (DFunLike.congr_fun h p).symm
+    exact i.continuous.congr (fun p ↦ (DFunLike.congr_fun heq p).symm)
+
+
+/-- Forgetting continuity gives Mathlib's coefficient-product tensor equivalence. -/
+theorem tensorProdLeft_toLinearEquiv
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (tensorProdLeft R C D M).toLinearEquiv =
+    (show tensorLeftObj R (ModuleCat.of R (C × D)) M ≃ₗ[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M) from
+        TensorProduct.prodLeft R R C D M) := by
+  rfl
+
+/-- The forward continuous linear map pairs the two coefficient tensor projections. -/
+theorem tensorProdLeft_toContinuousLinearMap
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (tensorProdLeft R C D M).toContinuousLinearMap =
+    (tensorMapCLM R (C := ModuleCat.of R (C × D)) (D := C)
+      (M := M) (N := M) (LinearMap.fst R C D) (ContinuousLinearMap.id R M)).prod
+    (tensorMapCLM R (C := ModuleCat.of R (C × D)) (D := D)
+      (M := M) (N := M) (LinearMap.snd R C D) (ContinuousLinearMap.id R M)) := by
+  apply ContinuousLinearMap.coe_injective
+  apply TensorProduct.ext'
+  rintro ⟨c, d⟩ m
+  exact TensorProduct.prodLeft_tmul R R C D M c d m
+
+/-- The inverse continuous linear map sums the two coefficient tensor inclusions. -/
+theorem tensorProdLeft_symm_toContinuousLinearMap
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (tensorProdLeft R C D M).symm.toContinuousLinearMap =
+    (tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M)).comp
+      (ContinuousLinearMap.fst R (tensorLeftObj R C M) (tensorLeftObj R D M)) +
+    (tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M)).comp
+      (ContinuousLinearMap.snd R (tensorLeftObj R C M) (tensorLeftObj R D M)) := by
+  rw [ContinuousLinearMap.comp_fst_add_comp_snd]
+  let e : tensorLeftObj R (ModuleCat.of R (C × D)) M ≃ₗ[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M) :=
+    TensorProduct.prodLeft R R C D M
+  let l := tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+    (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M)
+  let r := tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+    (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M)
+  let i := l.coprod r
+  have hinverse : (tensorProdLeft R C D M).symm.toContinuousLinearMap.toLinearMap =
+      e.symm.toLinearMap :=
+    congrArg (fun q : tensorLeftObj R (ModuleCat.of R (C × D)) M ≃ₗ[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M) ↦ q.symm.toLinearMap)
+        (tensorProdLeft_toLinearEquiv R C D M)
+  apply ContinuousLinearMap.coe_injective
+  apply LinearMap.prod_ext
+  · apply TensorProduct.ext'
+    intro c m
+    have hpair : (c ⊗ₜ[R] m, (0 : tensorLeftObj R D M)) =
+        (c ⊗ₜ[R] m, (0 : D) ⊗ₜ[R] m) :=
+      congrArg (fun z : tensorLeftObj R D M ↦
+        ((show tensorLeftObj R C M from c ⊗ₜ[R] m), z))
+          (TensorProduct.zero_tmul (R := R) D m).symm
+    have hstock : e.symm (c ⊗ₜ[R] m, (0 : D) ⊗ₜ[R] m) =
+        (((c, 0) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+      TensorProduct.prodLeft_symm_tmul R R C D M c 0 m
+    have hleft : (tensorProdLeft R C D M).symm (c ⊗ₜ[R] m, 0) =
+        (((c, 0) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+      (DFunLike.congr_fun hinverse (c ⊗ₜ[R] m, 0)).trans
+        ((congrArg e.symm hpair).trans hstock)
+    have hright : i (c ⊗ₜ[R] m, 0) =
+        (((c, 0) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+      (DFunLike.congr_fun (ContinuousLinearMap.coprod_comp_inl l r)
+        (c ⊗ₜ[R] m)).trans
+          (tensorMapCLM_tmul R (C := C) (D := ModuleCat.of R (C × D))
+            (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M) c m)
+    exact hleft.trans hright.symm
+  · apply TensorProduct.ext'
+    intro d m
+    have hpair : ((0 : tensorLeftObj R C M), d ⊗ₜ[R] m) =
+        ((0 : C) ⊗ₜ[R] m, d ⊗ₜ[R] m) :=
+      congrArg (fun z : tensorLeftObj R C M ↦
+        (z, (show tensorLeftObj R D M from d ⊗ₜ[R] m)))
+          (TensorProduct.zero_tmul (R := R) C m).symm
+    have hstock : e.symm ((0 : C) ⊗ₜ[R] m, d ⊗ₜ[R] m) =
+        (((0, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+      TensorProduct.prodLeft_symm_tmul R R C D M 0 d m
+    have hleft : (tensorProdLeft R C D M).symm (0, d ⊗ₜ[R] m) =
+        (((0, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+      (DFunLike.congr_fun hinverse (0, d ⊗ₜ[R] m)).trans
+        ((congrArg e.symm hpair).trans hstock)
+    have hright : i (0, d ⊗ₜ[R] m) =
+        (((0, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+      (DFunLike.congr_fun (ContinuousLinearMap.coprod_comp_inr l r)
+        (d ⊗ₜ[R] m)).trans
+          (tensorMapCLM_tmul R (C := D) (D := ModuleCat.of R (C × D))
+            (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M) d m)
+    exact hleft.trans hright.symm
+
+/-- A pure tensor with a coefficient pair distributes componentwise. -/
+theorem tensorProdLeft_tmul
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (c : C) (d : D) (m : M) :
+  tensorProdLeft R C D M (((c,d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) =
+    (c ⊗ₜ[R] m, d ⊗ₜ[R] m) := by
+  exact TensorProduct.prodLeft_tmul R R C D M c d m
+
+/-- Distribution after a product-coefficient generator pairs the factor generators. -/
+theorem tensorProdLeft_comp_tensorGenerator
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) (c : C) (d : D) :
+  (tensorProdLeft R C D M).toContinuousLinearMap.comp
+    (tensorGenerator R (ModuleCat.of R (C × D)) M (c,d)) =
+      (tensorGenerator R C M c).prod (tensorGenerator R D M d) := by
+  have he : (tensorProdLeft R C D M).toContinuousLinearMap.toLinearMap =
+      (TensorProduct.prodLeft R R C D M).toLinearMap :=
+    congrArg (fun q : tensorLeftObj R (ModuleCat.of R (C × D)) M ≃ₗ[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M) ↦ q.toLinearMap)
+        (tensorProdLeft_toLinearEquiv R C D M)
+  have hsource : (tensorGenerator R (ModuleCat.of R (C × D)) M (c, d)).toLinearMap =
+      (TensorProduct.mk R (ModuleCat.of R (C × D)) M) (c, d) :=
+    tensorGenerator_toLinearMap R (ModuleCat.of R (C × D)) M (c, d)
+  have htarget : ((tensorGenerator R C M c).prod
+      (tensorGenerator R D M d)).toLinearMap =
+        ((TensorProduct.mk R C M) c).prod ((TensorProduct.mk R D M) d) :=
+    congrArg₂ (fun (a : M →ₗ[R] tensorLeftObj R C M)
+      (b : M →ₗ[R] tensorLeftObj R D M) ↦ a.prod b)
+      (tensorGenerator_toLinearMap R C M c) (tensorGenerator_toLinearMap R D M d)
+  have hraw : (TensorProduct.prodLeft R R C D M).toLinearMap.comp
+      ((TensorProduct.mk R (ModuleCat.of R (C × D)) M) (c, d)) =
+        ((TensorProduct.mk R C M) c).prod ((TensorProduct.mk R D M) d) := by
+    apply LinearMap.ext
+    intro m
+    exact TensorProduct.prodLeft_tmul R R C D M c d m
+  apply ContinuousLinearMap.coe_injective
+  exact (ContinuousLinearMap.toLinearMap_comp
+    (tensorProdLeft R C D M).toContinuousLinearMap
+    (tensorGenerator R (ModuleCat.of R (C × D)) M (c, d))).trans
+      ((congrArg₂ (fun
+        (a : tensorLeftObj R (ModuleCat.of R (C × D)) M →ₗ[R]
+          (tensorLeftObj R C M × tensorLeftObj R D M))
+        (b : M →ₗ[R] tensorLeftObj R (ModuleCat.of R (C × D)) M) ↦ a.comp b)
+          he hsource).trans (hraw.trans htarget.symm))
+
+/-- Inverse distribution reconstructs an arbitrary pair by summing its coefficient inclusions. -/
+theorem tensorProdLeft_symm_apply_pair
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (x : tensorLeftObj R C M) (y : tensorLeftObj R D M) :
+  (tensorProdLeft R C D M).symm (x,y) =
+    tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M) x +
+    tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M) y := by
+  simpa only [ContinuousLinearEquiv.coe_coe, add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd'] using
+      DFunLike.congr_fun (tensorProdLeft_symm_toContinuousLinearMap R C D M) (x, y)
+
+/-- The first projection after distribution is the tensor of the first coefficient projection. -/
+theorem tensorProdLeft_fst_comp
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (ContinuousLinearMap.fst R (tensorLeftObj R C M) (tensorLeftObj R D M)).comp
+    (tensorProdLeft R C D M).toContinuousLinearMap =
+      tensorMapCLM R (C := ModuleCat.of R (C × D)) (D := C)
+        (M := M) (N := M) (LinearMap.fst R C D) (ContinuousLinearMap.id R M) := by
+  rw [tensorProdLeft_toContinuousLinearMap, ContinuousLinearMap.fst_comp_prod]
+
+/-- The second projection after distribution is the tensor of the second coefficient projection. -/
+theorem tensorProdLeft_snd_comp
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (ContinuousLinearMap.snd R (tensorLeftObj R C M) (tensorLeftObj R D M)).comp
+    (tensorProdLeft R C D M).toContinuousLinearMap =
+      tensorMapCLM R (C := ModuleCat.of R (C × D)) (D := D)
+        (M := M) (N := M) (LinearMap.snd R C D) (ContinuousLinearMap.id R M) := by
+  rw [tensorProdLeft_toContinuousLinearMap, ContinuousLinearMap.snd_comp_prod]
+
+/-- Inverse distribution after the first inclusion is the tensor of the first coefficient
+inclusion. -/
+theorem tensorProdLeft_symm_comp_inl
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (tensorProdLeft R C D M).symm.toContinuousLinearMap.comp
+    (ContinuousLinearMap.inl R (tensorLeftObj R C M) (tensorLeftObj R D M)) =
+      tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+        (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M) := by
+  rw [tensorProdLeft_symm_toContinuousLinearMap,
+    ContinuousLinearMap.comp_fst_add_comp_snd, ContinuousLinearMap.coprod_comp_inl]
+
+/-- Inverse distribution after the second inclusion is the tensor of the second coefficient
+inclusion. -/
+theorem tensorProdLeft_symm_comp_inr
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R) :
+  (tensorProdLeft R C D M).symm.toContinuousLinearMap.comp
+    (ContinuousLinearMap.inr R (tensorLeftObj R C M) (tensorLeftObj R D M)) =
+      tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+        (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M) := by
+  rw [tensorProdLeft_symm_toContinuousLinearMap,
+    ContinuousLinearMap.comp_fst_add_comp_snd, ContinuousLinearMap.coprod_comp_inr]
+
+/-- A pair supported in the first component reconstructs by the first coefficient inclusion. -/
+theorem tensorProdLeft_symm_apply_zero_right
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (x : tensorLeftObj R C M) :
+  (tensorProdLeft R C D M).symm (x,0) =
+    tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M) x := by
+  rw [tensorProdLeft_symm_apply_pair]
+  simp only [map_zero, add_zero]
+
+/-- A pair supported in the second component reconstructs by the second coefficient inclusion. -/
+theorem tensorProdLeft_symm_apply_zero_left
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (y : tensorLeftObj R D M) :
+  (tensorProdLeft R C D M).symm (0,y) =
+    tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M) y := by
+  rw [tensorProdLeft_symm_apply_pair]
+  simp only [map_zero, zero_add]
+
+/-- Inverse distribution recombines pure tensors with the same right input. -/
+theorem tensorProdLeft_symm_tmul
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (c : C) (d : D) (m : M) :
+  (tensorProdLeft R C D M).symm (c ⊗ₜ[R] m, d ⊗ₜ[R] m) =
+    (((c,d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) := by
+  exact TensorProduct.prodLeft_symm_tmul R R C D M c d m
+
+/-- Independently chosen right inputs reconstruct as two coefficient-supported pure tensors. -/
+theorem tensorProdLeft_symm_tmul_pair
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (c : C) (d : D) (m n : M) :
+  (tensorProdLeft R C D M).symm (c ⊗ₜ[R] m, d ⊗ₜ[R] n) =
+    (((c,0) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) +
+    (((0,d) : ModuleCat.of R (C × D)) ⊗ₜ[R] n) := by
+  have hinl : tensorMapCLM R (C := C) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M)
+      (show tensorLeftObj R C M from c ⊗ₜ[R] m) =
+        (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+          ((c, 0) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) :=
+    (tensorMapCLM_apply R (C := C) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inl R C D) (ContinuousLinearMap.id R M)
+      (show tensorLeftObj R C M from c ⊗ₜ[R] m)).trans
+        (TensorProduct.map_tmul (LinearMap.inl R C D)
+          (ContinuousLinearMap.id R M).toLinearMap c m)
+  have hinr : tensorMapCLM R (C := D) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M)
+      (show tensorLeftObj R D M from d ⊗ₜ[R] n) =
+        (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+          ((0, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] n) :=
+    (tensorMapCLM_apply R (C := D) (D := ModuleCat.of R (C × D))
+      (M := M) (N := M) (LinearMap.inr R C D) (ContinuousLinearMap.id R M)
+      (show tensorLeftObj R D M from d ⊗ₜ[R] n)).trans
+        (TensorProduct.map_tmul (LinearMap.inr R C D)
+          (ContinuousLinearMap.id R M).toLinearMap d n)
+  exact (tensorProdLeft_symm_apply_pair R C D M
+    (show tensorLeftObj R C M from c ⊗ₜ[R] m)
+    (show tensorLeftObj R D M from d ⊗ₜ[R] n)).trans
+      (congrArg₂ (fun (x y : tensorLeftObj R (ModuleCat.of R (C × D)) M) ↦ x + y)
+        hinl hinr)
+
+/-- Underlying algebraic agreement characterizes coefficient-product distribution. -/
+theorem tensorProdLeft_unique
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (e : tensorLeftObj R (ModuleCat.of R (C × D)) M ≃L[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M))
+    (he : e.toLinearEquiv =
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M ≃ₗ[R]
+        (tensorLeftObj R C M × tensorLeftObj R D M) from
+          TensorProduct.prodLeft R R C D M)) :
+  e = tensorProdLeft R C D M := by
+  apply ContinuousLinearEquiv.toLinearEquiv_injective
+  exact he.trans (tensorProdLeft_toLinearEquiv R C D M).symm
+
+/-- The formula on every pure tensor characterizes coefficient-product distribution. -/
+theorem tensorProdLeft_unique_of_tmul
+    (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R) (M : TopModuleCat.{uM} R)
+    (e : tensorLeftObj R (ModuleCat.of R (C × D)) M ≃L[R]
+      (tensorLeftObj R C M × tensorLeftObj R D M))
+    (he : ∀ (c : C) (d : D) (m : M),
+      e (((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) =
+        (c ⊗ₜ[R] m, d ⊗ₜ[R] m)) :
+  e = tensorProdLeft R C D M := by
+  apply ContinuousLinearEquiv.coe_injective
+  apply tensorLeft_ext R (C := ModuleCat.of R (C × D)) (M := M)
+    (N := TopModuleCat.of R (tensorLeftObj R C M × tensorLeftObj R D M))
+  rintro ⟨c, d⟩ m
+  exact (he c d m).trans (tensorProdLeft_tmul R C D M c d m).symm
+
+/-- Distribution is natural in both algebraic coefficient maps and a continuous right-factor map. -/
+theorem tensorProdLeft_naturality
+    {C : ModuleCat.{uC} R} {D : ModuleCat.{uD} R} {M : TopModuleCat.{uM} R}
+    {C' : ModuleCat.{uM'} R} {D' : ModuleCat.{uN'} R} {N : TopModuleCat.{uN} R}
+    (f : C →ₗ[R] C') (g : D →ₗ[R] D') (h : M →L[R] N) :
+  ((tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h).prodMap
+    (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h)).comp
+      (tensorProdLeft R C D M).toContinuousLinearMap =
+    (tensorProdLeft R C' D' N).toContinuousLinearMap.comp
+      (tensorMapCLM R (C := ModuleCat.of R (C × D))
+        (D := ModuleCat.of R (C' × D')) (M := M) (N := N) (f.prodMap g) h) := by
+  apply tensorLeft_ext R (C := ModuleCat.of R (C × D)) (M := M)
+    (N := TopModuleCat.of R (tensorLeftObj R C' N × tensorLeftObj R D' N))
+  rintro ⟨c, d⟩ m
+  have hdist : tensorProdLeft R C D M
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) =
+        (show tensorLeftObj R C M × tensorLeftObj R D M from
+          (c ⊗ₜ[R] m, d ⊗ₜ[R] m)) :=
+    tensorProdLeft_tmul R C D M c d m
+  have hprod : ((tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h).prodMap
+      (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h))
+      (c ⊗ₜ[R] m, d ⊗ₜ[R] m) =
+        (show tensorLeftObj R C' N × tensorLeftObj R D' N from
+          (f c ⊗ₜ[R] h m, g d ⊗ₜ[R] h m)) :=
+    (congrFun (ContinuousLinearMap.coe_prodMap'
+      (tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h)
+      (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h))
+      (c ⊗ₜ[R] m, d ⊗ₜ[R] m)).trans
+        (congrArg₂ (fun (x : tensorLeftObj R C' N) (y : tensorLeftObj R D' N) ↦ (x, y))
+          ((tensorMapCLM_apply R (C := C) (D := C') (M := M) (N := N) f h
+            (show tensorLeftObj R C M from c ⊗ₜ[R] m)).trans
+              (TensorProduct.map_tmul f h.toLinearMap c m))
+          ((tensorMapCLM_apply R (C := D) (D := D') (M := M) (N := N) g h
+            (show tensorLeftObj R D M from d ⊗ₜ[R] m)).trans
+              (TensorProduct.map_tmul g h.toLinearMap d m)))
+  have hmap : tensorMapCLM R (C := ModuleCat.of R (C × D))
+      (D := ModuleCat.of R (C' × D')) (M := M) (N := N) (f.prodMap g) h
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) =
+        (show tensorLeftObj R (ModuleCat.of R (C' × D')) N from
+          ((f c, g d) : ModuleCat.of R (C' × D')) ⊗ₜ[R] h m) :=
+    (tensorMapCLM_apply R (C := ModuleCat.of R (C × D))
+      (D := ModuleCat.of R (C' × D')) (M := M) (N := N) (f.prodMap g) h
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m)).trans
+          (TensorProduct.map_tmul (f.prodMap g) h.toLinearMap (c, d) m)
+  have hleft : (((tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h).prodMap
+      (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h)).comp
+      (tensorProdLeft R C D M).toContinuousLinearMap)
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) =
+        (show tensorLeftObj R C' N × tensorLeftObj R D' N from
+          (f c ⊗ₜ[R] h m, g d ⊗ₜ[R] h m)) :=
+    (ContinuousLinearMap.comp_apply
+      ((tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h).prodMap
+        (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h))
+      (tensorProdLeft R C D M).toContinuousLinearMap
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m)).trans
+          ((congrArg
+            ((tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h).prodMap
+              (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h)) hdist).trans hprod)
+  have hright : ((tensorProdLeft R C' D' N).toContinuousLinearMap.comp
+      (tensorMapCLM R (C := ModuleCat.of R (C × D))
+        (D := ModuleCat.of R (C' × D')) (M := M) (N := N) (f.prodMap g) h))
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m) =
+        (show tensorLeftObj R C' N × tensorLeftObj R D' N from
+          (f c ⊗ₜ[R] h m, g d ⊗ₜ[R] h m)) :=
+    (ContinuousLinearMap.comp_apply (tensorProdLeft R C' D' N).toContinuousLinearMap
+      (tensorMapCLM R (C := ModuleCat.of R (C × D))
+        (D := ModuleCat.of R (C' × D')) (M := M) (N := N) (f.prodMap g) h)
+      (show tensorLeftObj R (ModuleCat.of R (C × D)) M from
+        ((c, d) : ModuleCat.of R (C × D)) ⊗ₜ[R] m)).trans
+          ((congrArg (tensorProdLeft R C' D' N) hmap).trans
+            (tensorProdLeft_tmul R C' D' N (f c) (g d) (h m)))
+  exact hleft.trans hright.symm
+
+/-- Inverse distribution is natural in both coefficient maps and the continuous right-factor map. -/
+theorem tensorProdLeft_symm_naturality
+    {C : ModuleCat.{uC} R} {D : ModuleCat.{uD} R} {M : TopModuleCat.{uM} R}
+    {C' : ModuleCat.{uM'} R} {D' : ModuleCat.{uN'} R} {N : TopModuleCat.{uN} R}
+    (f : C →ₗ[R] C') (g : D →ₗ[R] D') (h : M →L[R] N) :
+  (tensorMapCLM R (C := ModuleCat.of R (C × D))
+    (D := ModuleCat.of R (C' × D')) (M := M) (N := N) (f.prodMap g) h).comp
+      (tensorProdLeft R C D M).symm.toContinuousLinearMap =
+    (tensorProdLeft R C' D' N).symm.toContinuousLinearMap.comp
+      ((tensorMapCLM R (C := C) (D := C') (M := M) (N := N) f h).prodMap
+        (tensorMapCLM R (C := D) (D := D') (M := M) (N := N) g h)) := by
+  apply ContinuousLinearMap.ext
+  intro p
+  apply (tensorProdLeft R C' D' N).injective
+  have hn := DFunLike.congr_fun (tensorProdLeft_naturality R f g h)
+    ((tensorProdLeft R C D M).symm p)
+  simpa only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe,
+    ContinuousLinearEquiv.apply_symm_apply] using hn.symm
 
 end TopModuleCat
