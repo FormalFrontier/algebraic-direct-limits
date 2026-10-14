@@ -143,7 +143,7 @@ Lean modules for the exact statements and proofs.
   It uses compatible semilinear module systems over a nonempty directed preorder,
   with four independent universes and no injectivity assumption on transitions.
   See the [module](../AlgebraicDirectLimits/VaryingScalar.lean) and
-  [representative client](../tests/ReadinessClient.lean#L48).
+  [representative client](../tests/ReadinessClient.lean#L54).
 - **Coinduced topological modules.**
   [`TopModuleCat.continuous_coinduced_iff`](../AlgebraicDirectLimits/Topology/Coinduced.lean)
   characterizes continuity of a linear map out of Mathlib's existing coinduced
@@ -159,7 +159,7 @@ Lean modules for the exact statements and proofs.
   produce a monotone cofinal sequence and a final functor from `ℕ` when a
   *nonempty directed preorder has a countable cofinal subset*; the entire index
   type need not be countable. See the [module](../AlgebraicDirectLimits/CofinalSequence.lean)
-  and [client](../tests/ReadinessClient.lean#L100).
+  and [client](../tests/ReadinessClient.lean#L106).
 - **Mittag--Leffler inverse systems.**
   [`IsMittagLeffler.nonempty_sections_of_countable_cofinal`](../AlgebraicDirectLimits/MittagLeffler.lean#L66)
   gives a compatible section for a pointwise nonempty, Type-valued
@@ -169,14 +169,14 @@ Lean modules for the exact statements and proofs.
   lifts each element of an eventual range to a section; this second theorem does
   not separately assume pointwise nonemptiness. See the
   [module](../AlgebraicDirectLimits/MittagLeffler.lean) and
-  [client](../tests/ReadinessClient.lean#L136).
+  [client](../tests/ReadinessClient.lean#L142).
 - **Filtered colimits of simple rings.**
   [`RingCat.FilteredColimits.colimit_isSimpleRing`](../AlgebraicDirectLimits/SimpleRing.lean#L47)
   proves that a small filtered colimit of simple rings in the possibly
   noncommutative `RingCat` is simple. Stage-map injectivity follows from
   simplicity; it is not a diagram hypothesis. See the
   [module](../AlgebraicDirectLimits/SimpleRing.lean) and
-  [client](../tests/ReadinessClient.lean#L156).
+  [client](../tests/ReadinessClient.lean#L162).
 - **Prime spectra of filtered colimits.** For a small filtered category and
   any colimit cocone of commutative rings,
   [`PrimeSpectrum.colimitCone_isLimit`](../AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean)
@@ -229,7 +229,7 @@ Lean modules for the exact statements and proofs.
   shows non-surjectivity if `R` is a commutative domain and `r` is nonzero and
   not a unit; no finite-product claim follows. See the
   [module](../AlgebraicDirectLimits/LocalizationPi.lean) and
-  [client](../tests/ReadinessClient.lean#L166).
+  [client](../tests/ReadinessClient.lean#L172).
 - **Cofinal submonoids and group completion.** If an additive submonoid `L`
   of an arbitrary additive commutative monoid has top saturation, the canonical
   completion map [localizes at `L`](../AlgebraicDirectLimits/CofinalGroupCompletion.lean#L31).

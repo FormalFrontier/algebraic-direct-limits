@@ -26,6 +26,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectedUnion",
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.Restriction",
+  "AlgebraicDirectLimitsExamples.DiscreteScalarExtension",
   "AlgebraicDirectLimitsExamples.TensorProduct",
   "AlgebraicDirectLimitsExamples.TensorProduct.Map",
   "AlgebraicDirectLimitsExamples.TensorProduct.Prod",
@@ -42,4 +43,4 @@ roots = [
 [[lean_lib]]
 name = "ReadinessTests"
 srcDir = "tests"
-globs = ["CofinalGroupCompletionClient", "FiniteCaptureClient", "GradedStabilizationClient", "MonoidalGroupCompletionClient", "ReadinessClient", "ReadinessTests"]
+globs = ["CofinalGroupCompletionClient", "FiniteCaptureClient", "GradedStabilizationClient", "MonoidalGroupCompletionClient", "ReadinessClient", "ReadinessTests", "AlgebraicDirectLimitsTests.Topology.TensorProduct"]

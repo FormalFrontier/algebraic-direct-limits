@@ -79,7 +79,7 @@ theorem t2Space_tensorLeftObj [Module.Projective R C] [T2Space M] :
   let p : tensorLeftObj R F M →L[R] tensorLeftObj R C M :=
     tensorMapCLM R (C := F) (D := C) (M := M) (N := M) π
       (ContinuousLinearMap.id R M)
-  letI : T2Space (tensorLeftObj R F M) :=
+  let : T2Space (tensorLeftObj R F M) :=
     t2Space_tensorLeftObj_of_basis R F M
       (Finsupp.basisSingleOne : Module.Basis C R F)
   have hπs : π.comp (show C →ₗ[R] F from s) = (LinearMap.id : C →ₗ[R] C) := hs

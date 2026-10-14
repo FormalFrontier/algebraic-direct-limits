@@ -66,12 +66,10 @@ theorem M3_topologicalSpace :
 
 /-- The coefficient action is multiplication by the integer cast. -/
 theorem C3_smul (n : ℤ) (x : C3) : n • x = (n : ZMod 3) * x := by
-  change n • (x : ZMod 3) = (n : ZMod 3) * x
   rw [zsmul_eq_mul]
 
 /-- The stored right-factor action is multiplication by the same integer cast. -/
 theorem M3_smul (n : ℤ) (x : M3) : n • x = (n : ZMod 3) * x := by
-  change n • (x : ZMod 3) = (n : ZMod 3) * x
   rw [zsmul_eq_mul]
 
 /-- The right factor has jointly continuous scalar action for its stored module structure. -/
@@ -106,7 +104,7 @@ theorem C3_three_smul_one : (3 : ℤ) • (1 : C3) = 0 := by
 /-- The coefficient module is not free over the integers. -/
 theorem C3_not_free : ¬ Module.Free ℤ C3 := by
   intro hfree
-  letI : Module.Free ℤ C3 := hfree
+  let : Module.Free ℤ C3 := hfree
   have hthree : (3 : ℤ) ≠ 0 := by decide
   have hone : (1 : C3) = 0 :=
     (smul_eq_zero_iff_right (R := ℤ) (M := C3) hthree).mp C3_three_smul_one

@@ -27,9 +27,10 @@ The algebraic finite-basis coordinates use Mathlib's tensor-to-Finsupp equivalen
 followed by its finite-function equivalence. `tensorCoordinateContinuousLinearEquiv`
 realizes these coordinates as a continuous linear equivalence with the finite
 product. Its inverse sums the continuous basis generators after the canonical
-product projections. The remaining type contracts specify the induced finite-product
+product projections. The type contracts in
+`AlgebraicDirectLimitsTests.Topology.TensorProduct` specify the induced finite-product
 topology equality, basis change, and separate compactness/Hausdorff preservation
-properties. These remaining contracts are types, not proofs or exported constructions
+properties. These contracts are types, not proofs or exported constructions
 of those realizations.
 The scalar ring need not be nontrivial, discrete or a field. Carrier and coordinate
 index universes are independent.
@@ -75,9 +76,6 @@ variable {A : ModuleCat.{uC} S} {I : Type uI} {X : I → TopModuleCat.{uC} S}
 
 /- Linear continuity out of the existing coinduced module, with an independently
 leveled target. This is not a nonlinear final-topology assertion. -/
-#check (∀ (j : ∀ i, (X i).toModuleCat ⟶ A) (Y : TopModuleCat.{uN} S)
-    (f : coinduced j →ₗ[S] Y),
-    Continuous f ↔ ∀ i, Continuous (fun x : X i ↦ f (j i x)))
 
 end Coinduced
 
@@ -130,12 +128,6 @@ theorem tensorLeftObj_topologicalSpace (C : ModuleCat.{uC} R) (M : TopModuleCat.
   simp_rw [hgen]
 
 /- The unlifted topology contract is realized by `tensorLeftObj_topologicalSpace`. -/
-#check (∀ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R),
-    (tensorLeftObj R C M).topologicalSpace =
-      sInf {t : TopologicalSpace (TensorProduct R C M) |
-        @ContinuousSMul R (TensorProduct R C M) _ _ t ∧
-        @ContinuousAdd (TensorProduct R C M) t _ ∧
-        ∀ c : C, M.topologicalSpace.coinduced ((TensorProduct.mk R C M) c) ≤ t})
 
 /-- The continuous linear generator at a fixed coefficient. -/
 noncomputable def tensorGenerator (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
@@ -206,9 +198,6 @@ theorem continuous_tensorLeftObj_iff_tmul (C : ModuleCat.{uC} R)
   simpa only [tensorGenerator_apply] using continuous_tensorLeftObj_iff R C M N f
 
 /- Linear continuity is tested on fixed-coefficient generators. -/
-#check (∀ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) (N : TopModuleCat.{uN} R)
-    (f : tensorLeftObj R C M →ₗ[R] N),
-    Continuous f ↔ ∀ c : C, Continuous (fun m : M ↦ f (c ⊗ₜ[R] m)))
 
 section TensorMaps
 
@@ -324,29 +313,11 @@ theorem exists_tensorMapCLM (f : C →ₗ[R] D) (g : M →L[R] N) :
   ⟨tensorMapCLM R f g, tensorMapCLM_toLinearMap R f g⟩
 
 /- Continuous realization of the two-variable algebraic tensor map. -/
-#check (∀ (f : C →ₗ[R] D) (g : M →L[R] N),
-    ∃ t : tensorLeftObj R C M →L[R] tensorLeftObj R D N,
-      t.toLinearMap = TensorProduct.map f g.toLinearMap)
 
 /- Its pure-tensor law is specified through the exact algebraic agreement. -/
-#check (∀ (f : C →ₗ[R] D) (g : M →L[R] N)
-    (t : tensorLeftObj R C M →L[R] tensorLeftObj R D N),
-    t.toLinearMap = TensorProduct.map f g.toLinearMap →
-      ∀ c m, t (c ⊗ₜ[R] m) = f c ⊗ₜ[R] g m)
 
 /- Identity and composition laws for continuous realizations of Mathlib's map. -/
-#check (∀ (t : tensorLeftObj R C M →L[R] tensorLeftObj R C M),
-    t.toLinearMap = TensorProduct.map (LinearMap.id : C →ₗ[R] C)
-      (LinearMap.id : M →ₗ[R] M) → t = ContinuousLinearMap.id R (tensorLeftObj R C M))
 
-#check (∀ (f : C →ₗ[R] D) (f' : D →ₗ[R] E) (g : M →L[R] N) (g' : N →L[R] P)
-    (t : tensorLeftObj R C M →L[R] tensorLeftObj R D N)
-    (t' : tensorLeftObj R D N →L[R] tensorLeftObj R E P)
-    (t'' : tensorLeftObj R C M →L[R] tensorLeftObj R E P),
-    t.toLinearMap = TensorProduct.map f g.toLinearMap →
-    t'.toLinearMap = TensorProduct.map f' g'.toLinearMap →
-    t''.toLinearMap = TensorProduct.map (f'.comp f) (g'.comp g).toLinearMap →
-      t'' = t'.comp t)
 
 section MapLinearity
 
@@ -615,31 +586,17 @@ theorem exists_tensorCoordinateContinuousLinearEquiv (b : Module.Basis ι R C) :
   exact tensorCoordinateContinuousLinearEquiv_unique R C M b e he
 
 /- Continuous coordinates must realize this precise algebraic equivalence. -/
-#check (∀ b : Module.Basis ι R C,
-    ∃ e : tensorLeftObj R C M ≃L[R] (ι → M),
-      e.toLinearEquiv = tensorCoordinateLinearEquiv R C M b)
 
-#check (∀ (b : Module.Basis ι R C) (e : tensorLeftObj R C M ≃L[R] (ι → M)),
-    e.toLinearEquiv = tensorCoordinateLinearEquiv R C M b →
-      ∀ c m i, e (c ⊗ₜ[R] m) i = b.repr c i • m)
 
 section FiniteSums
 
 variable [Fintype ι]
 
-#check (∀ (b : Module.Basis ι R C) (e : tensorLeftObj R C M ≃L[R] (ι → M)),
-    e.toLinearEquiv = tensorCoordinateLinearEquiv R C M b →
-      ∀ x : ι → M, e.symm x = ∑ i, b i ⊗ₜ[R] x i)
 
 end FiniteSums
 
 /- Finite-basis topology and separate conditional preservation properties. -/
-#check (∀ b : Module.Basis ι R C,
-    (tensorLeftObj R C M).topologicalSpace =
-      TopologicalSpace.induced (tensorCoordinateLinearEquiv R C M b) Pi.topologicalSpace)
 
-#check (∀ (_b : Module.Basis ι R C), CompactSpace M → CompactSpace (tensorLeftObj R C M))
-#check (∀ (_b : Module.Basis ι R C), T2Space M → T2Space (tensorLeftObj R C M))
 
 end Coordinates
 
@@ -649,55 +606,23 @@ variable (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
 variable {ι : Type uι} {κ : Type uκ} [Finite ι] [Finite κ]
 
 /- The transition between independently indexed finite bases, with linear agreement. -/
-#check (∀ (b : Module.Basis ι R C) (b' : Module.Basis κ R C),
-    ∃ e : (ι → M) ≃L[R] (κ → M),
-      e.toLinearEquiv = (tensorCoordinateLinearEquiv R C M b).symm.trans
-        (tensorCoordinateLinearEquiv R C M b'))
 
 section FiniteSums
 
 variable [Fintype ι]
 
-#check (∀ (b : Module.Basis ι R C) (b' : Module.Basis κ R C)
-    (e : (ι → M) ≃L[R] (κ → M)),
-    e.toLinearEquiv = (tensorCoordinateLinearEquiv R C M b).symm.trans
-      (tensorCoordinateLinearEquiv R C M b') →
-      ∀ (x : ι → M) (k : κ), e x k = ∑ i, b'.repr (b i) k • x i)
 
 end FiniteSums
 
-#check (∀ (b : Module.Basis ι R C) (b' : Module.Basis κ R C)
-    (e : (ι → M) ≃L[R] (κ → M)) (e' : (κ → M) ≃L[R] (ι → M)),
-    e.toLinearEquiv = (tensorCoordinateLinearEquiv R C M b).symm.trans
-      (tensorCoordinateLinearEquiv R C M b') →
-    e'.toLinearEquiv = (tensorCoordinateLinearEquiv R C M b').symm.trans
-      (tensorCoordinateLinearEquiv R C M b) → e.symm = e')
 
 end BasisChange
 
 /- Right-factor coordinate naturality for a continuous realization of the tensor map. -/
-#check (∀ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) (N : TopModuleCat.{uN} R)
-    (ι : Type uι) [Finite ι] (b : Module.Basis ι R C) (g : M →L[R] N)
-    (t : tensorLeftObj R C M →L[R] tensorLeftObj R C N),
-    t.toLinearMap = TensorProduct.map (LinearMap.id : C →ₗ[R] C) g.toLinearMap →
-      ∀ (x : tensorLeftObj R C M) (i : ι),
-        tensorCoordinateLinearEquiv R C N b (t x) i =
-          g (tensorCoordinateLinearEquiv R C M b x i))
 
 /- Canonical finite-free compactness and Hausdorffness contracts are independent. -/
-#check (∀ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
-    [Module.Free R C] [Module.Finite R C],
-    CompactSpace M → CompactSpace (tensorLeftObj R C M))
 
-#check (∀ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
-    [Module.Free R C] [Module.Finite R C],
-    T2Space M → T2Space (tensorLeftObj R C M))
 
 /- The canonical continuous-coordinate contract uses Mathlib's existing finite
 chosen-basis index, including over trivial rings. -/
-#check (∀ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
-    [Module.Free R C] [Module.Finite R C],
-    ∃ e : tensorLeftObj R C M ≃L[R] (Module.Free.ChooseBasisIndex R C → M),
-      e.toLinearEquiv = tensorCoordinateLinearEquiv R C M (Module.Free.chooseBasis R C))
 
 end TopModuleCat

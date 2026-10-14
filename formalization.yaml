@@ -3,7 +3,8 @@ version: "v0.4"
 project:
   name: Algebraic Direct Limits
   description: >-
-    Reusable Lean results for varying-scalar directed limits, tensor products,
+    Reusable Lean results for constant identity function and ring-homomorphism systems,
+    varying-scalar directed limits, tensor products,
     countably cofinal inverse systems, simple filtered ring colimits,
     prime spectra of filtered commutative-ring colimits,
     Krull dimension under finite-subset capture, for directed colimits and for
@@ -11,11 +12,14 @@ project:
     localization of countable products, cofinal group completions,
     monoidal-category object classes with actual-image cofinality, same-topology
     scalar restriction, linear continuity for coinduced topological modules,
-    continuous finite-basis coordinates for one-sided tensor products,
-    continuous tensor universal properties, the scalar tensor unit, continuous
+    continuous finite-basis coordinates and binary-product distribution for
+    one-sided tensor products, continuous tensor universal properties,
+    the scalar tensor unit, continuous
     associativity, compactness for finitely generated tensor coefficients,
-    arbitrary-basis and projective tensor Hausdorffness preservation, and
-    a rational-circle counterexample to flat-coefficient tensor Hausdorff
+    arbitrary-basis and projective tensor Hausdorffness preservation,
+    scalar extension by discrete coefficient algebras with separate base-linear
+    and coefficient-linear views, a continuous unit and functorial continuous maps,
+    and a rational-circle counterexample to flat-coefficient tensor Hausdorff
     preservation, with an algebraic quotient detector and dense rational-angle
     tensor-vanishing laws.
   authors:
@@ -50,14 +54,16 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Twenty-three mathematical leaf modules and a public re-export (24 library
-    modules), eighteen example modules and six test modules (five standalone
-    clients and their aggregate): 48 modules in the default targets. The
+    Twenty-six mathematical leaf modules and a public re-export (27 library
+    modules), nineteen example modules and seven test modules (six standalone
+    clients and their aggregate): 53 modules in the default targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
     dimensions including proper subsemiring traces, coinduced modules, integer-pair
-    tensors, tensor-Hom, the scalar unit, scalar restriction, tensor separation,
+    tensors, tensor-Hom, the scalar unit, scalar restriction, discrete scalar extension,
+    tensor separation and binary-product distribution with infinite integer
+    coefficients and usual real right factors,
     infinite-basis and nonfree projective coefficients, tensor associativity with
     nonfree torsion and empty coefficients, finite torsion tensor compactness,
     and rational coefficients with the usual real circle.
@@ -95,7 +101,10 @@ status:
     The one-sided tensor topology is constructed from fixed-coefficient
     generators, with their characteristic linear continuity criterion,
     canonical continuous tensor maps and continuous finite-basis coordinates
-    with the product topology and finite-sum inverse. Continuous linear maps out
+    with the product topology and finite-sum inverse. The tensor maps obey whole-map
+    zero, addition, scalar and finite-sum laws in each variable. Infinite-rank integer
+    coefficient projections on the usual real right module give distinct nonzero
+    supported outputs and unequal-weight detectors. Continuous linear maps out
     of the tensor correspond to algebraic linear families of continuous linear
     maps on the right factor, with explicit lift/curry constructions and
     naturality. The scalar tensor unit equips Mathlib's algebraic left identity
@@ -103,6 +112,12 @@ status:
     allow independent carrier universes over a commutative ring with a supplied
     topology and jointly continuous right-factor actions, without a topology
     on the coefficients or a finiteness hypothesis.
+    The binary-product tensor equivalence distributes an algebraic coefficient
+    module over two topological right factors, using their ordinary product
+    topology over a commutative ring with a supplied topology. Its underlying
+    equivalence is Mathlib's algebraic product equivalence; projection, inclusion,
+    inverse reconstruction and naturality laws retain independent carrier
+    universes without a finiteness or separation hypothesis.
     The algebraic associator becomes a continuous linear equivalence between
     the supplied one-sided tensor topologies, with pure-tensor formulas,
     inverse identities, threefold extensionality and naturality in all three
@@ -128,6 +143,18 @@ status:
     the discrete integer product ring, including model properties and explicit
     disjoint open pullbacks. These are forward Hausdorff preservation results;
     no Hausdorffness reflection or infinite-product surjectivity is asserted.
+    Scalar extension by a discrete, possibly noncommutative coefficient algebra
+    has separate base-linear and coefficient-linear views with the same primitive
+    tensor topology. Fixed-coefficient continuity gives a jointly continuous
+    coefficient action, a continuous base-linear unit and functorial
+    coefficient-linear maps. For commutative coefficients the underlying module
+    is naturally isomorphic to Mathlib's algebraic scalar extension.
+    Matrix/countable-product examples have nonzero tensors, a tensor moved by
+    extended doubling and an order-sensitive scalar action. A rank-one example
+    uses the same scalar ring for base and coefficients, a swapping nonidentity
+    algebra map, and a separately bundled regular input. Its coefficient-linear
+    comparison detects a nonzero unit, differing base and coefficient scalar
+    actions, and a nonzero nonidentity extended projection.
     Tensoring a compact topological module with a finitely generated algebraic
     coefficient module preserves compactness, over a commutative ring with a
     supplied topology and independent carrier universes. A finite spanning
@@ -145,6 +172,14 @@ status:
     of its preimages in the stages. Finite-variable polynomial examples establish
     this hypothesis without any one stage surjecting onto the target or its
     proper even-variable subsemiring.
+    Constant families with identity transition functions satisfy Mathlib's
+    DirectedSystem laws over arbitrary preorders, with independent index and
+    carrier universes and no directedness or nonemptiness assumption.
+    The constant identity ring-homomorphism system specializes this same law witness
+    for any nonassociative semiring, using Mathlib's identity-coercion API.
+    The topology test client retains linear-continuity, tensor-map, finite-coordinate,
+    basis-change and preservation type contracts without asserting proofs of the
+    remaining realizations.
     The dimension of a directed colimit of commutative semirings
     over a nonempty directed preorder is bounded by the supremum of stage dimensions,
     without injective transitions and with independent index and stage universes.
@@ -178,6 +213,9 @@ review:
     boundary examples. Scalar restriction has characteristic action and
     forgetful agreements, natural identity and composition comparisons, and
     a semiring regular-action continuity criterion with Algebra agreement.
+    Discrete scalar extension retains separate scalar views and has characteristic
+    action, map, unit and underlying-module comparisons, with matrix/countable-
+    product and same-ring swapping rank-one clients.
     This does not assert source-author endorsement or
     complete formal coverage of a source. API documentation is partial;
     see docs/CREDITS.md and docs/README.md.

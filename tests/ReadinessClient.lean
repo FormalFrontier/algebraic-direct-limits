@@ -9,8 +9,11 @@ public import AlgebraicDirectLimits
 /-!
 # Aggregate-import client
 
-These private checks use the older five mathematical modules through the public
-aggregate only, without assuming injective transitions or countable index types.
+The public theorem `tensor_equiv_on_representatives` records the pure-tensor
+formula for compatible module systems over varying commutative semirings.
+The remaining checks are private. All use the five mathematical modules below
+through the public aggregate only, without assuming injective transitions or
+countable index types.
 -/
 
 public section
@@ -45,7 +48,10 @@ private theorem module_transition_on_representatives {i j : ι} (hij : i ≤ j) 
     of A f M g j (g i j hij m) = of A f M g i m :=
   of_map A f M g hij m
 
-private theorem tensor_equiv_on_representatives (i : ι) (m : M i) (n : N i) :
+/-- The tensor equivalence sends a pure tensor of two representatives at one
+stage to the representative of their stagewise tensor. The scalar, left-module
+and right-module universes are independent, and transitions need not be injective. -/
+theorem tensor_equiv_on_representatives (i : ι) (m : M i) (n : N i) :
     tensorProductEquiv A f M g N h
         (of A f M g i m ⊗ₜ[ScalarLimit A f] of A f N h i n) =
       tensorOf A f M g N h i (m ⊗ₜ[A i] n) :=
@@ -176,25 +182,5 @@ private theorem comparison_not_surjective [IsDomain R] (r : R)
 
 end LocalizationPi
 
-#print axioms scalar_action_on_representatives
-#print axioms module_transition_on_representatives
-#print axioms tensor_equiv_on_representatives
-#print axioms tensor_map_stage_rw
-#print axioms tensor_map_stage_simp
-#print axioms tensor_map_quotient_simp
-#print axioms tensor_equiv_stage_rw
-#print axioms tensor_equiv_stage_simp
-#print axioms tensor_equiv_quotient_simp
-#print axioms DirectLimit.VaryingScalar.toTensorLimit_tmul_mk_mk
-#print axioms DirectLimit.VaryingScalar.tensorProductEquiv_tmul_mk_mk
-#print axioms cofinal_restriction_without_nonempty
-#print axioms cofinal_restriction_old_assumptions
-#print axioms tensor_inverse_on_representatives
-#print axioms monotone_cofinal_sequence
-#print axioms sections_of_pointwise_nonempty
-#print axioms evaluation_onto_eventual_range
-#print axioms simple_filtered_colimit
-#print axioms comparison_on_original_product
-#print axioms comparison_not_surjective
 
 end AlgebraicDirectLimits.Tests.Readiness

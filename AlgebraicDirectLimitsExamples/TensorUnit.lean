@@ -77,7 +77,7 @@ theorem twiceFirstUnitTensor_image :
   change TopModuleCat.tensorUnitContinuousLinearEquiv ℤ integerPairModule
     (TopModuleCat.tensorGenerator ℤ (ModuleCat.of ℤ ℤ) integerPairModule 2 firstVector) = _
   rw [TopModuleCat.tensorUnitContinuousLinearEquiv_tensorGenerator_apply]
-  simp [firstVector, Prod.smul_mk, smul_eq_mul]
+  simp [firstVector, Prod.smul_mk]
 
 /-- The tensor inverse image of the first vector is nonzero. -/
 theorem firstUnitTensor_ne_zero : firstUnitTensor ≠ 0 := by
@@ -104,7 +104,7 @@ noncomputable def integerPairDoubling : integerPairModule →L[ℤ] integerPairM
 /-- Right-factor doubling sends the first vector to `(2, 0)`. -/
 theorem integerPairDoubling_apply_firstVector :
     integerPairDoubling firstVector = ((2, 0) : integerPairModule) := by
-  simp [integerPairDoubling, firstVector, Prod.smul_mk, smul_eq_mul]
+  simp [integerPairDoubling, firstVector, Prod.smul_mk]
 
 /-- Right-factor doubling is not the identity continuous linear map. -/
 theorem integerPairDoubling_ne_id :

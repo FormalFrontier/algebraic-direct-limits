@@ -9,5 +9,6 @@ public import FiniteCaptureClient
 public import GradedStabilizationClient
 public import MonoidalGroupCompletionClient
 public import ReadinessClient
+public import AlgebraicDirectLimitsTests.Topology.TensorProduct
 
-/-! Build entry point for the five standalone public-API clients. -/
+/-! Build entry point for the six standalone public-API clients. -/

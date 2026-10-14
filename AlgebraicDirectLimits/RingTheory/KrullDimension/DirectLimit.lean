@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import AlgebraicDirectLimits.RingTheory.DirectLimit
 public import AlgebraicDirectLimits.RingTheory.KrullDimension.FiniteCapture
 public import Mathlib.Algebra.Colimit.DirectLimit
 public import Mathlib.Data.Set.Finite.Lattice

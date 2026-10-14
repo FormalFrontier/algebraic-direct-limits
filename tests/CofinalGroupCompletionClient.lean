@@ -90,20 +90,5 @@ theorem punit_completion_injective :
 #check @exists_cofinal_denominator
 #check @of_eq_iff_exists_cofinal_stabilizer
 #check @lift_subtype_injective
-#print axioms isLocalizationMap_of_saturation_eq_top
-#print axioms exists_cofinal_denominator
-#print axioms of_eq_iff_exists_cofinal_stabilizer
-#print axioms lift_subtype_injective
-#print axioms localization_of_top_saturation
-#print axioms denominator_representation
-#print axioms cofinal_stabilizer_characterization
-#print axioms inclusion_completion_injective
-#print axioms evens_saturation
-#print axioms evens_proper
-#print axioms evens_completion_injective
-#print axioms evens_denominators
-#print axioms noncancellative_canonical_map_not_injective
-#print axioms noncancellative_completion_injective
-#print axioms punit_completion_injective
 
 end CofinalGroupCompletionClient

@@ -78,7 +78,7 @@ theorem infiniteCoefficients_free : Module.Free ℤ infiniteCoefficients := by
 
 /-- Stock free-to-projective inference supplies the projective dictionary. -/
 theorem infiniteCoefficients_projective : Module.Projective ℤ infiniteCoefficients := by
-  letI : Module.Free ℤ infiniteCoefficients := infiniteCoefficients_free
+  let : Module.Free ℤ infiniteCoefficients := infiniteCoefficients_free
   infer_instance
 
 /-- The infinite canonical basis rules out finite generation, by Mathlib's stock result. -/
@@ -95,8 +95,8 @@ theorem realModule_t2 : T2Space realModule := by
 /-- The usual dense-order topology of the reals is not discrete. -/
 theorem realModule_not_discrete : ¬ DiscreteTopology realModule := by
   intro h
-  letI : DiscreteTopology ℝ := h
-  letI : Subsingleton ℝ := DenselyOrdered.subsingleton_of_discreteTopology
+  let : DiscreteTopology ℝ := h
+  let : Subsingleton ℝ := DenselyOrdered.subsingleton_of_discreteTopology
   exact (zero_ne_one : (0 : ℝ) ≠ 1) (Subsingleton.elim _ _)
 
 /-- The one-sided tensor of infinite integer coefficients with the usual reals. -/
@@ -261,21 +261,21 @@ theorem infiniteTensor_t2_of_basis : T2Space infiniteTensor :=
 
 /-- The projective preservation statement also applies to these infinite coefficients. -/
 theorem infiniteTensor_t2_projective : T2Space infiniteTensor := by
-  letI : Module.Projective ℤ infiniteCoefficients := infiniteCoefficients_projective
+  let : Module.Projective ℤ infiniteCoefficients := infiniteCoefficients_projective
   exact TopModuleCat.t2Space_tensorLeftObj ℤ infiniteCoefficients realModule
 
 /-- The supplied-basis statement separates the exhibited nonzero pure tensor from zero. -/
 theorem infiniteFirstTensor_separated_zero :
     ∃ U V : Set infiniteTensor, IsOpen U ∧ IsOpen V ∧
       infiniteFirstTensor ∈ U ∧ 0 ∈ V ∧ Disjoint U V := by
-  letI : T2Space infiniteTensor := infiniteTensor_t2_of_basis
+  let : T2Space infiniteTensor := infiniteTensor_t2_of_basis
   exact t2_separation infiniteFirstTensor_ne_zero
 
 /-- The projective statement separates the exhibited mixed tensors. -/
 theorem infiniteMixed_separated_projective :
     ∃ U V : Set infiniteTensor, IsOpen U ∧ IsOpen V ∧
       infiniteMixedX ∈ U ∧ infiniteMixedY ∈ V ∧ Disjoint U V := by
-  letI : T2Space infiniteTensor := infiniteTensor_t2_projective
+  let : T2Space infiniteTensor := infiniteTensor_t2_projective
   exact t2_separation infiniteMixedX_ne_mixedY
 
 /-- The discrete product ring with componentwise multiplication. -/
@@ -331,7 +331,7 @@ theorem firstAxisCoefficients_projective : Module.Projective productRing firstAx
 theorem firstAxisElement_ne_zero : firstAxisElement ≠ 0 := by
   intro h
   have hv := congrArg (fun z : firstAxisCoefficients ↦ (z : productRing).1) h
-  simpa [firstAxisElement, firstAxisIdempotent] using hv
+  simp [firstAxisElement, firstAxisIdempotent] at hv
 
 /-- Zero and the packaged generator show that the coefficient module is nontrivial. -/
 theorem firstAxisCoefficients_nontrivial : Nontrivial firstAxisCoefficients :=
@@ -341,7 +341,7 @@ theorem firstAxisCoefficients_nontrivial : Nontrivial firstAxisCoefficients :=
 theorem secondAxisScalar_ne_zero : secondAxisScalar ≠ 0 := by
   intro h
   have hv := congrArg Prod.snd h
-  simpa [secondAxisScalar] using hv
+  simp [secondAxisScalar] at hv
 
 /-- The complementary scalar annihilates every element of the canonical ideal. -/
 theorem secondAxisScalar_smul (z : firstAxisCoefficients) : secondAxisScalar • z = 0 := by
@@ -354,8 +354,8 @@ theorem secondAxisScalar_smul (z : firstAxisCoefficients) : secondAxisScalar •
 /-- This projective ideal is not free: a nonzero scalar kills the entire nontrivial module. -/
 theorem firstAxisCoefficients_not_free : ¬ Module.Free productRing firstAxisCoefficients := by
   intro h
-  letI : Module.Free productRing firstAxisCoefficients := h
-  letI : Nontrivial firstAxisCoefficients := firstAxisCoefficients_nontrivial
+  let : Module.Free productRing firstAxisCoefficients := h
+  let : Nontrivial firstAxisCoefficients := firstAxisCoefficients_nontrivial
   apply secondAxisScalar_ne_zero
   exact eq_of_smul_eq_smul (α := firstAxisCoefficients) (fun z ↦ by
     rw [secondAxisScalar_smul, zero_smul])
@@ -413,7 +413,8 @@ theorem firstAxisTensorValue_first :
   rw [TopModuleCat.tensorLiftCLM_tmul]
   simp [LinearMap.smulRight_apply, firstAxisElement, smul_eq_mul]
 
-/-- Explicit singleton pullbacks are disjoint open neighborhoods in this supplied tensor topology. -/
+/-- Explicit singleton pullbacks are disjoint open neighborhoods
+in this supplied tensor topology. -/
 theorem firstAxisTensor_separated_preimages :
     ∃ U V : Set firstAxisTensorObj, IsOpen U ∧ IsOpen V ∧
       firstAxisTensor ∈ U ∧ 0 ∈ V ∧ Disjoint U V := by
@@ -427,18 +428,18 @@ theorem firstAxisTensor_separated_preimages :
     simp only [Set.mem_preimage, Set.mem_singleton_iff] at hx hy
     have he : firstAxisIdempotent = 0 := hx.symm.trans hy
     have hv := congrArg Prod.fst he
-    simpa [firstAxisIdempotent] using hv
+    simp [firstAxisIdempotent] at hv
 
 /-- The projective preservation statement applies to the nonfree ideal model. -/
 theorem firstAxisTensor_t2 : T2Space firstAxisTensorObj := by
-  letI : Module.Projective productRing firstAxisCoefficients := firstAxisCoefficients_projective
+  let : Module.Projective productRing firstAxisCoefficients := firstAxisCoefficients_projective
   exact TopModuleCat.t2Space_tensorLeftObj productRing firstAxisCoefficients productModule
 
 /-- The projective statement separates the exhibited nonzero ideal tensor from zero. -/
 theorem firstAxisTensor_separated_zero :
     ∃ U V : Set firstAxisTensorObj, IsOpen U ∧ IsOpen V ∧
       firstAxisTensor ∈ U ∧ 0 ∈ V ∧ Disjoint U V := by
-  letI : T2Space firstAxisTensorObj := firstAxisTensor_t2
+  let : T2Space firstAxisTensorObj := firstAxisTensor_t2
   exact t2_separation firstAxisTensor_ne_zero
 
 section IndependentUniverses
@@ -499,7 +500,7 @@ theorem projectiveCoefficients_separates_tensor [Module.Projective R C] [T2Space
     (x y : TopModuleCat.tensorLeftObj R C M) (hne : x ≠ y) :
     ∃ U V : Set (TopModuleCat.tensorLeftObj R C M),
       IsOpen U ∧ IsOpen V ∧ x ∈ U ∧ y ∈ V ∧ Disjoint U V := by
-  letI : T2Space (TopModuleCat.tensorLeftObj R C M) :=
+  let : T2Space (TopModuleCat.tensorLeftObj R C M) :=
     TopModuleCat.t2Space_tensorLeftObj R C M
   exact t2_separation hne
 

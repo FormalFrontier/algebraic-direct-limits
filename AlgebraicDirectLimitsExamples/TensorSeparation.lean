@@ -86,7 +86,7 @@ theorem residueModule_three_smul_one : (3 : ℤ) • (1 : residueModule) = 0 := 
 /-- The residue right factor is not a free integer module. -/
 theorem residueModule_not_free : ¬ Module.Free ℤ residueModule := by
   intro h
-  letI : Module.Free ℤ residueModule := h
+  let : Module.Free ℤ residueModule := h
   have hone : (1 : residueModule) = 0 :=
     (smul_eq_zero_iff_right (by norm_num : (3 : ℤ) ≠ 0)).mp
       residueModule_three_smul_one
@@ -210,7 +210,7 @@ theorem residueTensor_t2_of_basis : T2Space residueTensor := by
 /-- The projective statement applies to these finite-free coefficients through
 Mathlib's free-to-projective instance. -/
 theorem residueTensor_t2 : T2Space residueTensor := by
-  letI : Module.Free ℤ integerPairCoefficients :=
+  let : Module.Free ℤ integerPairCoefficients :=
     Module.Free.of_basis (Module.Basis.finTwoProd ℤ)
   exact TopModuleCat.t2Space_tensorLeftObj ℤ integerPairCoefficients residueModule
 
@@ -218,14 +218,14 @@ theorem residueTensor_t2 : T2Space residueTensor := by
 theorem residueFirstTensor_separated_zero :
     ∃ U V : Set residueTensor, IsOpen U ∧ IsOpen V ∧
       residueFirstTensor ∈ U ∧ 0 ∈ V ∧ Disjoint U V := by
-  letI : T2Space residueTensor := residueTensor_t2_of_basis
+  let : T2Space residueTensor := residueTensor_t2_of_basis
   exact t2_separation residueFirstTensor_ne_zero
 
 /-- The canonical theorem separates the distinct pure and mixed tensors. -/
 theorem residueFirstTensor_separated_mixed :
     ∃ U V : Set residueTensor, IsOpen U ∧ IsOpen V ∧
       residueFirstTensor ∈ U ∧ residueMixedTensor ∈ V ∧ Disjoint U V := by
-  letI : T2Space residueTensor := residueTensor_t2
+  let : T2Space residueTensor := residueTensor_t2
   exact t2_separation residueFirstTensor_ne_mixed
 
 /-- The existing discrete integer right factor is noncompact. -/
@@ -243,7 +243,7 @@ theorem integerFirstTensor_separated_zero :
     ∃ U V : Set (TopModuleCat.tensorLeftObj ℤ integerPairCoefficients integerModule),
       IsOpen U ∧ IsOpen V ∧ TensorProductExamples.firstGeneratorTensor ∈ U ∧
         0 ∈ V ∧ Disjoint U V := by
-  letI := integerTensor_t2
+  let := integerTensor_t2
   exact t2_separation TensorProductExamples.firstGeneratorTensor_ne_zero
 
 section Boundaries
@@ -253,7 +253,7 @@ variable (R : Type uR) [CommRing R] [TopologicalSpace R]
 /-- The explicit empty `Fin 0` coefficient basis gives a Hausdorff tensor for every right factor. -/
 theorem emptyCoefficient_t2 (M : TopModuleCat.{uM} R) :
     T2Space (TopModuleCat.tensorLeftObj R (ModuleCat.of R (Fin 0 → R)) M) := by
-  letI : Subsingleton (TopModuleCat.tensorLeftObj R (ModuleCat.of R (Fin 0 → R)) M) :=
+  let : Subsingleton (TopModuleCat.tensorLeftObj R (ModuleCat.of R (Fin 0 → R)) M) :=
     ⟨fun x y ↦ (TensorProductExamples.emptyCoefficient_tensor_eq_zero R M x).trans
       (TensorProductExamples.emptyCoefficient_tensor_eq_zero R M y).symm⟩
   infer_instance
@@ -261,7 +261,7 @@ theorem emptyCoefficient_t2 (M : TopModuleCat.{uM} R) :
 /-- Trivial scalar rings give Hausdorff tensors without finite-free or right separation premises. -/
 theorem trivialRing_t2 [Subsingleton R] (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) :
     T2Space (TopModuleCat.tensorLeftObj R C M) := by
-  letI : Subsingleton (TopModuleCat.tensorLeftObj R C M) :=
+  let : Subsingleton (TopModuleCat.tensorLeftObj R C M) :=
     Module.subsingleton R (TopModuleCat.tensorLeftObj R C M)
   infer_instance
 
@@ -269,8 +269,8 @@ theorem trivialRing_t2 [Subsingleton R] (C : ModuleCat.{uC} R) (M : TopModuleCat
 theorem trivialRing_t2_of_basis [Subsingleton R]
     (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R) {ι : Type uι}
     (b : Module.Basis ι R C) : T2Space (TopModuleCat.tensorLeftObj R C M) := by
-  letI : Subsingleton M := Module.subsingleton R M
-  letI : T2Space M := inferInstance
+  let : Subsingleton M := Module.subsingleton R M
+  let : T2Space M := inferInstance
   exact TopModuleCat.t2Space_tensorLeftObj_of_basis R C M b
 
 /-- Free coefficients over a trivial ring satisfy the projective statement;
@@ -278,8 +278,8 @@ in particular this includes the finite-free specialization. -/
 theorem trivialRing_freeFinite_t2 [Subsingleton R]
     (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
     [Module.Free R C] : T2Space (TopModuleCat.tensorLeftObj R C M) := by
-  letI : Subsingleton M := Module.subsingleton R M
-  letI : T2Space M := inferInstance
+  let : Subsingleton M := Module.subsingleton R M
+  let : T2Space M := inferInstance
   exact TopModuleCat.t2Space_tensorLeftObj R C M
 
 end Boundaries
@@ -299,9 +299,9 @@ abbrev indiscreteIntegerModule : TopModuleCat ℤ :=
 /-- The nontrivial indiscrete integer module is not Hausdorff. -/
 theorem indiscreteIntegerModule_not_t2 : ¬ T2Space indiscreteIntegerModule := by
   intro h
-  letI : T2Space indiscreteIntegerModule := h
-  letI : IndiscreteTopology indiscreteIntegerModule := ⟨rfl⟩
-  letI : Subsingleton indiscreteIntegerModule :=
+  let : T2Space indiscreteIntegerModule := h
+  let : IndiscreteTopology indiscreteIntegerModule := ⟨rfl⟩
+  let : Subsingleton indiscreteIntegerModule :=
     subsingleton_iff_indiscreteTopology.mpr inferInstance
   have h01 := Subsingleton.elim
     (show indiscreteIntegerModule from (0 : ℤ))
@@ -323,7 +323,7 @@ theorem finiteBasis_separates_tensor
     (x y : TopModuleCat.tensorLeftObj R C M) (hne : x ≠ y) :
     ∃ U V : Set (TopModuleCat.tensorLeftObj R C M),
       IsOpen U ∧ IsOpen V ∧ x ∈ U ∧ y ∈ V ∧ Disjoint U V := by
-  letI := TopModuleCat.t2Space_tensorLeftObj_of_basis R C M b
+  let := TopModuleCat.t2Space_tensorLeftObj_of_basis R C M b
   exact t2_separation hne
 
 section ZeroRight
@@ -338,19 +338,19 @@ abbrev zeroRightModule : TopModuleCat R :=
 theorem zeroRight_t2_of_basis (C : ModuleCat.{uC} R) {ι : Type uι}
     (b : Module.Basis ι R C) :
     T2Space (TopModuleCat.tensorLeftObj R C (zeroRightModule R)) := by
-  letI : Subsingleton (zeroRightModule R) := by
+  let : Subsingleton (zeroRightModule R) := by
     change Subsingleton (Fin 0 → R)
     exact ⟨fun f g ↦ funext (fun i ↦ Fin.elim0 i)⟩
-  letI : T2Space (zeroRightModule R) := inferInstance
+  let : T2Space (zeroRightModule R) := inferInstance
   exact TopModuleCat.t2Space_tensorLeftObj_of_basis R C (zeroRightModule R) b
 
 /-- The projective statement also applies to the canonical zero right module. -/
 theorem zeroRight_projective_t2 (C : ModuleCat.{uC} R) [Module.Projective R C] :
     T2Space (TopModuleCat.tensorLeftObj R C (zeroRightModule R)) := by
-  letI : Subsingleton (zeroRightModule R) := by
+  let : Subsingleton (zeroRightModule R) := by
     change Subsingleton (Fin 0 → R)
     exact ⟨fun f g ↦ funext (fun i ↦ Fin.elim0 i)⟩
-  letI : T2Space (zeroRightModule R) := inferInstance
+  let : T2Space (zeroRightModule R) := inferInstance
   exact TopModuleCat.t2Space_tensorLeftObj R C (zeroRightModule R)
 
 end ZeroRight

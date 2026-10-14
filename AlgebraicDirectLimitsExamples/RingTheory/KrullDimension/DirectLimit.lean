@@ -22,6 +22,11 @@ These facts use the characteristic maps and universal property of the colimit.
 The directed-colimit dimension bound specializes to both systems: it bounds the
 constant limit by the integer dimension and the quotient limit by the supremum
 of the two stage dimensions.
+
+`DirectLimitExamples.constant_dimension_bound` is a public example of the
+bound for the constant integer system, expressed using Mathlib's `DirectLimit`
+and identity transition maps. The projections and two-stage calculations remain
+private supporting examples.
 -/
 
 @[expose] public section
@@ -30,14 +35,10 @@ namespace DirectLimitExamples
 
 noncomputable section
 
-private instance : DirectedSystem (fun _ : ℕ => ℤ)
-    (fun _ _ _ => RingHom.id ℤ) where
-  map_self := by intros; rfl
-  map_map := by intros; rfl
-
 private def constantProjection :
     DirectLimit (fun _ : ℕ => ℤ) (fun _ _ _ => RingHom.id ℤ) →+* ℤ :=
-  DirectLimit.Ring.lift _ _ ℤ (fun _ => RingHom.id ℤ) (by intros; rfl)
+  DirectLimit.Ring.lift (fun _ : ℕ => ℤ) (fun _ _ _ => RingHom.id ℤ)
+    ℤ (fun _ => RingHom.id ℤ) (by intros; rfl)
 
 /-- The universal map of the constant integer system recovers each stage element. -/
 private theorem constantProjection_of (i : ℕ) (x : ℤ) :
@@ -54,8 +55,10 @@ private theorem constant_of_injective (i : ℕ) :
   have h' := congrArg constantProjection h
   simpa only [constantProjection_of] using h'
 
-/-- The constant integer limit has dimension at most that of the integers. -/
-private theorem constant_dimension_bound :
+/-- The constant integer limit has dimension at most that of the integers.
+This specializes `ringKrullDim_directLimit_le_iSup` to identity transition maps
+over the nonempty directed index `ℕ`. -/
+theorem constant_dimension_bound :
     ringKrullDim (DirectLimit (fun _ : ℕ => ℤ) (fun _ _ _ => RingHom.id ℤ)) ≤
       ringKrullDim ℤ := by
   simpa using ringKrullDim_directLimit_le_iSup

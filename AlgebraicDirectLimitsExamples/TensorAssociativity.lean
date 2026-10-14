@@ -890,7 +890,7 @@ theorem torsion_nonfree_nonzero :
   have hscalar : (3 : ℤ) • (1 : ZMod 3) = 0 := by decide
   have hnonfree : ¬ Module.Free ℤ (ZMod 3) := by
     intro hfree
-    letI : Module.Free ℤ (ZMod 3) := hfree
+    let : Module.Free ℤ (ZMod 3) := hfree
     have hone : (1 : ZMod 3) = 0 :=
       (smul_eq_zero.mp hscalar).resolve_left (by decide : (3 : ℤ) ≠ 0)
     exact one_ne_zero hone
@@ -910,7 +910,7 @@ theorem torsion_nonfree_nonzero :
         rw [LinearMap.compl₁₂_apply, LinearMap.mul_apply',
           TensorProduct.lift.tmul (f' := LinearMap.mul ℤ (ZMod 3))
             (1 : ZMod 3) (1 : ZMod 3), LinearMap.mul_apply']
-        simp only [LinearMap.id_apply, one_mul, mul_one]
+        simp only [LinearMap.id_apply, mul_one]
   have hright : torsionRightDetector torsionRightTriple = 1 := by
     calc
       torsionRightDetector torsionRightTriple =
@@ -927,7 +927,7 @@ theorem torsion_nonfree_nonzero :
         rw [LinearMap.compl₁₂_apply, LinearMap.mul_apply',
           TensorProduct.lift.tmul (f' := LinearMap.mul ℤ (ZMod 3))
             (1 : ZMod 3) (1 : ZMod 3), LinearMap.mul_apply']
-        simp only [LinearMap.id_apply, one_mul, mul_one]
+        simp only [LinearMap.id_apply, mul_one]
   refine ⟨hnonfree, hscalar, hleft, hright, ?_, ?_, ?_, ?_⟩
   · intro h
     have hzero : (1 : ZMod 3) = 0 := hleft.symm.trans (by rw [h, map_zero])
@@ -967,9 +967,9 @@ forward and inverse transports, with no nonzero assumption. -/
 theorem emptyCoefficient_boundary :
     (∀ x : EmptyLeft, x = 0 ∧ emptyAssoc x = 0) ∧
       (∀ y : EmptyRight, y = 0 ∧ emptyAssoc.symm y = 0) := by
-  haveI : Subsingleton EmptyLeft :=
+  have : Subsingleton EmptyLeft :=
     (inferInstance : Subsingleton (((Fin 0 → ℤ) ⊗[ℤ] ℤ) ⊗[ℤ] ℤ))
-  haveI : Subsingleton EmptyRight :=
+  have : Subsingleton EmptyRight :=
     (inferInstance : Subsingleton ((Fin 0 → ℤ) ⊗[ℤ] (ℤ ⊗[ℤ] ℤ)))
   constructor
   · intro x

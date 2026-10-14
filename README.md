@@ -46,6 +46,25 @@ The rational-circle modules listed below are separate imports.
   continuity of the algebraic detector is used. See the
   [model](AlgebraicDirectLimitsExamples/TensorCircleModel.lean) and
   [detailed counterexample](docs/Results.md#supporting-rational-circle-results).
+- **Scalar extension by a discrete coefficient algebra.**
+  [`Topology.DiscreteScalarExtension`](AlgebraicDirectLimits/Topology/DiscreteScalarExtension.lean)
+  constructs a coefficient-linear topological module over a possibly
+  noncommutative discrete `R`-algebra `K`, for a commutative ring `R` with a
+  supplied topology and any topological `R`-module. The separate base-linear
+  view reuses `tensorLeftObj` exactly; the continuous unit lands in that view.
+  Neither coefficient finiteness, input finiteness nor continuity of the algebra
+  map is required. Fixed-coefficient continuity gives joint continuity of the
+  `K`-action; continuous input maps extend functorially and the unit determines
+  outgoing coefficient-linear maps. For commutative `K`, forgetting topology
+  gives a natural comparison with Mathlib's algebraic scalar extension.
+  The [examples](AlgebraicDirectLimitsExamples/DiscreteScalarExtension.lean)
+  use noncommutative matrix coefficients over `ℤ` and a countable-product input,
+  with a nonzero tensor moved by extended doubling and order-sensitive actions.
+  A rank-one example uses `R = K = ℤ × ℤ` with the swapping algebra map and a
+  separately bundled regular input. Its coefficient-linear comparison sends
+  `c ⊗ m` to `φ(m) * c`; on the nonzero unit, the two actions of `(1, 0)` have
+  images `(0, 1)` and `(1, 0)`. The extended regular-input projection is nonzero
+  and differs from the identity.
 - **Varying scalars and tensor products.**
   [`DirectLimit.VaryingScalar.tensorProductEquiv`](AlgebraicDirectLimits/VaryingScalar.lean#L429)
   identifies the tensor product of two module limits over a *varying*
@@ -53,7 +72,7 @@ The rational-circle modules listed below are separate imports.
   It uses compatible semilinear module systems over a nonempty directed preorder,
   with four independent universes and no injectivity assumption on transitions.
   See the [module](AlgebraicDirectLimits/VaryingScalar.lean) and
-  [representative client](tests/ReadinessClient.lean#L48).
+  [representative client](tests/ReadinessClient.lean#L54).
 - **Mittag--Leffler inverse systems.**
   [`IsMittagLeffler.nonempty_sections_of_countable_cofinal`](AlgebraicDirectLimits/MittagLeffler.lean#L66)
   gives a compatible section for a pointwise nonempty, Type-valued
@@ -63,7 +82,7 @@ The rational-circle modules listed below are separate imports.
   lifts each element of an eventual range to a section; this second theorem does
   not separately assume pointwise nonemptiness. See the
   [module](AlgebraicDirectLimits/MittagLeffler.lean) and
-  [client](tests/ReadinessClient.lean#L136).
+  [client](tests/ReadinessClient.lean#L142).
 - **Prime spectra of filtered colimits.** For a small filtered category and
   any colimit cocone of commutative rings,
   [`PrimeSpectrum.colimitCone_isLimit`](AlgebraicDirectLimits/PrimeSpectrumFilteredColimits.lean)
@@ -131,8 +150,8 @@ Import the aggregate with `import AlgebraicDirectLimits`, or the linked leaf
 appropriate to your use. No private research workspace is needed.
 
 For a first use, follow
-[`tensor_equiv_on_representatives`](tests/ReadinessClient.lean#L48) or
-[`cofinal_restriction_without_nonempty`](tests/ReadinessClient.lean#L115).
+[`tensor_equiv_on_representatives`](tests/ReadinessClient.lean#L54) or
+[`cofinal_restriction_without_nonempty`](tests/ReadinessClient.lean#L121).
 The headline links also provide examples and boundary clients; client
 namespaces are not public library declarations.
 
@@ -156,6 +175,7 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
 | [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
+| [`Topology.DiscreteScalarExtension`](AlgebraicDirectLimits/Topology/DiscreteScalarExtension.lean) | Discrete coefficient-algebra scalar extension, continuous unit and functorial maps with separate scalar views |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps, linearity in each map variable and finite-basis contracts |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Map`](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) | Infinite-rank integer coefficient projections with nonzero two-term inputs, distinct supported outputs, unequal weights, and whole-map finite-sum laws |
 | [`Topology.TensorProduct.Prod`](AlgebraicDirectLimits/Topology/TensorProduct/Prod.lean) | Binary-product distribution for an algebraic coefficient module and two topological right factors over a commutative ring with a supplied topology; ordinary product topology, independent carrier universes and naturality in algebraic coefficient and continuous right-factor maps |
@@ -169,6 +189,9 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.TensorCircle.RationalAngles`](AlgebraicDirectLimits/Topology/TensorCircle/RationalAngles.lean) | Dense rational angles, positive integer annihilators and vanishing rational pure tensors |
 | [`AlgebraicDirectLimitsExamples.TensorCircleModel`](AlgebraicDirectLimitsExamples/TensorCircleModel.lean) | Flat rational coefficients, the usual compact Hausdorff circle and its continuous tensor generator |
 | [`AlgebraicDirectLimitsExamples.TensorCircleClient`](AlgebraicDirectLimitsExamples/TensorCircleClient.lean) | Non-Hausdorff rational-circle tensor, detector and generator laws, a nonzero killed half-angle and combined supporting properties |
+| [`Order.DirectedSystem`](AlgebraicDirectLimits/Order/DirectedSystem.lean) | Constant families with identity transition functions over arbitrary preorders |
+| [`RingTheory.DirectLimit`](AlgebraicDirectLimits/RingTheory/DirectLimit.lean) | Constant identity ring-homomorphism systems over arbitrary preorders and nonassociative semirings |
+| [`AlgebraicDirectLimitsTests.Topology.TensorProduct`](tests/AlgebraicDirectLimitsTests/Topology/TensorProduct.lean) | Type contracts for linear continuity, tensor maps, finite-basis coordinates, basis change and preservation properties |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |
 | [`MittagLeffler`](AlgebraicDirectLimits/MittagLeffler.lean) | Compatible sections of inverse systems |
 | [`SimpleRing`](AlgebraicDirectLimits/SimpleRing.lean) | Filtered colimits of simple rings |
@@ -185,10 +208,12 @@ The [mathematical guide](docs/Guide.md) explains the constructions and proofs;
 the Lean modules give the exact signatures and hypotheses. The
 [partial API reference](docs/API.md) selects **73 library and 23 boundary-client
 sites from seven mathematical modules**; [its overview](docs/README.md) lists
-those modules. It does not cover `MonoidalGroupCompletion`,
+those modules. It does not cover `Order.DirectedSystem`, `RingTheory.DirectLimit`,
+`MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
-`Topology.TensorProduct.Prod`, `Topology.Restriction`, `Topology.TensorHom`,
-`Topology.TensorUnit`, `Topology.TensorAssociativity`, `Topology.TensorCompactness`,
+`Topology.TensorProduct.Prod`, `Topology.Restriction`,
+`Topology.DiscreteScalarExtension`, `Topology.TensorHom`, `Topology.TensorUnit`,
+`Topology.TensorAssociativity`, `Topology.TensorCompactness`,
 `Topology.TensorSeparation`, `Topology.TensorCircle.Detector`,
 `Topology.TensorCircle.RationalAngles`,
 `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit`,
@@ -215,8 +240,8 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-23 mathematical leaf modules plus the public aggregate (24 library modules),
-18 example modules and six test modules: 48 modules in all. The circle library
+26 mathematical leaf modules plus the public aggregate (27 library modules),
+19 example modules and seven test modules: 53 modules in all. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 
@@ -261,6 +286,12 @@ Mathlib's `Order.krullDim`, `LTSeries` and `PrimeSpectrum.comap`; the singleton
 family recovers Mathlib's `ringKrullDim_le_of_surjective`. The directed-colimit
 specialization and its models are also Keel's development, using Mathlib's
 characteristic maps, representatives and directed finite-union capture API.
+The constant-identity directed-system instances generalize Keel's integer
+client law using Junyan Xu's Mathlib `DirectedSystem` and its identity and
+composition API. `DirectedSystem.constRingHom` specializes the same function-law
+witness using the identity-coercion API of Amelia Livingston and Jireh Loreaux.
+It allows any nonassociative semiring over an arbitrary preorder, independently
+of the directedness and nonemptiness required by the colimit.
 The directed-subsemiring union bound and its models use the same finite-capture
 criterion, Mathlib's subsemiring union and inclusion API, and the integer and
 rational dimension theorems.

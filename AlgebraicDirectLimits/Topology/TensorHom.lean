@@ -198,18 +198,16 @@ noncomputable def tensorHomLinearEquiv (C : ModuleCat.{uC} R)
     intro c
     apply ContinuousLinearMap.ext
     intro m
-    simpa only [tensorCurry_apply, ContinuousLinearMap.comp_apply,
-      LinearMap.add_apply, add_apply] using
-      (add_apply f g (tensorGenerator R C M c m))
+    simp only [tensorCurry_apply, ContinuousLinearMap.comp_apply,
+      LinearMap.add_apply, add_apply]
   map_smul' := by
     intro r f
     apply LinearMap.ext
     intro c
     apply ContinuousLinearMap.ext
     intro m
-    simpa only [tensorCurry_apply, ContinuousLinearMap.comp_apply,
-      LinearMap.smul_apply, smul_apply, RingHom.id_apply] using
-      (smul_apply f r (tensorGenerator R C M c m))
+    simp only [tensorCurry_apply, ContinuousLinearMap.comp_apply,
+      LinearMap.smul_apply, smul_apply, RingHom.id_apply]
 
 /-- The forward Hom equivalence is the curried family. -/
 @[simp]
