@@ -57,9 +57,9 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Twenty-seven mathematical leaf modules and a public re-export (28 library
-    modules), twenty-three example modules and seven test modules (six standalone
-    clients and their aggregate): 58 modules in the default targets. The
+    Twenty-eight mathematical leaf modules and a public re-export (29 library modules),
+    twenty-four example modules and seven test modules (six standalone clients and their aggregate): 60 local modules in the default source import closure.
+    The coefficient-tensor API includes eleven characteristic identities for concrete Hom, tensor maps, and currying. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union
@@ -255,7 +255,7 @@ status:
     all coefficient-product client laws describe the projection product and
     inclusion coproduct, with characteristic formulas and naturality in both
     coefficient maps and the continuous right-factor map.
-  sorry_count: 0
+  sorry_count: 0 # Source count of admitted research API result proof bodies; not a compiled axiom audit.
   sorry_in_definitions: 0
 review:
   status: unchecked

@@ -305,8 +305,8 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-27 mathematical leaf modules plus the public aggregate (28 library modules),
-23 example modules and seven test modules: 58 modules in all. The circle library
+28 mathematical leaf modules plus the public aggregate (29 library modules), 24 example modules and seven test modules: 60 local modules in the default source import closure.
+The coefficient-tensor API includes eleven characteristic identities for concrete Hom, tensor maps, and currying. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 

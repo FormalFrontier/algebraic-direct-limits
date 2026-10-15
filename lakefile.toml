@@ -41,7 +41,8 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorCircleModel",
   "AlgebraicDirectLimitsExamples.TensorCircleClient",
   "AlgebraicDirectLimitsExamples.CoefficientTensorProd",
-  "AlgebraicDirectLimitsExamples.TensorNoncompactness"
+  "AlgebraicDirectLimitsExamples.TensorNoncompactness",
+  "AlgebraicDirectLimitsExamples.CoefficientTensor"
 ]
 
 [[lean_lib]]
