@@ -21,7 +21,11 @@ continuous. The coefficient module carries no topology.
 Linear continuity out of this tensor is tested on the continuous fixed-coefficient
 generators. `TopModuleCat.tensorMapCLM` realizes Mathlib's two-variable tensor map
 for an algebraic map on the left and a continuous linear map on the right, with
-application, identity and composition laws.
+application, identity and composition laws. `TopModuleCat.tensorMapBilinear`
+bundles this construction as a bilinear operator on the two morphism spaces.
+Forgetting continuity identifies the whole operator with Mathlib's
+`TensorProduct.mapBilinear` at the identity ring homomorphism. No topology on the
+coefficient modules or the morphism spaces is required.
 
 The algebraic finite-basis coordinates use Mathlib's tensor-to-Finsupp equivalence
 followed by its finite-function equivalence. `tensorCoordinateContinuousLinearEquiv`
@@ -53,8 +57,9 @@ to Jakob von Raumer, its Finsupp API to Johannes Hölzl, and its finite-free
 chosen-basis API to Riccardo Brasca. The continuous-linear-equivalence API is due
 to Jan-David Salchow, Sébastien Gouëzel, Jean Lo, Yury Kudryashov, Frédéric Dupuis
 and Heather Macbeth. The module `ULift` API is due to Kim Morrison, and the tensor-map
-API to Kenny Lau and Mario Carneiro. The coinduced-topology composition API is due to
-Johannes Hölzl and Mario Carneiro; the homeomorphism API to Johannes Hölzl, Patrick
+and bilinear-map APIs to Kenny Lau and Mario Carneiro. The coinduced-topology
+composition API is due to Johannes Hölzl and Mario Carneiro; the homeomorphism API
+is due to Johannes Hölzl, Patrick
 Massot, Sébastien Gouëzel, Zhouhang Zhou and Reid Barton.
 The universe adapters reuse Mathlib's module and continuous linear equivalences
 for `ULift`, rather than a separate universe-lift functor.
@@ -398,6 +403,82 @@ theorem tensorMapCLM_sum_right {ι : Type uI} (s : Finset ι)
   | insert i s hi ih => simp only [Finset.sum_insert hi, tensorMapCLM_add_right, ih]
 
 end MapLinearity
+
+/-- The continuous tensor map as a bilinear operator on coefficient linear maps
+and right-factor continuous linear maps. The coefficient modules are algebraic;
+no topology on either morphism space is used. -/
+noncomputable def tensorMapBilinear (C : ModuleCat.{uC} R) (D : ModuleCat.{uD} R)
+    (M : TopModuleCat.{uM} R) (N : TopModuleCat.{uN} R) :
+    (C →ₗ[R] D) →ₗ[R] (M →L[R] N) →ₗ[R]
+      tensorLeftObj R C M →L[R] tensorLeftObj R D N :=
+  LinearMap.mk₂ R (tensorMapCLM R)
+    (tensorMapCLM_add_left R) (tensorMapCLM_smul_left R)
+    (tensorMapCLM_add_right R) (tensorMapCLM_smul_right R)
+
+/-- Evaluating the bilinear operator gives the continuous tensor map. -/
+theorem tensorMapBilinear_apply (f : C →ₗ[R] D) (g : M →L[R] N) :
+    tensorMapBilinear R C D M N f g = tensorMapCLM R f g := rfl
+
+/-- The bilinear operator sends a pure tensor to the tensor of the two images. -/
+@[simp]
+theorem tensorMapBilinear_tmul (f : C →ₗ[R] D) (g : M →L[R] N) (c : C) (m : M) :
+    tensorMapBilinear R C D M N f g (c ⊗ₜ[R] m) = f c ⊗ₜ[R] g m := by
+  rw [tensorMapBilinear_apply, tensorMapCLM_tmul]
+
+/-- Forgetting continuity of a value of the operator gives Mathlib's tensor map. -/
+@[simp]
+theorem tensorMapBilinear_toLinearMap (f : C →ₗ[R] D) (g : M →L[R] N) :
+    (tensorMapBilinear R C D M N f g).toLinearMap =
+      TensorProduct.map f g.toLinearMap := by
+  rw [tensorMapBilinear_apply, tensorMapCLM_toLinearMap]
+
+/-- On every tensor, the bilinear operator agrees with the algebraic tensor map. -/
+theorem tensorMapBilinear_apply_apply (f : C →ₗ[R] D) (g : M →L[R] N)
+    (x : tensorLeftObj R C M) :
+    tensorMapBilinear R C D M N f g x = TensorProduct.map f g.toLinearMap x := by
+  rw [tensorMapBilinear_apply, tensorMapCLM_apply]
+
+/-- Forgetting continuity of the whole bilinear operator is Mathlib's algebraic
+operator, with the right morphism first mapped to its underlying linear map. -/
+theorem tensorMapBilinear_coeLM :
+    (tensorMapBilinear R C D M N).compr₂ (ContinuousLinearMap.coeLM R) =
+      (TensorProduct.mapBilinear (RingHom.id R) C M D N).compl₂
+        (ContinuousLinearMap.coeLM R) := by
+  apply LinearMap.ext
+  intro f
+  apply LinearMap.ext
+  intro g
+  change (tensorMapBilinear R C D M N f g).toLinearMap =
+    TensorProduct.map f g.toLinearMap
+  exact tensorMapBilinear_toLinearMap R f g
+
+/-- The operator takes identity maps to the identity tensor map. -/
+@[simp]
+theorem tensorMapBilinear_id :
+    tensorMapBilinear R C C M M LinearMap.id (ContinuousLinearMap.id R M) =
+      ContinuousLinearMap.id R (tensorLeftObj R C M) := by
+  rw [tensorMapBilinear_apply, tensorMapCLM_id]
+
+/-- The operator respects simultaneous composition in the two factors. -/
+theorem tensorMapBilinear_comp (f : C →ₗ[R] D) (f' : D →ₗ[R] E)
+    (g : M →L[R] N) (g' : N →L[R] P) :
+    tensorMapBilinear R C E M P (f'.comp f) (g'.comp g) =
+      (tensorMapBilinear R D E N P f' g').comp (tensorMapBilinear R C D M N f g) := by
+  simp only [tensorMapBilinear_apply, tensorMapCLM_comp]
+
+/-- The pure-tensor formula uniquely determines the bundled bilinear operator. -/
+theorem tensorMapBilinear_unique
+    (B : (C →ₗ[R] D) →ₗ[R] (M →L[R] N) →ₗ[R]
+      tensorLeftObj R C M →L[R] tensorLeftObj R D N)
+    (hB : ∀ f g c m, B f g (c ⊗ₜ[R] m) = f c ⊗ₜ[R] g m) :
+    B = tensorMapBilinear R C D M N := by
+  apply LinearMap.ext
+  intro f
+  apply LinearMap.ext
+  intro g
+  apply tensorLeft_ext R
+  intro c m
+  exact (hB f g c m).trans (tensorMapBilinear_tmul R f g c m).symm
 
 end TensorMaps
 

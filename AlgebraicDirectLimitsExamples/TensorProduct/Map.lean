@@ -23,11 +23,17 @@ weighting the projections by two and three gives coordinates `(2, 3)`. The detec
 has Pi codomain `ℕ → realModule`, not a finitely supported codomain. Finite support
 of these particular outputs is not a hypothesis on the generic tensor-map laws.
 
+The bundled operator `TopModuleCat.tensorMapBilinear` is also used on the standard
+integer module. Mathlib's algebraic left unitor detects `1 ⊗ 1` as `1`, the
+identity value is nonzero, and scaling the two input maps by `2` and `3` gives
+detected value `6`. The weighted calculation uses the bundle's linear-map API.
+
 ## References
 
 The one-sided tensor topology follows the Continuous Group Cohomology formalization
 by Formal Frontier Agents, including Beacon's original development. The algebraic
-map-variable laws are Mathlib's tensor-map API by Kenny Lau and Mario Carneiro;
+map-variable laws, bilinear-map constructors and algebraic tensor unitor are
+Mathlib's APIs by Kenny Lau and Mario Carneiro;
 Finsupp linear projections and inclusions are due to Johannes Hölzl and the authors
 credited in the reused tensor-separation examples. No second tensor-map construction
 is used here.
@@ -362,6 +368,119 @@ theorem weightedProjectionTensor_input_coordinates :
   constructor
   · exact (hcoord 0).trans (by norm_num [tensorProjection_input_coordinates])
   · exact (hcoord 1).trans (by norm_num [tensorProjection_input_coordinates])
+
+/-- Integers with their usual algebraic module data, without coefficient topology. -/
+abbrev integerCoefficients : ModuleCat ℤ := ModuleCat.of ℤ ℤ
+
+/-- The same integer module with its standard discrete topology. -/
+noncomputable abbrev integerModule : TopModuleCat ℤ := TopModuleCat.of ℤ ℤ
+
+/-- The canonical one-sided tensor of the standard integer modules. -/
+noncomputable abbrev integerTensor : TopModuleCat ℤ :=
+  TopModuleCat.tensorLeftObj ℤ integerCoefficients integerModule
+
+/-- The bundled tensor-map operator on the standard integer modules. -/
+noncomputable abbrev integerTensorMapBilinear :
+    (integerCoefficients →ₗ[ℤ] integerCoefficients) →ₗ[ℤ]
+      (integerModule →L[ℤ] integerModule) →ₗ[ℤ] integerTensor →L[ℤ] integerTensor :=
+  TopModuleCat.tensorMapBilinear ℤ
+    integerCoefficients integerCoefficients integerModule integerModule
+
+/-- The tensor of the two integer units. -/
+noncomputable def integerUnitTensor : integerTensor :=
+  (1 : integerCoefficients) ⊗ₜ[ℤ] (1 : integerModule)
+
+/-- The algebraic left unitor detects the tensor of the units as one. -/
+theorem integerUnitTensor_lid : TensorProduct.lid ℤ ℤ integerUnitTensor = 1 := by
+  simp [integerUnitTensor]
+
+/-- The standard integer tensor carrier is nonzero. -/
+theorem integerUnitTensor_ne_zero : integerUnitTensor ≠ 0 := by
+  intro h
+  have he := integerUnitTensor_lid
+  have hzero : TensorProduct.lid ℤ ℤ (0 : integerTensor) = 0 :=
+    (TensorProduct.lid ℤ ℤ).map_zero
+  rw [h] at he
+  replace he := hzero.symm.trans he
+  exact (one_ne_zero : (1 : ℤ) ≠ 0) he.symm
+
+/-- Scaling both input maps is visible through the bundle's linear-map API. -/
+theorem integerTensorMapBilinear_weighted (a b : ℤ) :
+    TensorProduct.lid ℤ ℤ
+      (integerTensorMapBilinear
+        (a • (LinearMap.id : integerCoefficients →ₗ[ℤ] integerCoefficients))
+        (b • ContinuousLinearMap.id ℤ integerModule) integerUnitTensor) = a * b := by
+  let I : integerCoefficients →ₗ[ℤ] integerCoefficients := LinearMap.id
+  let J : integerModule →L[ℤ] integerModule := ContinuousLinearMap.id ℤ integerModule
+  let τ : integerCoefficients → integerModule → integerTensor := fun c m ↦ c ⊗ₜ[ℤ] m
+  let lidE : integerTensor → ℤ := fun x ↦ TensorProduct.lid ℤ ℤ x
+  have ht : integerTensorMapBilinear (a • I) (b • J) integerUnitTensor =
+      τ ((a • I) (1 : integerCoefficients)) ((b • J) (1 : integerModule)) :=
+    TopModuleCat.tensorMapBilinear_tmul ℤ (a • I) (b • J)
+      (1 : integerCoefficients) (1 : integerModule)
+  have ha : (a • I) (1 : integerCoefficients) = (a : integerCoefficients) := by
+    calc
+      _ = integerCoefficients.isModule.smul a (1 : integerCoefficients) :=
+        LinearMap.smul_apply a I (1 : integerCoefficients)
+      _ = a := by
+        simpa only [Int.zsmul_eq_mul, mul_one] using
+          int_smul_eq_zsmul integerCoefficients.isModule a (1 : integerCoefficients)
+  have hb : (b • J) (1 : integerModule) = (b : integerModule) := by
+    calc
+      _ = integerModule.toModuleCat.isModule.smul b (1 : integerModule) :=
+        smul_apply J b (1 : integerModule)
+      _ = b := by
+        simpa only [Int.zsmul_eq_mul, mul_one] using
+          int_smul_eq_zsmul integerModule.toModuleCat.isModule b (1 : integerModule)
+  calc
+    _ = lidE (τ (a : integerCoefficients) (b : integerModule)) :=
+      congrArg lidE (ht.trans (congrArg₂ τ ha hb))
+    _ = a * b := by
+      simpa only [lidE, τ, smul_eq_mul] using
+        (TensorProduct.lid_tmul (R := ℤ) (M := ℤ) b a)
+
+/-- Neither the identity value nor the whole integer bilinear operator is zero. -/
+theorem integerTensorMapBilinear_id_nonzero :
+    integerTensorMapBilinear LinearMap.id (ContinuousLinearMap.id ℤ integerModule) ≠ 0 ∧
+      integerTensorMapBilinear ≠ 0 := by
+  have hdet : TensorProduct.lid ℤ ℤ
+      (integerTensorMapBilinear LinearMap.id
+        (ContinuousLinearMap.id ℤ integerModule) integerUnitTensor) = 1 := by
+    simpa only [one_smul, one_mul] using integerTensorMapBilinear_weighted 1 1
+  have hmap : integerTensorMapBilinear LinearMap.id
+      (ContinuousLinearMap.id ℤ integerModule) ≠ 0 := by
+    intro h
+    have hzero : TensorProduct.lid ℤ ℤ (0 : integerTensor) = 0 :=
+      (TensorProduct.lid ℤ ℤ).map_zero
+    rw [h, zero_apply] at hdet
+    replace hdet := hzero.symm.trans hdet
+    exact (one_ne_zero : (1 : ℤ) ≠ 0) hdet.symm
+  refine ⟨hmap, ?_⟩
+  intro h
+  apply hmap
+  have he := DFunLike.congr_fun
+    (DFunLike.congr_fun h (LinearMap.id : integerCoefficients →ₗ[ℤ] integerCoefficients))
+    (ContinuousLinearMap.id ℤ integerModule)
+  simpa only [LinearMap.zero_apply] using he
+
+/-- The two independently weighted maps give a tensor detected as six, not zero. -/
+theorem integerTensorMapBilinear_weighted_nonzero :
+    TensorProduct.lid ℤ ℤ
+        (integerTensorMapBilinear
+          ((2 : ℤ) • (LinearMap.id : integerCoefficients →ₗ[ℤ] integerCoefficients))
+          ((3 : ℤ) • ContinuousLinearMap.id ℤ integerModule) integerUnitTensor) = 6 ∧
+      integerTensorMapBilinear
+        ((2 : ℤ) • (LinearMap.id : integerCoefficients →ₗ[ℤ] integerCoefficients))
+        ((3 : ℤ) • ContinuousLinearMap.id ℤ integerModule) integerUnitTensor ≠ 0 := by
+  have hdet := (integerTensorMapBilinear_weighted 2 3).trans
+    (show (2 : ℤ) * 3 = 6 by norm_num)
+  refine ⟨hdet, ?_⟩
+  intro h
+  have hzero : TensorProduct.lid ℤ ℤ (0 : integerTensor) = 0 :=
+    (TensorProduct.lid ℤ ℤ).map_zero
+  rw [h] at hdet
+  replace hdet := hzero.symm.trans hdet
+  norm_num at hdet
 
 section IndependentUniverses
 

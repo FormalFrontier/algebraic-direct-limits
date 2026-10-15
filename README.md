@@ -10,6 +10,19 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Bundled continuous tensor maps.**
+  [`TopModuleCat.tensorMapBilinear`](AlgebraicDirectLimits/Topology/TensorProduct.lean)
+  is bilinear in an algebraic coefficient map and a continuous linear right-factor
+  map, with values in continuous linear maps between the canonical one-sided
+  tensors. The ring is commutative with a supplied topology; the right-factor
+  topological modules supply continuous addition and jointly continuous scalar
+  actions. All carrier universes are independent. Forgetting continuity of the
+  whole bundle gives Mathlib's `TensorProduct.mapBilinear` at the identity ring
+  homomorphism. No coefficient or Hom topology, continuity of ring operations,
+  finiteness or separation hypothesis is required. The
+  [integer examples](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) detect
+  the unit tensor as one and the images under two independently scaled maps as six.
+
 - **Coefficient tensor functors and natural outgoing Hom equivalences.**
   Let `R` be a commutative ring equipped with a topology. A fixed topological
   `R`-module `M` with jointly continuous scalar action gives a coefficient tensor
