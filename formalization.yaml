@@ -59,7 +59,7 @@ status:
   scope: >-
     Twenty-eight mathematical leaf modules and a public re-export (29 library modules),
     twenty-four example modules and seven test modules (six standalone clients and their aggregate): 60 local modules in the default source import closure.
-    The coefficient-tensor API includes eleven characteristic identities for concrete Hom, tensor maps, and currying. The
+    The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples
     cover prime spectra, finite-capture, directed-colimit and directed-union

@@ -20,9 +20,9 @@ covariant Hom functor is Mathlib's linear coyoneda functor.
 
 ## Limitations
 
-The eleven identities below describe concrete Hom, tensor maps, and currying.
-The object constructions, their supporting laws, and the example definitions do
-not use these identities. No adjunction or naturality result is asserted here.
+The characteristic identities describe concrete Hom, tensor maps and currying.
+The plain Hom equivalence is natural in algebraic coefficients and continuous
+targets. No adjunction structure is defined here.
 
 ## References
 
@@ -216,5 +216,70 @@ theorem coefficientTensorHomEquiv_symm_apply_tmul (M : TopModuleCat.{w} R)
   rw [coefficientTensorHomEquiv_symm_apply]
   exact tensorLiftCLM_tmul R
     ((homLinearEquiv R (X := M) (Y := N)).toLinearMap.comp b.hom) c m
+
+/-- Currying commutes with precomposition by a coefficient morphism. -/
+theorem coefficientTensorHomEquiv_naturality_left
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (M : TopModuleCat.{w} R) {C D : ModuleCat.{w} R}
+    {N : TopModuleCat.{w} R} (u : D ⟶ C)
+    (f : (TopModuleCat.coefficientTensor R M).obj C ⟶ N) :
+    TopModuleCat.coefficientTensorHomEquiv R M D N
+        ((TopModuleCat.coefficientTensor R M).map u ≫ f) =
+      u ≫ TopModuleCat.coefficientTensorHomEquiv R M C N f := by
+  apply ModuleCat.hom_ext
+  apply LinearMap.ext
+  intro c
+  apply ConcreteCategory.ext
+  apply ContinuousLinearMap.ext
+  intro m
+  change
+    ((coefficientTensorHomEquiv R M D N
+      ((coefficientTensor R M).map u ≫ f)).hom c).hom m =
+    ((coefficientTensorHomEquiv R M C N f).hom (u.hom c)).hom m
+  calc
+    _ = ((coefficientTensor R M).map u ≫ f).hom (c ⊗ₜ[R] m) :=
+      coefficientTensorHomEquiv_apply_apply R M _ c m
+    _ = f.hom (((coefficientTensor R M).map u).hom (c ⊗ₜ[R] m)) :=
+      CategoryTheory.comp_apply (C := TopModuleCat.{w} R)
+        (X := (coefficientTensor R M).obj D)
+        (Y := (coefficientTensor R M).obj C) (Z := N)
+        ((coefficientTensor R M).map u) f (c ⊗ₜ[R] m)
+    _ = f.hom (u.hom c ⊗ₜ[R] m) :=
+      congrArg f.hom (coefficientTensor_map_tmul R M u c m)
+    _ = _ := (coefficientTensorHomEquiv_apply_apply R M f (u.hom c) m).symm
+
+/-- Currying commutes with postcomposition in the continuous target module. -/
+theorem coefficientTensorHomEquiv_naturality_right
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (M : TopModuleCat.{w} R) {C : ModuleCat.{w} R}
+    {N N' : TopModuleCat.{w} R}
+    (f : (TopModuleCat.coefficientTensor R M).obj C ⟶ N)
+    (v : N ⟶ N') :
+    TopModuleCat.coefficientTensorHomEquiv R M C N' (f ≫ v) =
+      TopModuleCat.coefficientTensorHomEquiv R M C N f ≫
+        ((CategoryTheory.linearCoyoneda R (TopModuleCat.{w} R)).obj
+          (Opposite.op M)).map v := by
+  apply ModuleCat.hom_ext
+  apply LinearMap.ext
+  intro c
+  apply ConcreteCategory.ext
+  apply ContinuousLinearMap.ext
+  intro m
+  change
+    ((coefficientTensorHomEquiv R M C N' (f ≫ v)).hom c).hom m =
+    (((coefficientTensorHomEquiv R M C N f).hom c) ≫ v).hom m
+  calc
+    _ = (f ≫ v).hom (c ⊗ₜ[R] m) :=
+      coefficientTensorHomEquiv_apply_apply R M _ c m
+    _ = v.hom (f.hom (c ⊗ₜ[R] m)) :=
+      CategoryTheory.comp_apply (C := TopModuleCat.{w} R)
+        (X := (coefficientTensor R M).obj C) (Y := N) (Z := N')
+        f v (c ⊗ₜ[R] m)
+    _ = v.hom (((coefficientTensorHomEquiv R M C N f).hom c).hom m) :=
+      congrArg v.hom (coefficientTensorHomEquiv_apply_apply R M f c m).symm
+    _ = _ :=
+      (CategoryTheory.comp_apply (C := TopModuleCat.{w} R)
+        (X := M) (Y := N) (Z := N')
+        ((coefficientTensorHomEquiv R M C N f).hom c) v m).symm
 
 end TopModuleCat

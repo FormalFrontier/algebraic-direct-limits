@@ -10,6 +10,17 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Coefficient tensor functors and natural outgoing Hom equivalences.**
+  Let `R` be a commutative ring equipped with a topology. A fixed topological
+  `R`-module `M` with jointly continuous scalar action gives a coefficient tensor
+  functor from algebraic `R`-modules to topological `R`-modules. In a common
+  carrier universe, outgoing continuous linear maps correspond to linear
+  coefficient families of continuous linear maps, naturally in algebraic
+  coefficients and continuous targets. Neither coefficients nor the Hom module
+  are given a topology. See the [module](AlgebraicDirectLimits/Topology/CoefficientTensor.lean),
+  [naturality guide](docs/coefficient-tensor-hom-naturality.md), and
+  [integer evaluations](AlgebraicDirectLimitsExamples/CoefficientTensor.lean).
+
 - **Discrete right-factor tensors.**
   [`TensorProduct.continuousSMul_bot_of_discrete_right`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean)
   gives joint scalar continuity on the algebraic tensor with bottom topology, and
@@ -246,6 +257,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence, arbitrary product coordinates and lift/curry naturality |
+| [`Topology.CoefficientTensor`](AlgebraicDirectLimits/Topology/CoefficientTensor.lean) | Algebraic coefficient tensor functor and natural outgoing tensor–Hom equivalence over a commutative ring equipped with a topology |
+| [`AlgebraicDirectLimitsExamples.CoefficientTensor`](AlgebraicDirectLimitsExamples/CoefficientTensor.lean) | Infinite, nonfree and distinct-action coefficient models, with nonzero integer evaluations of coefficient and target naturality |
 | [`AlgebraicDirectLimitsExamples.TensorHomNaturality`](AlgebraicDirectLimitsExamples/TensorHomNaturality.lean) | Integer-axis, infinite-real-coordinate and nonfree-ideal naturality laws, variable mixed-tensor formulas and nonzero control values |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
 | [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products, three-factor naturality and whole lift/curry compatibility |
@@ -306,7 +319,7 @@ The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
 28 mathematical leaf modules plus the public aggregate (29 library modules), 24 example modules and seven test modules: 60 local modules in the default source import closure.
-The coefficient-tensor API includes eleven characteristic identities for concrete Hom, tensor maps, and currying. The circle library
+The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
 
