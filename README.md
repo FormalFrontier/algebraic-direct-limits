@@ -10,6 +10,21 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Additive tensoring with fixed algebraic coefficients.**
+  [`TopModuleCat.tensorLeftFunctor`](AlgebraicDirectLimits/Topology/TensorFunctor.lean)
+  sends `M : TopModuleCat.{uM} R` to `tensorLeftObj R C M` for a fixed
+  `C : ModuleCat.{uC} R`, retaining the canonical tensor action and one-sided
+  topology. Morphisms act by tensoring the coefficient identity with the given
+  continuous linear map. The ring is commutative with a supplied topology, and
+  the input has a jointly continuous scalar action. Scalar and carrier universes
+  are independent, with target `TopModuleCat.{max uC uM} R`; no coefficient
+  topology, finiteness, freeness, separation or continuity of ring multiplication
+  is required. The [characteristic API](AlgebraicDirectLimits/Topology/TensorFunctor.lean)
+  exposes the object, continuous map, underlying algebraic map and pure-tensor
+  formula. The stock `Functor.Additive` instance supplies `Functor.map_add` and
+  `Functor.map_zero`. The [integer-pair examples](AlgebraicDirectLimitsExamples/TensorFunctor.lean)
+  identify the doubled nonzero tensor and evaluate doubling plus identity.
+
 - **Bundled continuous tensor maps.**
   [`TopModuleCat.tensorMapBilinear`](AlgebraicDirectLimits/Topology/TensorProduct.lean)
   is bilinear in an algebraic coefficient map and a continuous linear right-factor
@@ -263,6 +278,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
 | [`Topology.DiscreteScalarExtension`](AlgebraicDirectLimits/Topology/DiscreteScalarExtension.lean) | Discrete coefficient-algebra scalar extension, continuous unit and functorial maps with separate scalar views |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps, linearity in each map variable and finite-basis contracts |
+| [`Topology.TensorFunctor`](AlgebraicDirectLimits/Topology/TensorFunctor.lean) | Additive tensor functor with fixed algebraic coefficients, the one-sided topology, algebraic map compatibility and pure-tensor values |
+| [`AlgebraicDirectLimitsExamples.TensorFunctor`](AlgebraicDirectLimitsExamples/TensorFunctor.lean) | Integer doubling compatibility and the additive functor law evaluated on a nonzero rank-two tensor |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Map`](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) | Infinite-rank integer coefficient projections with nonzero two-term inputs, distinct supported outputs, unequal weights, and whole-map finite-sum laws |
 | [`Topology.TensorProduct.Prod`](AlgebraicDirectLimits/Topology/TensorProduct/Prod.lean) | Binary-product distribution for an algebraic coefficient module and two topological right factors over a commutative ring with a supplied topology; ordinary product topology, independent carrier universes and naturality in algebraic coefficient and continuous right-factor maps |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Prod`](AlgebraicDirectLimitsExamples/TensorProduct/Prod.lean) | Infinite-rank integer Finsupp coefficients and the usual real product, with independently supported tensors, reconstruction and map detectors |
@@ -331,7 +348,7 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-28 mathematical leaf modules plus the public aggregate (29 library modules), 24 example modules and seven test modules: 60 local modules in the default source import closure.
+29 mathematical leaf modules plus the public aggregate (30 library modules), 25 example modules and seven test modules: 62 local modules in the default source import closure.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:

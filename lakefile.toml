@@ -28,6 +28,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.Restriction",
   "AlgebraicDirectLimitsExamples.DiscreteScalarExtension",
   "AlgebraicDirectLimitsExamples.TensorProduct",
+  "AlgebraicDirectLimitsExamples.TensorFunctor",
   "AlgebraicDirectLimitsExamples.TensorProduct.Map",
   "AlgebraicDirectLimitsExamples.TensorProduct.Prod",
   "AlgebraicDirectLimitsExamples.DiscreteTensor",

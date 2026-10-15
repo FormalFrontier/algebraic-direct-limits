@@ -26,6 +26,7 @@ public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimits.Topology.TensorProduct.Prod
 public import AlgebraicDirectLimits.Topology.TensorDiscrete
 public import AlgebraicDirectLimits.Topology.TensorHom
+public import AlgebraicDirectLimits.Topology.TensorFunctor
 public import AlgebraicDirectLimits.Topology.TensorUnit
 public import AlgebraicDirectLimits.Topology.TensorAssociativity
 public import AlgebraicDirectLimits.Topology.TensorSeparation
@@ -44,6 +45,7 @@ localization of countable products, one-sided tensor topologies, same-topology
 scalar restriction, discrete coefficient-algebra scalar extension, continuous
 tensor associativity, compactness for finitely generated coefficients, statements
 for arbitrary-basis and projective tensor Hausdorffness, and linear continuity
-for coinduced topological modules.
+for coinduced topological modules, and additive tensor functors with fixed algebraic
+coefficients.
 Each module may be imported independently.
 -/
