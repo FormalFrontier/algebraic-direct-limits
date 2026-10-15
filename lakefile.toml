@@ -26,6 +26,8 @@ roots = [
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectedUnion",
   "AlgebraicDirectLimitsExamples.Coinduced",
   "AlgebraicDirectLimitsExamples.Restriction",
+  "AlgebraicDirectLimitsExamples.RestrictionKernels",
+  "AlgebraicDirectLimitsExamples.RestrictionCokernels",
   "AlgebraicDirectLimitsExamples.DiscreteScalarExtension",
   "AlgebraicDirectLimitsExamples.TensorProduct",
   "AlgebraicDirectLimitsExamples.TensorFunctor",
