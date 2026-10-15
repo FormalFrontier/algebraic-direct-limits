@@ -69,6 +69,25 @@ The rational-circle modules listed below are separate imports.
   [naturality guide](docs/coefficient-tensor-hom-naturality.md), and
   [integer evaluations](AlgebraicDirectLimitsExamples/CoefficientTensor.lean).
 
+- **Continuous tensor quotients.**
+  [`TopModuleCat.tensorQuotient`](AlgebraicDirectLimits/Topology/TensorProduct/Quotient.lean)
+  gives a continuous linear equivalence
+  `C ⊗[R] (M ⧸ P) ≃L[R] (C ⊗[R] M) ⧸ K`, where
+  `K = LinearMap.range (TensorProduct.map LinearMap.id P.subtype)`.
+  The target is the canonical cokernel of the continuous submodule tensor map,
+  not a quotient by the closure of its range. The ring is commutative with a
+  supplied topology, `C` is purely algebraic, `M` is a topological module with jointly
+  continuous scalar action and `P` is any submodule. Carrier universes are independent; no
+  coefficient topology, continuity of ring multiplication, closedness,
+  separation, finiteness, freeness, flatness or injectivity of the submodule tensor map
+  is required. The underlying equivalence is
+  `TensorProduct.tensorQuotientEquiv C P`. Characteristic formulas describe the
+  forward and inverse maps on arbitrary and pure tensors; the existing
+  continuous-linear-equivalence API supplies both round trips. The
+  [examples](AlgebraicDirectLimitsExamples/CoefficientTensorQuotient.lean) use
+  `(ZMod 2 × ZMod 2) × (ℕ →₀ ℤ)` and right submodules `2ℤ × B` of `ℤ × ℝ`,
+  including the rational span of `1` restricted to `ℤ`, which is not closed.
+  They give block maps, distinct-index detectors and doubling controls.
 - **Discrete right-factor tensors.**
   [`TensorProduct.continuousSMul_bot_of_discrete_right`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean)
   gives joint scalar continuity on the algebraic tensor with bottom topology, and
@@ -305,6 +324,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Map`](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) | Infinite-rank integer coefficient projections with nonzero two-term inputs, distinct supported outputs, unequal weights, and whole-map finite-sum laws |
 | [`Topology.TensorProduct.Prod`](AlgebraicDirectLimits/Topology/TensorProduct/Prod.lean) | Binary-product distribution for an algebraic coefficient module and two topological right factors over a commutative ring with a supplied topology; ordinary product topology, independent carrier universes and naturality in algebraic coefficient and continuous right-factor maps |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Prod`](AlgebraicDirectLimitsExamples/TensorProduct/Prod.lean) | Infinite-rank integer Finsupp coefficients and the usual real product, with independently supported tensors, reconstruction and map detectors |
+| [`Topology.TensorProduct.Quotient`](AlgebraicDirectLimits/Topology/TensorProduct/Quotient.lean) | Continuous tensor-quotient equivalence for algebraic coefficients and arbitrary submodules, with arbitrary- and pure-tensor forward/inverse formulas |
+| [`AlgebraicDirectLimitsExamples.CoefficientTensorQuotient`](AlgebraicDirectLimitsExamples/CoefficientTensorQuotient.lean) | Rank-two mod-two torsion and infinite integer coefficients, quotient block maps, distinct-index detectors, doubling controls and a nonclosed rational submodule |
 | [`Topology.TensorDiscrete`](AlgebraicDirectLimits/Topology/TensorDiscrete.lean) | Joint scalar continuity at bottom and discrete canonical tensors with arbitrary algebraic coefficients and a discrete right module |
 | [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
@@ -371,7 +392,7 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-31 mathematical leaf modules plus the public aggregate (32 library modules), 27 example modules and seven test modules: 66 local modules in the default source import closure.
+32 mathematical leaf modules plus the public aggregate (33 library modules), 28 example modules and seven test modules: 68 local modules in the default source import closure.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:

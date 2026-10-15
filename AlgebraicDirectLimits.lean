@@ -26,6 +26,7 @@ public import AlgebraicDirectLimits.Topology.DiscreteScalarExtension
 public import AlgebraicDirectLimits.Topology.TensorCompactness
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimits.Topology.TensorProduct.Prod
+public import AlgebraicDirectLimits.Topology.TensorProduct.Quotient
 public import AlgebraicDirectLimits.Topology.TensorDiscrete
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import AlgebraicDirectLimits.Topology.TensorFunctor

@@ -44,6 +44,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorCircleModel",
   "AlgebraicDirectLimitsExamples.TensorCircleClient",
   "AlgebraicDirectLimitsExamples.CoefficientTensorProd",
+  "AlgebraicDirectLimitsExamples.CoefficientTensorQuotient",
   "AlgebraicDirectLimitsExamples.TensorNoncompactness",
   "AlgebraicDirectLimitsExamples.CoefficientTensor"
 ]
