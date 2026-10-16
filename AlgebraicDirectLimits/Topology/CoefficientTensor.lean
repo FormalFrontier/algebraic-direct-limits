@@ -7,6 +7,7 @@ module
 public import Mathlib.Algebra.Category.ModuleCat.Topology.Basic
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import Mathlib.CategoryTheory.Linear.Yoneda
+public import Mathlib.CategoryTheory.Adjunction.Limits
 
 /-!
 # Coefficient tensor and categorical continuous Hom
@@ -22,19 +23,20 @@ covariant Hom functor is Mathlib's linear coyoneda functor.
 
 The characteristic identities describe concrete Hom, tensor maps and currying.
 The plain Hom equivalence is natural in algebraic coefficients and continuous
-targets. No adjunction structure is defined here.
+targets. The adjunction identifies it with the categorical Hom equivalence.
 
 ## References
 
-This construction follows Wick's coefficient tensor formulation and Formal
-Frontier Agents' one-sided topological tensor and continuous-Hom formalization,
-including Beacon's coinduced topology work and Lantern's tensor models. It reuses
+This construction follows Formal Frontier Agents' coefficient tensor formulation
+and one-sided topological tensor and continuous-Hom formalization, including
+their coinduced topology work and tensor models. It reuses
 Mathlib's TopModuleCat interface by Andrew Yang and Richard Hill, the ModuleCat
 interface by Robert A. Spencer and Markus Himmel, Kim Morrison's linear Yoneda
 construction, and the tensor universal property by Kenny Lau and Mario Carneiro.
 The continuous-linear-map formalization is credited in
 `AlgebraicDirectLimits.Topology.TensorHom`; the categorical and linear-equivalence
-interfaces are those of Mathlib. Mathematical and prior-formalization credit is
+interfaces, as well as the adjunction and colimit-preservation interfaces, are
+those of Mathlib. Mathematical and prior-formalization credit is
 separate from the Apache-2.0 licensing notice above.
 -/
 
@@ -281,5 +283,42 @@ theorem coefficientTensorHomEquiv_naturality_right
       (CategoryTheory.comp_apply (C := TopModuleCat.{w} R)
         (X := M) (Y := N) (Z := N')
         ((coefficientTensorHomEquiv R M C N f).hom c) v m).symm
+
+/-- Tensoring algebraic coefficients with a fixed topological module is left adjoint
+to the existing algebraic continuous-Hom functor. -/
+noncomputable def coefficientTensorAdjunction
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (M : TopModuleCat.{w} R) :
+    (coefficientTensor R M : ModuleCat.{w} R ⥤ TopModuleCat.{w} R) ⊣
+      (CategoryTheory.linearCoyoneda R (TopModuleCat.{w} R)).obj
+        (Opposite.op M) := by
+  refine Adjunction.mkOfHomEquiv
+    { homEquiv := coefficientTensorHomEquiv R M
+      homEquiv_naturality_left_symm := ?_
+      homEquiv_naturality_right := ?_ }
+  · intro D C N u b
+    apply (coefficientTensorHomEquiv R M D N).injective
+    rw [Equiv.apply_symm_apply, coefficientTensorHomEquiv_naturality_left,
+      Equiv.apply_symm_apply]
+  · intro C N N' f v
+    exact coefficientTensorHomEquiv_naturality_right R M f v
+
+/-- The adjunction's Hom equivalence is the concrete coefficient-tensor currying equivalence. -/
+@[simp] theorem coefficientTensorAdjunction_homEquiv
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (M : TopModuleCat.{w} R) (C : ModuleCat.{w} R)
+    (N : TopModuleCat.{w} R) :
+    (coefficientTensorAdjunction R M).homEquiv C N =
+      coefficientTensorHomEquiv R M C N := by
+  unfold coefficientTensorAdjunction
+  rw [Adjunction.mkOfHomEquiv_homEquiv]
+
+/-- The coefficient tensor is a left adjoint, so Mathlib supplies preservation of colimits. -/
+instance coefficientTensor_isLeftAdjoint
+    (R : Type uR) [CommRing R] [TopologicalSpace R]
+    (M : TopModuleCat.{w} R) :
+    Functor.IsLeftAdjoint
+      (coefficientTensor R M : ModuleCat.{w} R ⥤ TopModuleCat.{w} R) := by
+  exact (coefficientTensorAdjunction R M).isLeftAdjoint
 
 end TopModuleCat

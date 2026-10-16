@@ -60,11 +60,14 @@ Kevin Buzzard, Yury Kudryashov, Frédéric Dupuis, Heather Macbeth and Andrew Ya
 ZMod is due to Chris Hughes. Rational cast density is due to Yury Kudryashov.
 The rational-class detector follows the algebraic circle detector and
 irrational-square-root argument in `TensorCircle.Detector`, with its cited
-contributors. The topological-module lineage includes Beacon's original
+contributors. The topological-module lineage includes the
 Continuous Group Cohomology development and Richard Hill and Andrew Yang's
 Mathlib constructions. These examples were developed by Formal Frontier Agents
 with AI assistance.
 -/
+
+-- These quotient tensor checks are private examples, not a downstream API.
+set_option linter.privateModule false
 
 noncomputable section
 
@@ -693,7 +696,7 @@ private theorem quotientTensor_detector_values (B : Submodule ℤ ℝ) :
             (congrArg (Int.castAddHom (ZMod 2)).toIntLinearMap
               (integerDetector_tmul i (Finsupp.single n 1) 1 0))
         _ = (if i = n then 1 else 0) := by
-          by_cases h : i = n <;> simp [Finsupp.single_apply, eq_comm, h]
+          by_cases h : i = n <;> simp [h]
     · have hwR : realDetector i (w n) = 0 :=
         (realDetector_tmul i (Finsupp.single n 1) 1 0).trans (mul_zero _)
       exact (hR i (w n)).trans ((congrArg B.mkQ hwR).trans (map_zero B.mkQ))
@@ -775,7 +778,7 @@ private theorem quotientTensor_mixed_controls (B : Submodule ℤ ℝ) :
       (congrArg (fun a ↦ a + q finsuppCoefficients (v k y))
         (map_add (q finsuppCoefficients) (w n) (v n x)))
   have hiw : quotientIntegerDetector B n (q finsuppCoefficients (w n)) = 1 :=
-    (hs n n 0).1.trans (if_pos rfl)
+    (hs n n 0).1.trans (ite_eq_left rfl)
   have hivn : quotientIntegerDetector B n (q finsuppCoefficients (v n x)) = 0 :=
     (hs n n x).2.2.1
   have hivk : quotientIntegerDetector B n (q finsuppCoefficients (v k y)) = 0 :=
@@ -786,15 +789,15 @@ private theorem quotientTensor_mixed_controls (B : Submodule ℤ ℝ) :
   have hrnw : quotientRealDetector B n (q finsuppCoefficients (w n)) = 0 :=
     (hs n n 0).2.1
   have hrnvn : quotientRealDetector B n (q finsuppCoefficients (v n x)) = B.mkQ x :=
-    (hs n n x).2.2.2.trans (if_pos rfl)
+    (hs n n x).2.2.2.trans (ite_eq_left rfl)
   have hrnvk : quotientRealDetector B n (q finsuppCoefficients (v k y)) = 0 :=
-    (hs n k y).2.2.2.trans (if_neg hnk)
+    (hs n k y).2.2.2.trans (ite_eq_right hnk)
   have hrkw : quotientRealDetector B k (q finsuppCoefficients (w n)) = 0 :=
     (hs k n 0).2.1
   have hrkvn : quotientRealDetector B k (q finsuppCoefficients (v n x)) = 0 :=
-    (hs k n x).2.2.2.trans (if_neg hnk.symm)
+    (hs k n x).2.2.2.trans (ite_eq_right hnk.symm)
   have hrkvk : quotientRealDetector B k (q finsuppCoefficients (v k y)) = B.mkQ y :=
-    (hs k k y).2.2.2.trans (if_pos rfl)
+    (hs k k y).2.2.2.trans (ite_eq_left rfl)
   have hrn : quotientRealDetector B n V = B.mkQ x :=
     (congrArg (quotientRealDetector B n) hsum).trans (by
       rw [map_add, map_add, hrnw, hrnvn, hrnvk, zero_add, add_zero])

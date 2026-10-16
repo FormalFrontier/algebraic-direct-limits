@@ -25,6 +25,18 @@ The rational-circle modules listed below are separate imports.
   `Functor.map_zero`. The [integer-pair examples](AlgebraicDirectLimitsExamples/TensorFunctor.lean)
   identify the doubled nonzero tensor and evaluate doubling plus identity.
 
+- **Tensor functoriality in both variables.**
+  [`TopModuleCat.tensorBifunctor`](AlgebraicDirectLimits/Topology/TensorBifunctor.lean)
+  sends each algebraic coefficient module to its existing right-variable tensor
+  functor. Its coefficient components are the existing coefficient-tensor maps;
+  the standard `Functor.uncurry` acts by `tensorMapBilinear`, and `Functor.flip`
+  recovers the coefficient functor. The commutative ring has a supplied topology,
+  and right modules have jointly continuous actions. Scalar and carrier universes
+  are independent, with target carrier universe `max uC uM`; no coefficient
+  topology, finiteness, freeness, separation or continuity of ring multiplication
+  is required. The [integer example](AlgebraicDirectLimitsExamples/TensorBifunctor.lean)
+  tensors doubling with tripling and detects a nonzero image as six.
+
 - **Bundled continuous tensor maps.**
   [`TopModuleCat.tensorMapBilinear`](AlgebraicDirectLimits/Topology/TensorProduct.lean)
   is bilinear in an algebraic coefficient map and a continuous linear right-factor
@@ -58,16 +70,18 @@ The rational-circle modules listed below are separate imports.
   and a [nonzero quotient class of `1`](AlgebraicDirectLimitsExamples/RestrictionCokernels.lean),
   with a nonzero parity descendant into `ℤ × ZMod 2`.
 
-- **Coefficient tensor functors and natural outgoing Hom equivalences.**
-  Let `R` be a commutative ring equipped with a topology. A fixed topological
-  `R`-module `M` with jointly continuous scalar action gives a coefficient tensor
-  functor from algebraic `R`-modules to topological `R`-modules. In a common
-  carrier universe, outgoing continuous linear maps correspond to linear
-  coefficient families of continuous linear maps, naturally in algebraic
-  coefficients and continuous targets. Neither coefficients nor the Hom module
-  are given a topology. See the [module](AlgebraicDirectLimits/Topology/CoefficientTensor.lean),
-  [naturality guide](docs/coefficient-tensor-hom-naturality.md), and
-  [integer evaluations](AlgebraicDirectLimitsExamples/CoefficientTensor.lean).
+- **Coefficient tensor–continuous Hom adjunction.**
+  Let `R` be a commutative ring equipped with a topology and `M` a topological
+  `R`-module with jointly continuous scalar action. In a common carrier universe,
+  independent of the scalar universe, coefficient tensor is left adjoint to the
+  existing algebraic continuous-Hom functor. Its characteristic Hom equivalence
+  is the natural coefficient-family currying equivalence. It therefore preserves
+  existing colimits of arbitrary diagram size. Neither coefficients nor the Hom
+  module are given a topology. See the
+  [module](AlgebraicDirectLimits/Topology/CoefficientTensor.lean),
+  [naturality guide](docs/coefficient-tensor-hom-naturality.md),
+  [integer evaluations](AlgebraicDirectLimitsExamples/CoefficientTensor.lean), and
+  [endomorphism counit and binary coproduct](AlgebraicDirectLimitsExamples/CoefficientTensorAdjunction.lean).
 
 - **Continuous tensor quotients.**
   [`TopModuleCat.tensorQuotient`](AlgebraicDirectLimits/Topology/TensorProduct/Quotient.lean)
@@ -321,6 +335,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps, linearity in each map variable and finite-basis contracts |
 | [`Topology.TensorFunctor`](AlgebraicDirectLimits/Topology/TensorFunctor.lean) | Additive tensor functor with fixed algebraic coefficients, the one-sided topology, algebraic map compatibility and pure-tensor values |
 | [`AlgebraicDirectLimitsExamples.TensorFunctor`](AlgebraicDirectLimitsExamples/TensorFunctor.lean) | Integer doubling compatibility and the additive functor law evaluated on a nonzero rank-two tensor |
+| [`Topology.TensorBifunctor`](AlgebraicDirectLimits/Topology/TensorBifunctor.lean) | Tensor functor in algebraic coefficients and topological right modules, with characteristic uncurried maps and fixed-slot equalities |
+| [`AlgebraicDirectLimitsExamples.TensorBifunctor`](AlgebraicDirectLimitsExamples/TensorBifunctor.lean) | Coefficient doubling and right tripling on the integer unit tensor, detected as six and nonzero |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Map`](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) | Infinite-rank integer coefficient projections with nonzero two-term inputs, distinct supported outputs, unequal weights, and whole-map finite-sum laws |
 | [`Topology.TensorProduct.Prod`](AlgebraicDirectLimits/Topology/TensorProduct/Prod.lean) | Binary-product distribution for an algebraic coefficient module and two topological right factors over a commutative ring with a supplied topology; ordinary product topology, independent carrier universes and naturality in algebraic coefficient and continuous right-factor maps |
 | [`AlgebraicDirectLimitsExamples.TensorProduct.Prod`](AlgebraicDirectLimitsExamples/TensorProduct/Prod.lean) | Infinite-rank integer Finsupp coefficients and the usual real product, with independently supported tensors, reconstruction and map detectors |
@@ -330,8 +346,9 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence, arbitrary product coordinates and lift/curry naturality |
-| [`Topology.CoefficientTensor`](AlgebraicDirectLimits/Topology/CoefficientTensor.lean) | Algebraic coefficient tensor functor and natural outgoing tensor–Hom equivalence over a commutative ring equipped with a topology |
+| [`Topology.CoefficientTensor`](AlgebraicDirectLimits/Topology/CoefficientTensor.lean) | Coefficient tensor–continuous Hom adjunction over a commutative ring equipped with a topology, characteristic currying equivalence and preservation of existing colimits |
 | [`AlgebraicDirectLimitsExamples.CoefficientTensor`](AlgebraicDirectLimitsExamples/CoefficientTensor.lean) | Infinite, nonfree and distinct-action coefficient models, with nonzero integer evaluations of coefficient and target naturality |
+| [`AlgebraicDirectLimitsExamples.CoefficientTensorAdjunction`](AlgebraicDirectLimitsExamples/CoefficientTensorAdjunction.lean) | Nonzero counit evaluation on integer endomorphisms and preservation of their canonical binary coproduct |
 | [`AlgebraicDirectLimitsExamples.TensorHomNaturality`](AlgebraicDirectLimitsExamples/TensorHomNaturality.lean) | Integer-axis, infinite-real-coordinate and nonfree-ideal naturality laws, variable mixed-tensor formulas and nonzero control values |
 | [`Topology.TensorUnit`](AlgebraicDirectLimits/Topology/TensorUnit.lean) | Continuous scalar tensor unit and right-factor naturality |
 | [`Topology.TensorAssociativity`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean) | Continuous reassociation of one-sided tensor products, three-factor naturality and whole lift/curry compatibility |
@@ -392,7 +409,7 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-32 mathematical leaf modules plus the public aggregate (33 library modules), 28 example modules and seven test modules: 68 local modules in the default source import closure.
+33 mathematical leaf modules plus the public aggregate (34 library modules), 30 example modules and seven test modules: 71 local modules in the default source import closure.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
@@ -426,22 +443,23 @@ including `Mathlib.Algebra.Colimit.DirectLimit`,
 `Mathlib.RingTheory.Localization.Pi`. References are mathematical background,
 not quotations or claims of formalizing those exact texts.
 
-Original Formal Frontier contributions credit Anchor (varying scalars,
-cofinality and Mittag--Leffler systems), Prism (simple-ring colimits, graded
-stabilization and monoidal research) and other Formal Frontier agents (including
-the distinct Lean implementations for localization, cofinal completion and
-monoidal completion). Anchor also contributed assembly and subsequent
-improvements. See [contributors and provenance](docs/CREDITS.md) for details;
-these are AI-assisted formal developments, not claims of source-author
-endorsement. The finite-capture dimension bounds are Keel's formal development using
+Original contributions by Formal Frontier Agents include varying scalars,
+cofinality and Mittag--Leffler systems; simple-ring colimits, graded
+stabilization and monoidal research; and distinct Lean implementations for
+localization, cofinal completion and monoidal completion. Formal Frontier Agents
+also contributed library assembly and subsequent improvements. See
+[contributors and provenance](docs/CREDITS.md) for details; these are AI-assisted
+formal developments, not claims of source-author endorsement. The finite-capture
+dimension bounds are a formal development by Formal Frontier Agents using
 Mathlib's `Order.krullDim`, `LTSeries` and `PrimeSpectrum.comap`; the singleton
 family recovers Mathlib's `ringKrullDim_le_of_surjective`. The directed-colimit
-specialization and its models are also Keel's development, using Mathlib's
-characteristic maps, representatives and directed finite-union capture API.
-The constant-identity directed-system instances generalize Keel's integer
-client law using Junyan Xu's Mathlib `DirectedSystem` and its identity and
-composition API. `DirectedSystem.constRingHom` specializes the same function-law
-witness using the identity-coercion API of Amelia Livingston and Jireh Loreaux.
+specialization and its models are also due to Formal Frontier Agents, using
+Mathlib's characteristic maps, representatives and directed finite-union capture API.
+The constant-identity directed-system instances generalize the integer client
+law developed by Formal Frontier Agents, using Junyan Xu's Mathlib
+`DirectedSystem` and its identity and composition API.
+`DirectedSystem.constRingHom` specializes the same function-law witness using
+the identity-coercion API of Amelia Livingston and Jireh Loreaux.
 It allows any nonassociative semiring over an arbitrary preorder, independently
 of the directedness and nonemptiness required by the colimit.
 The directed-subsemiring union bound and its models use the same finite-capture
@@ -451,9 +469,10 @@ The coinduced-module criterion follows Richard Hill and Andrew
 Yang's Mathlib coinduced construction and `TopModuleCat.isColimit`
 induced-topology proof. The same-topology restriction generalizes the restriction
 object and continuous-map construction in Continuous Group Cohomology, including
-Beacon's original development. Its algebraic objects and comparisons reuse
-Jujian Zhang's Mathlib change-of-rings API; continuous maps reuse Sébastien Gouëzel
-and Yury Kudryashov's restriction API. The regular-action continuity criterion
+Formal Frontier Agents' original restriction and continuous-map development.
+Its algebraic objects and comparisons reuse Jujian Zhang's Mathlib change-of-rings
+API; continuous maps reuse Sébastien Gouëzel and Yury Kudryashov's restriction
+API. The regular-action continuity criterion
 and Algebra agreement follow Mathlib's `continuous_algebraMap_iff_smul` and
 `Algebra.smul_def`; the former is from the topological-algebra development by
 Kim Morrison, Antoine Chambert-Loir and María Inés de Frutos-Fernández.
@@ -463,7 +482,7 @@ credit the underlying topological-module constructions and formalization approac
 The one-sided tensor topology follows
 scalar-extension ideas from
 [Continuous Group Cohomology](https://github.com/FormalFrontier/continuous-group-cohomology)
-by Formal Frontier Agents, including Beacon's original topological development.
+by Formal Frontier Agents, including the original topological development.
 Its local universe adapters reuse Mathlib's module and continuous-linear `ULift`
 APIs directly. The continuous tensor universal property and scalar unit reuse
 Kenny Lau and Mario Carneiro's Mathlib algebraic tensor lift, lift equivalence
@@ -472,21 +491,29 @@ criterion. The complementary lift-precomposition statement represents Mathlib's
 `TensorProduct.lift_comp_map` in the continuous map space for the existing
 one-sided topology, rather than asserting a new algebraic naturality theorem.
 The modules name the contributors to their continuous-linear APIs.
-The arbitrary-basis/projective preservation follows Lantern's split-cover
-mathematics, reusing Kevin Buzzard and Antoine Labelle's projective-module API,
-Mathlib's Finsupp and tensor-basis APIs, Johan Commelin's infinite-basis finiteness
-provider, and Johannes Hölzl, Mario Carneiro and Yury Kudryashov's dense-order
-topology. The fixed product-ring ideal model uses Kenny Lau, Chris Hughes and
-Mario Carneiro's ideal API. Related general idempotent-ideal mathematics is
+The coefficient tensor–continuous Hom adjunction follows Formal Frontier Agents'
+coefficient tensor formulation and Mathlib's adjunction and colimit-preservation
+interfaces.
+The two-variable tensor functor combines the one-variable constructions,
+including the coinduced topology and tensor models developed by Formal Frontier
+Agents, and reuses Mathlib's functor currying and flipping interfaces by
+Kim Morrison, Tim Baumann, Stephen Morgan and Floris van Doorn. Its tensor maps
+reuse Kenny Lau and Mario Carneiro's algebraic tensor-map API.
+The arbitrary-basis/projective preservation follows Formal Frontier Agents'
+split-cover mathematics, reusing Kevin Buzzard and Antoine Labelle's
+projective-module API, Mathlib's Finsupp and tensor-basis APIs,
+Johan Commelin's infinite-basis finiteness provider, and Johannes Hölzl,
+Mario Carneiro and Yury Kudryashov's dense-order topology. The fixed product-ring
+ideal model uses Kenny Lau, Chris Hughes and Mario Carneiro's ideal API. Related general idempotent-ideal mathematics is
 provided by [Projective Modules](https://github.com/FormalFrontier/projective-modules),
-including Prism's work; no dependency on that library or new general ideal API
-is introduced here.
+including Formal Frontier Agents' work on projective modules; no dependency on
+that library or new general ideal API is introduced here.
 The discrete-right tensor statements generalize the Continuous Group Cohomology
 discrete-tensor scalar provider to arbitrary algebraic coefficients and reuse
 Mathlib's discrete-topology continuity APIs by Johannes Hölzl, Mario Carneiro
 and Mitchell Lee.
 The rational-circle constructions and non-Hausdorffness proof follow Formal
-Frontier Agents (Lantern), *Rational coefficients do not preserve tensor
+Frontier Agents, *Rational coefficients do not preserve tensor
 Hausdorffness*, and its stock API companion. They reuse Mathlib's localization
 flatness, Oliver Nash's additive circle, integer tensor balancing, rational cast
 density, irrationality of `Real.sqrt 2` and uniqueness of continuous maps on a

@@ -31,6 +31,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.DiscreteScalarExtension",
   "AlgebraicDirectLimitsExamples.TensorProduct",
   "AlgebraicDirectLimitsExamples.TensorFunctor",
+  "AlgebraicDirectLimitsExamples.TensorBifunctor",
   "AlgebraicDirectLimitsExamples.TensorProduct.Map",
   "AlgebraicDirectLimitsExamples.TensorProduct.Prod",
   "AlgebraicDirectLimitsExamples.DiscreteTensor",
@@ -46,7 +47,8 @@ roots = [
   "AlgebraicDirectLimitsExamples.CoefficientTensorProd",
   "AlgebraicDirectLimitsExamples.CoefficientTensorQuotient",
   "AlgebraicDirectLimitsExamples.TensorNoncompactness",
-  "AlgebraicDirectLimitsExamples.CoefficientTensor"
+  "AlgebraicDirectLimitsExamples.CoefficientTensor",
+  "AlgebraicDirectLimitsExamples.CoefficientTensorAdjunction"
 ]
 
 [[lean_lib]]

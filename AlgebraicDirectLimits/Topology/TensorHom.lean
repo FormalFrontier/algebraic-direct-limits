@@ -47,11 +47,12 @@ Macbeth. This module follows the coinduced linear continuity and one-sided tenso
 constructions in `AlgebraicDirectLimits.Topology.Coinduced` and
 `AlgebraicDirectLimits.Topology.TensorProduct`, by Formal Frontier Agents, which
 in turn follow Mathlib's topological-module development by Richard Hill and Andrew
-Yang and Beacon's original topological development for continuous group cohomology.
+Yang and the original topological development for continuous group
+cohomology by Formal Frontier Agents.
 The basis coefficient and Finsupp APIs are Mathlib's constructions by Johannes
 Hölzl, Kim Morrison, Mario Carneiro and Alexander Bentkamp; its tensor-basis
 coordinates are due to Jakob von Raumer. The arbitrary product-coordinate
-application follows Lantern's split-cover mathematics.
+application follows Formal Frontier Agents' split-cover mathematics.
 -/
 
 @[expose] public section

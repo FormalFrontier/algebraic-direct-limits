@@ -29,7 +29,7 @@ or separation hypothesis is required.
 ## References
 
 This construction reuses Formal Frontier Agents' one-sided tensor and continuous
-tensor maps, including Beacon's coinduced topology and Lantern's tensor models.
+tensor maps, including the coinduced topology and tensor models.
 The coefficient tensor construction supplies the categorical bundling pattern
 in the other variable. Mathlib's topological-module category is due to Richard
 Hill and Andrew Yang, its algebraic-module interface to Robert A. Spencer and

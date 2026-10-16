@@ -9,29 +9,27 @@ The mathematical Lean expressions in this library are original Formal Frontier
 project contributions, not transcriptions of the mathematical references or
 upstream mathlib code. Their contributions include:
 
-| Modules and work | Project contributors |
+| Modules and work | Contributions |
 | --- | --- |
-| `VaryingScalar`, `CofinalSequence`, `MittagLeffler` | Anchor: original varying-scalar and tensor direct limits, cofinality, and Mittag-Leffler work |
-| `SimpleRing`, `GradedStabilization` | Prism: original simple-ring filtered-colimit and graded work |
-| `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit` and their examples | Keel: finite-subset capture, strict prime-chain contraction, subsemiring-preimage and directed-colimit dimension bounds, and finite-variable trace examples using Mathlib's Krull-dimension, prime-spectrum, set-restriction, polynomial, representative and characteristic-map APIs |
-| `Order.DirectedSystem`, `RingTheory.DirectLimit` | Ember: generalization of Keel's constant-integer identity-system law and its specialization to identity ring homomorphisms |
-| `LocalizationPi`, `CofinalGroupCompletion` and their boundary clients | Other Formal Frontier agents: original formalizations |
-| `MonoidalGroupCompletion` and its boundary client | Other Formal Frontier agents: formal Lean development informed by Prism's original monoidal research |
-| `Topology.Coinduced`, `Topology.TensorProduct`, `Topology.TensorHom`, `Topology.TensorUnit` and their examples | Formal Frontier Agents: one-sided topological-module development following Beacon's original Continuous Group Cohomology ideas and Mathlib's Richard Hill/Andrew Yang constructions |
-| Arbitrary product coordinates, generalized tensor separation statements and infinite/projective examples | Lantern: original split-cover mathematics and Lean expressions applying the existing universal lift, stock basis coordinates and projective splitting |
-| `Topology.Restriction` and its clients | Ember: generalization of the same-topology restriction object and continuous-map construction in Continuous Group Cohomology, including Beacon's original development |
-| `Topology.DiscreteScalarExtension` and its matrix-coefficient client | Ember: generalization of the Continuous Group Cohomology scalar object, maps and unit, following Beacon's topological development and reusing the one-sided tensor primitives |
-| Public imports, readiness clients, documentation, configuration and mathematical refinements | Anchor and other Formal Frontier agents: assembly and later project work |
+| `VaryingScalar`, `CofinalSequence`, `MittagLeffler` | Original varying-scalar and tensor direct limits, cofinality, and Mittag-Leffler work |
+| `SimpleRing`, `GradedStabilization` | Original simple-ring filtered-colimit and graded work |
+| `RingTheory.KrullDimension.FiniteCapture`, `RingTheory.KrullDimension.DirectLimit` and their examples | Finite-subset capture, strict prime-chain contraction, subsemiring-preimage and directed-colimit dimension bounds, and finite-variable trace examples using Mathlib's Krull-dimension, prime-spectrum, set-restriction, polynomial, representative and characteristic-map APIs |
+| `Order.DirectedSystem`, `RingTheory.DirectLimit` | Generalization of the original constant-integer identity-system law and its specialization to identity ring homomorphisms |
+| `LocalizationPi`, `CofinalGroupCompletion` and their boundary clients | Original formalizations |
+| `MonoidalGroupCompletion` and its boundary client | Formal Lean development informed by original Formal Frontier monoidal research |
+| `Topology.Coinduced`, `Topology.TensorProduct`, `Topology.TensorHom`, `Topology.TensorUnit` and their examples | One-sided topological-module development following the original Formal Frontier Continuous Group Cohomology ideas and Mathlib's Richard Hill/Andrew Yang constructions |
+| Arbitrary product coordinates, generalized tensor separation statements and infinite/projective examples | Original split-cover mathematics and Lean expressions applying the existing universal lift, stock basis coordinates and projective splitting |
+| `Topology.Restriction` and its clients | Generalization of the same-topology restriction object and continuous-map construction in Continuous Group Cohomology, including the original topological development |
+| `Topology.DiscreteScalarExtension` and its matrix-coefficient client | Generalization of the Continuous Group Cohomology scalar object, maps and unit, following the original topological development and reusing the one-sided tensor primitives |
+| Public imports, examples, documentation, configuration and mathematical refinements | Assembly and mathematical refinements |
 
-Prism's monoidal research informed the later reusable Lean extraction; it is
-credited as mathematical research and method input, not as a shipped import or
-an independently distributed source artifact. The documentation adapter in
-`scripts/generate_api.py` adapts Anchor's original Formal Frontier adapter from
-the ideal-completion project under the same project Apache-2.0 authorization.
-Anchor also authored the display inventory, supplementary API notes and associated
-controls. These project adaptations are distinct from dependency code: the
-generated reference reproduces this library's signatures and source docstrings,
-not doc-gen4's implementation or website assets.
+Original Formal Frontier monoidal research informs the reusable Lean development
+as mathematical ideas and methods, not dependency code. The documentation adapter
+in `scripts/generate_api.py` adapts the project's original ideal-completion
+adapter under the same Apache-2.0 authorization. The documentation tooling and
+supplementary API notes are also original project contributions. These adaptations
+are distinct from dependency code: the generated reference reproduces this library's
+signatures and source docstrings, not doc-gen4's implementation or website assets.
 
 [mathlib4](https://github.com/leanprover-community/mathlib4) supplies separately
 licensed formal foundations as a declared dependency, rather than the original
@@ -43,7 +41,7 @@ endorsement. No book PDF, scan, figure or substantial source excerpt is shipped.
 
 The constant-identity directed-system construction reuses Junyan Xu's
 [`DirectedSystem` class and its law API](https://github.com/leanprover-community/mathlib4/blob/83abb3e776bdefcbc447a1e44d0debe4010039e5/Mathlib/Order/DirectedInverseSystem.lean).
-It generalizes Keel's prior constant-integer directed-colimit client, rather
+It generalizes the original constant-integer directed-colimit client, rather
 than defining a new system class or colimit construction. The ring-homomorphism
 instance returns this same function-law witness after identity-coercion conversion,
 using Amelia Livingston and Jireh Loreaux's Mathlib `RingHom` API. The concrete
@@ -59,9 +57,9 @@ Kudryashov, Frédéric Dupuis and Heather Macbeth. The infinite-basis finiteness
 provider is due to Johan Commelin; dense-order topology to Johannes Hölzl, Mario
 Carneiro and Yury Kudryashov; integer-action continuity to Johannes Hölzl, Mario
 Carneiro and Patrick Massot; and the ideal API to Kenny Lau, Chris Hughes and Mario
-Carneiro. Related general idempotent-ideal mathematics in Projective Modules,
-including Prism's work, is mathematical input, not a dependency or copied generic
-implementation. The new fixed product-ring ideal uses canonical Mathlib module
+Carneiro. Related general idempotent-ideal mathematics in Projective Modules
+is mathematical input, not a dependency or copied generic
+implementation. The fixed product-ring ideal uses canonical Mathlib module
 structures and local specimen data.
 
 Same-topology restriction uses Jujian Zhang's Mathlib algebraic change-of-rings
@@ -78,7 +76,7 @@ María Inés de Frutos-Fernández; its Algebra agreement uses `Algebra.smul_def`
 The scalar-extension work follows the Continuous Group Cohomology formalization
 by Formal Frontier Agents. Its earlier universe interface adapts Nailin Guan's
 module-category universe-lift construction; that interface is not copied here.
-The new scalar layer reuses Mathlib's tensor and continuous-linear machinery
+The scalar layer reuses Mathlib's tensor and continuous-linear machinery
 through the one-sided tensor primitives. Mathlib's topological-module category
 is due to Richard Hill and Andrew Yang, its tensor APIs to Kenny Lau and Mario
 Carneiro, its coefficient-linear tensor APIs to Kim Morrison, Johan Commelin and

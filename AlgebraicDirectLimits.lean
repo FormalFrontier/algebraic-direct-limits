@@ -30,6 +30,7 @@ public import AlgebraicDirectLimits.Topology.TensorProduct.Quotient
 public import AlgebraicDirectLimits.Topology.TensorDiscrete
 public import AlgebraicDirectLimits.Topology.TensorHom
 public import AlgebraicDirectLimits.Topology.TensorFunctor
+public import AlgebraicDirectLimits.Topology.TensorBifunctor
 public import AlgebraicDirectLimits.Topology.TensorUnit
 public import AlgebraicDirectLimits.Topology.TensorAssociativity
 public import AlgebraicDirectLimits.Topology.TensorSeparation
@@ -50,6 +51,7 @@ discrete coefficient-algebra scalar extension, continuous
 tensor associativity, compactness for finitely generated coefficients, statements
 for arbitrary-basis and projective tensor Hausdorffness, and linear continuity
 for coinduced topological modules, and additive tensor functors with fixed algebraic
-coefficients.
+coefficients. Tensor functoriality in both variables uses the same one-sided
+topology, with standard curried, uncurried and flipped presentations.
 Each module may be imported independently.
 -/

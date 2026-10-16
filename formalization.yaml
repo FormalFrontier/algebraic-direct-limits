@@ -24,7 +24,8 @@ project:
     and coefficient-linear views, a continuous unit and functorial continuous maps,
     and a rational-circle counterexample to flat-coefficient tensor Hausdorff
     preservation, with an algebraic quotient detector and dense rational-angle
-    tensor-vanishing laws.
+    tensor-vanishing laws. The coefficient tensor–continuous Hom adjunction
+    preserves existing colimits.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -57,8 +58,12 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Thirty-two mathematical leaf modules and a public re-export (33 library modules),
-    twenty-eight example modules and seven test modules (six standalone clients and their aggregate): 68 local modules in the default source import closure.
+    Thirty-three mathematical leaf modules and a public re-export (34 library modules),
+    thirty example modules and seven test modules (six standalone clients and their aggregate): 71 local modules in the default source import closure.
+    Tensor functoriality in both algebraic coefficients and topological right modules
+    has standard curried, uncurried and flipped presentations, independent scalar
+    and carrier universes and a weighted integer example with a nonzero image
+    detected as six.
     The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The
     rational-circle library modules are separate imports, reached by the circle
     clients rather than the public re-export. The examples

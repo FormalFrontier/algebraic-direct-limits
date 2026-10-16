@@ -50,8 +50,8 @@ functions out of a final topology.
 ## References
 
 The construction follows the scalar-extension ideas of the Continuous Group
-Cohomology formalization by Formal Frontier Agents, including Beacon's original
-topological development. Mathlib's topological-module category and coinduced
+Cohomology formalization by Formal Frontier Agents, including the original topological
+development. Mathlib's topological-module category and coinduced
 construction are due to Richard Hill and Andrew Yang; its tensor-basis API is due
 to Jakob von Raumer, its Finsupp API to Johannes Hölzl, and its finite-free
 chosen-basis API to Riccardo Brasca. The continuous-linear-equivalence API is due
