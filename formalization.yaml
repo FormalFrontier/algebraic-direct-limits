@@ -12,8 +12,10 @@ project:
     localization of countable products, cofinal group completions,
     monoidal-category object classes with actual-image cofinality, same-topology
     scalar restriction, linear continuity for coinduced topological modules,
+    module topology on finite-dimensional strong duals without complete scalars,
     continuous finite-basis coordinates and binary-product distribution for
     one-sided tensor products, continuous tensor universal properties,
+    continuous dual tensor contraction into bounded-convergence Hom spaces,
     the scalar tensor unit, continuous
     associativity with whole continuous lift/curry compatibility,
     compactness for finitely generated tensor coefficients,
@@ -58,8 +60,14 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Thirty-three mathematical leaf modules and a public re-export (34 library modules),
-    thirty example modules and seven test modules (six standalone clients and their aggregate): 71 local modules in the default source import closure.
+    Thirty-five mathematical leaf modules and a public re-export (36 library modules),
+    thirty-two example modules and seven test modules (six standalone clients and their aggregate): 75 local modules in the default source import closure.
+    IsModuleTopology.strongDual gives the module topology on the existing
+    bounded-convergence continuous dual of a finite-dimensional topological
+    vector space with the module topology over a normed field, without a norm
+    on the original space, complete scalars or a nontrivial-norm assumption.
+    Rational-plane and dimension-zero applications and complete-field agreement
+    are included.
     Tensor functoriality in both algebraic coefficients and topological right modules
     has standard curried, uncurried and flipped presentations, independent scalar
     and carrier universes and a weighted integer example with a nonzero image
@@ -152,6 +160,17 @@ status:
     product ring of integers and reals, acting jointly on a discrete integer module through
     its first projection. Algebraic unitors detect nonzero, distinct and mixed
     tensors; continuity of those unitors is not asserted.
+    The continuous dual tensor contraction maps the existing one-sided tensor of
+    the algebraic coefficient module StrongDual κ E and G into bounded-convergence
+    continuous linear maps E to G. The scalar field is nontrivially normed; E only
+    has an additive group, a module structure and a topology, while G has continuous
+    addition and jointly continuous scalar action. Scalar and carrier universes
+    are independent. The rank-one formula and agreement with Mathlib's algebraic
+    dualTensorHom hold without finiteness, completeness, separation or norms on
+    the modules, and without continuity of the operations on E. No inverse is
+    asserted. Examples reconstruct an independently constructed real two-to-three
+    operator from its column tensor, evaluate it to a nonzero vector, and give the
+    zero-dimensional left-source boundary for arbitrary topological right modules.
     The algebraic associator becomes a continuous linear equivalence between
     the supplied one-sided tensor topologies, with pure-tensor formulas,
     inverse identities, threefold extensionality and naturality in all three

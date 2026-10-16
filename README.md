@@ -10,6 +10,18 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Module topology on finite-dimensional strong duals.**
+  [`IsModuleTopology.strongDual`](AlgebraicDirectLimits/Topology/StrongDual.lean)
+  gives the module topology on the continuous dual of any finite-dimensional
+  topological vector space already carrying the module topology, over a normed
+  field. The field need not be complete or nontrivially normed, and the original
+  space needs no norm. The dual retains its existing topology of uniform
+  convergence on bounded sets, which is the operator-norm topology in the normed
+  setting. This is an explicit theorem, not a global instance. The
+  [examples](AlgebraicDirectLimitsExamples/StrongDual.lean) apply it to linear
+  forms on the dual of the rational plane, include dimension zero, and record
+  agreement with Mathlib's complete-field conclusion on the same topology.
+
 - **Additive tensoring with fixed algebraic coefficients.**
   [`TopModuleCat.tensorLeftFunctor`](AlgebraicDirectLimits/Topology/TensorFunctor.lean)
   sends `M : TopModuleCat.{uM} R` to `tensorLeftObj R C M` for a fixed
@@ -127,6 +139,21 @@ The rational-circle modules listed below are separate imports.
   [integer-pair examples](AlgebraicDirectLimitsExamples/TensorHom.lean), including
   a nonzero cross tensor annihilated by the dot pairing but detected by a second
   pairing.
+- **Continuous dual tensor contraction.**
+  [`TopModuleCat.dualTensorHom`](AlgebraicDirectLimits/Topology/DualTensorHom.lean)
+  sends `φ ⊗ₜ v` to `w ↦ φ w • v`, from the existing one-sided tensor with
+  algebraic coefficients `StrongDual κ E` into the bounded-convergence space
+  `E →L[κ] G`. The field `κ` is nontrivially normed; `E` only needs an additive
+  group, a module structure and its original topology, while `G` has continuous
+  addition and jointly continuous scalar action. Scalar and carrier universes
+  are independent. No norm on either module, finite dimension, completeness,
+  separation or continuity of the operations on `E` is required. The rank-one
+  simp formula and whole-map agreement with Mathlib's algebraic `dualTensorHom`
+  after forgetting continuity characterize the forward map; no inverse is
+  asserted. The [rectangular real example](AlgebraicDirectLimitsExamples/DualTensorHom.lean)
+  reconstructs an independently defined two-to-three operator from its column
+  tensor and evaluates it at a nonzero input; a zero-dimensional left-source
+  example allows an arbitrary topological right module.
 - **Continuous lift and curry compatibility with reassociation.**
   [`TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
   identifies the flat continuous lift of any two-coefficient linear family
@@ -328,6 +355,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | --- | --- |
 | [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
+| [`Topology.StrongDual`](AlgebraicDirectLimits/Topology/StrongDual.lean) | Module topology on finite-dimensional continuous duals without complete scalars |
+| [`AlgebraicDirectLimitsExamples.StrongDual`](AlgebraicDirectLimitsExamples/StrongDual.lean) | Rational-plane application, dimension-zero boundary and complete-field agreement |
 | [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
 | [`Topology.RestrictionKernels`](AlgebraicDirectLimits/Topology/RestrictionKernels.lean) | Additivity and preservation of each kernel under continuous scalar restriction |
 | [`Topology.RestrictionCokernels`](AlgebraicDirectLimits/Topology/RestrictionCokernels.lean) | Preservation of algebraic-range cokernels and their universal property for arbitrary smaller-ring targets |
@@ -346,6 +375,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence, arbitrary product coordinates and lift/curry naturality |
+| [`Topology.DualTensorHom`](AlgebraicDirectLimits/Topology/DualTensorHom.lean) | Continuous dual tensor contraction into bounded-convergence Hom, rank-one simp formula and algebraic agreement |
+| [`AlgebraicDirectLimitsExamples.DualTensorHom`](AlgebraicDirectLimitsExamples/DualTensorHom.lean) | Independently constructed rectangular real operator, column-tensor reconstruction, nonzero value and zero-dimensional left-source boundary |
 | [`Topology.CoefficientTensor`](AlgebraicDirectLimits/Topology/CoefficientTensor.lean) | Coefficient tensor–continuous Hom adjunction over a commutative ring equipped with a topology, characteristic currying equivalence and preservation of existing colimits |
 | [`AlgebraicDirectLimitsExamples.CoefficientTensor`](AlgebraicDirectLimitsExamples/CoefficientTensor.lean) | Infinite, nonfree and distinct-action coefficient models, with nonzero integer evaluations of coefficient and target naturality |
 | [`AlgebraicDirectLimitsExamples.CoefficientTensorAdjunction`](AlgebraicDirectLimitsExamples/CoefficientTensorAdjunction.lean) | Nonzero counit evaluation on integer endomorphisms and preservation of their canonical binary coproduct |
@@ -378,10 +409,12 @@ the Lean modules give the exact signatures and hypotheses. The
 sites from seven mathematical modules**; [its overview](docs/README.md) lists
 those modules. It does not cover `Order.DirectedSystem`, `RingTheory.DirectLimit`,
 `MonoidalGroupCompletion`,
-`PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.TensorProduct`,
+`PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.StrongDual`,
+`Topology.TensorProduct`,
 `Topology.TensorDiscrete`, `Topology.TensorProduct.Prod`, `Topology.Restriction`,
 `Topology.RestrictionKernels`, `Topology.RestrictionCokernels`,
-`Topology.DiscreteScalarExtension`, `Topology.TensorHom`, `Topology.TensorUnit`,
+`Topology.DiscreteScalarExtension`, `Topology.TensorHom`, `Topology.DualTensorHom`,
+`Topology.TensorUnit`,
 `Topology.TensorAssociativity`, `Topology.TensorCompactness`,
 `Topology.TensorSeparation`, `Topology.TensorCircle.Detector`,
 `Topology.TensorCircle.RationalAngles`,
@@ -409,7 +442,7 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-33 mathematical leaf modules plus the public aggregate (34 library modules), 30 example modules and seven test modules: 71 local modules in the default source import closure.
+35 mathematical leaf modules plus the public aggregate (36 library modules), 32 example modules and seven test modules: 75 local modules in the default source import closure.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
@@ -479,6 +512,9 @@ Kim Morrison, Antoine Chambert-Loir and María Inés de Frutos-Fernández.
 The kernel and cokernel preservation modules reuse Mathlib's additive-functor,
 forgetful-limit reflection and quotient-comparison APIs; their module references
 credit the underlying topological-module constructions and formalization approach.
+The finite-dimensional strong-dual theorem uses Kevin Buzzard and Will Sawin's
+module-topology constructions, Mathlib's finite-dimensional basis API, and
+Anatole Dedecker and Yury Kudryashov's bounded-convergence topology.
 The one-sided tensor topology follows
 scalar-extension ideas from
 [Continuous Group Cohomology](https://github.com/FormalFrontier/continuous-group-cohomology)
@@ -491,6 +527,10 @@ criterion. The complementary lift-precomposition statement represents Mathlib's
 `TensorProduct.lift_comp_map` in the continuous map space for the existing
 one-sided topology, rather than asserting a new algebraic naturality theorem.
 The modules name the contributors to their continuous-linear APIs.
+The continuous dual tensor contraction follows Formal Frontier Agents' dual-tensor
+construction, applying Oliver Nash and Antoine Labelle's Mathlib algebraic
+contraction and Anatole Dedecker and Yury Kudryashov's bounded-convergence
+precomposition and scalar-line APIs through the existing one-sided tensor lift.
 The coefficient tensor–continuous Hom adjunction follows Formal Frontier Agents'
 coefficient tensor formulation and Mathlib's adjunction and colimit-preservation
 interfaces.

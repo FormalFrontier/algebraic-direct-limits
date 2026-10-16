@@ -19,10 +19,12 @@ public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectedUnion
 public import AlgebraicDirectLimits.SimpleRing
 public import AlgebraicDirectLimits.Topology.CoefficientTensor
 public import AlgebraicDirectLimits.Topology.Coinduced
+public import AlgebraicDirectLimits.Topology.StrongDual
 public import AlgebraicDirectLimits.Topology.Restriction
 public import AlgebraicDirectLimits.Topology.RestrictionKernels
 public import AlgebraicDirectLimits.Topology.RestrictionCokernels
 public import AlgebraicDirectLimits.Topology.DiscreteScalarExtension
+public import AlgebraicDirectLimits.Topology.DualTensorHom
 public import AlgebraicDirectLimits.Topology.TensorCompactness
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimits.Topology.TensorProduct.Prod
@@ -47,10 +49,12 @@ rings, spectra of filtered ring colimits, Krull dimension under finite-subset
 capture, for directed colimits and for directed subsemiring unions,
 localization of countable products, one-sided tensor topologies, same-topology
 scalar restriction with additivity and kernel and cokernel preservation,
-discrete coefficient-algebra scalar extension, continuous
-tensor associativity, compactness for finitely generated coefficients, statements
-for arbitrary-basis and projective tensor Hausdorffness, and linear continuity
-for coinduced topological modules, and additive tensor functors with fixed algebraic
+discrete coefficient-algebra scalar extension, continuous dual tensor contraction
+into bounded-convergence Hom spaces, continuous tensor associativity, compactness
+for finitely generated coefficients, statements for arbitrary-basis and projective
+tensor Hausdorffness, and linear continuity
+for coinduced topological modules, the module topology on finite-dimensional
+strong duals without complete scalars, and additive tensor functors with fixed algebraic
 coefficients. Tensor functoriality in both variables uses the same one-sided
 topology, with standard curried, uncurried and flipped presentations.
 Each module may be imported independently.
