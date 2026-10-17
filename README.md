@@ -10,6 +10,14 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Flat-coefficient tensor monomorphisms.** Over a commutative ring with a supplied
+  topology, tensoring the topological module factor with a flat algebraic coefficient
+  module preserves injectivity of continuous linear maps and categorical monomorphisms.
+  The [tensor functor](AlgebraicDirectLimits/Topology/TensorFunctor.lean) requires no
+  topology on the coefficient module. The integer-pair doubling example and the
+  [mod-two doubling boundary](AlgebraicDirectLimitsExamples/TensorFunctor.lean) show
+  the standard free case and why flatness cannot be omitted in general.
+
 - **Module topology on finite-dimensional strong duals.**
   [`IsModuleTopology.strongDual`](AlgebraicDirectLimits/Topology/StrongDual.lean)
   gives the module topology on the continuous dual of any finite-dimensional
