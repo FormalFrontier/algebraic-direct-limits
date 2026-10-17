@@ -149,11 +149,17 @@ The rational-circle modules listed below are separate imports.
   are independent. No norm on either module, finite dimension, completeness,
   separation or continuity of the operations on `E` is required. The rank-one
   simp formula and whole-map agreement with Mathlib's algebraic `dualTensorHom`
-  after forgetting continuity characterize the forward map; no inverse is
-  asserted. The [rectangular real example](AlgebraicDirectLimitsExamples/DualTensorHom.lean)
+  after forgetting continuity characterize the forward map. If `E` is additionally
+  finite-dimensional with its module topology,
+  [`TopModuleCat.dualTensorHomEquiv`](AlgebraicDirectLimits/Topology/DualTensorHom.lean)
+  is a continuous linear equivalence with exactly this forward map. In any finite
+  basis its inverse is the sum of continuous coordinate forms tensored with
+  operator values; no further hypothesis on `G` is needed. The
+  [rectangular real example](AlgebraicDirectLimitsExamples/DualTensorHom.lean)
   reconstructs an independently defined two-to-three operator from its column
-  tensor and evaluates it at a nonzero input; a zero-dimensional left-source
-  example allows an arbitrary topological right module.
+  tensor, recovers that tensor by the continuous inverse and evaluates the operator
+  at a nonzero input. The zero-dimensional left-source boundary allows an arbitrary
+  topological right module.
 - **Continuous lift and curry compatibility with reassociation.**
   [`TopModuleCat.tensorLiftCLM_lift_eq_comp_tensorAssoc`](AlgebraicDirectLimits/Topology/TensorAssociativity.lean)
   identifies the flat continuous lift of any two-coefficient linear family
@@ -375,8 +381,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.DiscreteTensor`](AlgebraicDirectLimitsExamples/DiscreteTensor.lean) | Non-finitely-generated mod-two integer coefficients, nondiscrete product-ring scalars, joint restricted actions and algebraic nonzero/distinct/mixed tensor detectors |
 | [`Topology.TensorCompactness`](AlgebraicDirectLimits/Topology/TensorCompactness.lean) | Compactness of one-sided tensors with finitely generated coefficients |
 | [`Topology.TensorHom`](AlgebraicDirectLimits/Topology/TensorHom.lean) | Continuous tensor lift, curry, universal-property linear equivalence, arbitrary product coordinates and lift/curry naturality |
-| [`Topology.DualTensorHom`](AlgebraicDirectLimits/Topology/DualTensorHom.lean) | Continuous dual tensor contraction into bounded-convergence Hom, rank-one simp formula and algebraic agreement |
-| [`AlgebraicDirectLimitsExamples.DualTensorHom`](AlgebraicDirectLimitsExamples/DualTensorHom.lean) | Independently constructed rectangular real operator, column-tensor reconstruction, nonzero value and zero-dimensional left-source boundary |
+| [`Topology.DualTensorHom`](AlgebraicDirectLimits/Topology/DualTensorHom.lean) | Continuous dual tensor contraction, finite-left continuous equivalence, rank-one and finite-basis inverse formulas, and algebraic agreement |
+| [`AlgebraicDirectLimitsExamples.DualTensorHom`](AlgebraicDirectLimitsExamples/DualTensorHom.lean) | Independent rectangular real operator, forward and inverse column-tensor reconstruction, nonzero value and arbitrary-right zero-left boundary |
 | [`Topology.CoefficientTensor`](AlgebraicDirectLimits/Topology/CoefficientTensor.lean) | Coefficient tensor–continuous Hom adjunction over a commutative ring equipped with a topology, characteristic currying equivalence and preservation of existing colimits |
 | [`AlgebraicDirectLimitsExamples.CoefficientTensor`](AlgebraicDirectLimitsExamples/CoefficientTensor.lean) | Infinite, nonfree and distinct-action coefficient models, with nonzero integer evaluations of coefficient and target naturality |
 | [`AlgebraicDirectLimitsExamples.CoefficientTensorAdjunction`](AlgebraicDirectLimitsExamples/CoefficientTensorAdjunction.lean) | Nonzero counit evaluation on integer endomorphisms and preservation of their canonical binary coproduct |
@@ -531,6 +537,9 @@ The continuous dual tensor contraction follows Formal Frontier Agents' dual-tens
 construction, applying Oliver Nash and Antoine Labelle's Mathlib algebraic
 contraction and Anatole Dedecker and Yury Kudryashov's bounded-convergence
 precomposition and scalar-line APIs through the existing one-sided tensor lift.
+The finite-left equivalence follows their finite-evaluation continuity argument:
+module-topology automatic continuity supplies coordinate forms, and fixed-left
+tensor generators after bounded-convergence evaluation give the continuous inverse.
 The coefficient tensor–continuous Hom adjunction follows Formal Frontier Agents'
 coefficient tensor formulation and Mathlib's adjunction and colimit-preservation
 interfaces.

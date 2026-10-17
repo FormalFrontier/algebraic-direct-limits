@@ -18,7 +18,7 @@ upstream mathlib code. Their contributions include:
 | `LocalizationPi`, `CofinalGroupCompletion` and their boundary clients | Original formalizations |
 | `MonoidalGroupCompletion` and its boundary client | Formal Lean development informed by original Formal Frontier monoidal research |
 | `Topology.Coinduced`, `Topology.TensorProduct`, `Topology.TensorHom`, `Topology.TensorUnit` and their examples | One-sided topological-module development following the original Formal Frontier Continuous Group Cohomology ideas and Mathlib's Richard Hill/Andrew Yang constructions |
-| `Topology.DualTensorHom` and its rectangular examples | Continuous forward dual tensor contraction and an independently constructed rectangular operator model, following Formal Frontier Agents' dual-tensor development and applying Mathlib's algebraic contraction and bounded-convergence maps |
+| `Topology.DualTensorHom` and its rectangular examples | Continuous dual tensor contraction, finite-left equivalence and finite-evaluation inverse continuity, with an independent rectangular operator model, following Formal Frontier Agents' dual-tensor development and applying Mathlib's algebraic contraction and bounded-convergence maps |
 | Arbitrary product coordinates, generalized tensor separation statements and infinite/projective examples | Original split-cover mathematics and Lean expressions applying the existing universal lift, stock basis coordinates and projective splitting |
 | `Topology.Restriction` and its clients | Generalization of the same-topology restriction object and continuous-map construction in Continuous Group Cohomology, including the original topological development |
 | `Topology.DiscreteScalarExtension` and its matrix-coefficient client | Generalization of the Continuous Group Cohomology scalar object, maps and unit, following the original topological development and reusing the one-sided tensor primitives |
@@ -65,9 +65,12 @@ structures and local specimen data.
 
 The continuous dual tensor contraction uses Oliver Nash and Antoine Labelle's
 Mathlib algebraic `dualTensorHom`, and Anatole Dedecker and Yury Kudryashov's
-bounded-convergence `precomp` and `toSpanSingletonCLE`. The forward construction
-and rectangular examples follow Formal Frontier Agents' dual-tensor development,
-using the existing one-sided tensor universal property. No algebraic contraction
+bounded-convergence `precomp` and `toSpanSingletonCLE`. The forward construction,
+finite-left equivalence and rectangular examples follow Formal Frontier Agents'
+dual-tensor development, using the existing one-sided tensor universal property.
+Their inverse-continuity proof is the finite sum of fixed-left tensor generators
+after bounded-convergence evaluation; Kevin Buzzard and Will Sawin's module-topology
+automatic-continuity API supplies the coordinate forms. No algebraic contraction
 or bounded-convergence topology implementation is copied.
 
 Same-topology restriction uses Jujian Zhang's Mathlib algebraic change-of-rings

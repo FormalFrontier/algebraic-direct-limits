@@ -15,7 +15,8 @@ project:
     module topology on finite-dimensional strong duals without complete scalars,
     continuous finite-basis coordinates and binary-product distribution for
     one-sided tensor products, continuous tensor universal properties,
-    continuous dual tensor contraction into bounded-convergence Hom spaces,
+    continuous dual tensor contraction and its finite-left equivalence with
+    bounded-convergence Hom spaces,
     the scalar tensor unit, continuous
     associativity with whole continuous lift/curry compatibility,
     compactness for finitely generated tensor coefficients,
@@ -167,9 +168,13 @@ status:
     addition and jointly continuous scalar action. Scalar and carrier universes
     are independent. The rank-one formula and agreement with Mathlib's algebraic
     dualTensorHom hold without finiteness, completeness, separation or norms on
-    the modules, and without continuity of the operations on E. No inverse is
-    asserted. Examples reconstruct an independently constructed real two-to-three
-    operator from its column tensor, evaluate it to a nonzero vector, and give the
+    the modules, and without continuity of the operations on E. When E is additionally
+    finite-dimensional with its module topology, the same forward contraction is a
+    continuous linear equivalence, with finite-basis inverse given by coordinate
+    forms tensored with operator values. No further hypothesis on G is needed.
+    Examples reconstruct an independently constructed real two-to-three operator
+    from its column tensor, recover the tensor by the continuous inverse, evaluate
+    the operator to a nonzero vector, and give the forward and inverse
     zero-dimensional left-source boundary for arbitrary topological right modules.
     The algebraic associator becomes a continuous linear equivalence between
     the supplied one-sided tensor topologies, with pure-tensor formulas,

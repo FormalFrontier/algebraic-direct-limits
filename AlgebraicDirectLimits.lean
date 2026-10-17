@@ -50,7 +50,8 @@ capture, for directed colimits and for directed subsemiring unions,
 localization of countable products, one-sided tensor topologies, same-topology
 scalar restriction with additivity and kernel and cokernel preservation,
 discrete coefficient-algebra scalar extension, continuous dual tensor contraction
-into bounded-convergence Hom spaces, continuous tensor associativity, compactness
+into bounded-convergence Hom spaces and its finite-left continuous linear
+equivalence, continuous tensor associativity, compactness
 for finitely generated coefficients, statements for arbitrary-basis and projective
 tensor Hausdorffness, and linear continuity
 for coinduced topological modules, the module topology on finite-dimensional
