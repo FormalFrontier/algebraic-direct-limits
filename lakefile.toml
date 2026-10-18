@@ -35,6 +35,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.TensorFunctor",
   "AlgebraicDirectLimitsExamples.TensorBifunctor",
   "AlgebraicDirectLimitsExamples.TensorProduct.Map",
+  "AlgebraicDirectLimitsExamples.TensorProduct.ParametricMap",
   "AlgebraicDirectLimitsExamples.TensorProduct.Prod",
   "AlgebraicDirectLimitsExamples.DiscreteTensor",
   "AlgebraicDirectLimitsExamples.TensorCompactness",

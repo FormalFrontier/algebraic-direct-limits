@@ -28,6 +28,7 @@ public import AlgebraicDirectLimits.Topology.DiscreteScalarExtension
 public import AlgebraicDirectLimits.Topology.DualTensorHom
 public import AlgebraicDirectLimits.Topology.TensorCompactness
 public import AlgebraicDirectLimits.Topology.TensorProduct
+public import AlgebraicDirectLimits.Topology.TensorProduct.Map
 public import AlgebraicDirectLimits.Topology.TensorProduct.Prod
 public import AlgebraicDirectLimits.Topology.TensorProduct.Quotient
 public import AlgebraicDirectLimits.Topology.TensorDiscrete
@@ -58,6 +59,8 @@ tensor Hausdorffness, and linear continuity
 for coinduced topological modules, the module topology on finite-dimensional
 strong duals without complete scalars, and additive tensor functors with fixed algebraic
 coefficients. Tensor functoriality in both variables uses the same one-sided
-topology, with standard curried, uncurried and flipped presentations.
+topology, with standard curried, uncurried and flipped presentations. For
+independently based finite coefficient modules, coefficientwise continuity on the
+left and joint right evaluation give joint tensor-map continuity on all tensors.
 Each module may be imported independently.
 -/

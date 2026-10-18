@@ -84,6 +84,21 @@ The rational-circle modules listed below are separate imports.
   [integer examples](AlgebraicDirectLimitsExamples/TensorProduct/Map.lean) detect
   the unit tensor as one and the images under two independently scaled maps as six.
 
+- **Joint continuity of varying tensor maps.**
+  [`TopModuleCat.continuous_tensorMapCLM_apply`](AlgebraicDirectLimits/Topology/TensorProduct/Map.lean)
+  gives joint continuity in the parameter and every tensor input when the left
+  maps vary coefficientwise continuously in independently indexed finite bases
+  and right evaluation is jointly continuous. Source and target ranks may differ.
+  The scalar ring is commutative with a supplied topology; the original right
+  modules have continuous addition and jointly continuous scalar actions.
+  All eight scalar, parameter, module and basis-index universes are independent.
+  No coefficient or operator-space topology, field, norm, completeness or
+  separation hypothesis is needed. The
+  [real-plane family](AlgebraicDirectLimitsExamples/TensorProduct/ParametricMap.lean)
+  tensors `diag(b, 0)` with `(b + 1) • id`: its output is nonzero at two, a fixed
+  nonzero tensor is always killed, and the whole map is zero at zero and minus one.
+  Zero-left and empty-parameter boundaries are included.
+
 - **Additive scalar restriction preserves kernels and cokernels.**
   For possibly noncommutative rings `R` and `S` with supplied topologies and a
   continuous unital homomorphism `φ : R →+* S`, the same-topology functor
@@ -392,6 +407,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`Topology.RestrictionCokernels`](AlgebraicDirectLimits/Topology/RestrictionCokernels.lean) | Preservation of algebraic-range cokernels and their universal property for arbitrary smaller-ring targets |
 | [`Topology.DiscreteScalarExtension`](AlgebraicDirectLimits/Topology/DiscreteScalarExtension.lean) | Discrete coefficient-algebra scalar extension, continuous unit and functorial maps with separate scalar views |
 | [`Topology.TensorProduct`](AlgebraicDirectLimits/Topology/TensorProduct.lean) | One-sided tensor topology, linear continuity, continuous tensor maps, linearity in each map variable and finite-basis contracts |
+| [`Topology.TensorProduct.Map`](AlgebraicDirectLimits/Topology/TensorProduct/Map.lean) | Finite-coordinate formula and joint continuity of varying tensor maps from coefficientwise left continuity and joint right evaluation |
+| [`AlgebraicDirectLimitsExamples.TensorProduct.ParametricMap`](AlgebraicDirectLimitsExamples/TensorProduct/ParametricMap.lean) | Real-plane rank-dropping tensor family, nonzero output, fixed nonzero kernel, whole-zero maps and degenerate boundaries |
 | [`Topology.TensorFunctor`](AlgebraicDirectLimits/Topology/TensorFunctor.lean) | Additive tensor functor with fixed algebraic coefficients, the one-sided topology, algebraic map compatibility and pure-tensor values |
 | [`AlgebraicDirectLimitsExamples.TensorFunctor`](AlgebraicDirectLimitsExamples/TensorFunctor.lean) | Integer doubling compatibility and the additive functor law evaluated on a nonzero rank-two tensor |
 | [`Topology.TensorBifunctor`](AlgebraicDirectLimits/Topology/TensorBifunctor.lean) | Tensor functor in algebraic coefficients and topological right modules, with characteristic uncurried maps and fixed-slot equalities |
@@ -441,7 +458,8 @@ those modules. It does not cover `Order.DirectedSystem`, `RingTheory.DirectLimit
 `MonoidalGroupCompletion`,
 `PrimeSpectrumFilteredColimits`, `Topology.Coinduced`, `Topology.StrongDual`,
 `Topology.TensorProduct`,
-`Topology.TensorDiscrete`, `Topology.TensorProduct.Prod`, `Topology.Restriction`,
+`Topology.TensorDiscrete`, `Topology.TensorProduct.Map`,
+`Topology.TensorProduct.Prod`, `Topology.Restriction`,
 `Topology.RestrictionKernels`, `Topology.RestrictionCokernels`,
 `Topology.DiscreteScalarExtension`, `Topology.TensorHom`, `Topology.DualTensorHom`,
 `Topology.TensorUnit`,
@@ -472,7 +490,7 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-36 mathematical leaf modules plus the public aggregate (37 library modules), 33 example modules and seven test modules: 77 local modules in the default source import closure.
+37 mathematical leaf modules plus the public aggregate (38 library modules), 34 example modules and seven test modules: 79 local modules in the default source import closure.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
