@@ -12,6 +12,7 @@ project:
     localization of countable products, cofinal group completions,
     monoidal-category object classes with actual-image cofinality, same-topology
     scalar restriction, linear continuity for coinduced topological modules,
+    module topology under continuous linear injections into semisimple modules,
     module topology on finite-dimensional strong duals without complete scalars,
     continuous finite-basis coordinates and binary-product distribution for
     one-sided tensor products, continuous tensor universal properties,
@@ -61,8 +62,14 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Thirty-five mathematical leaf modules and a public re-export (36 library modules),
-    thirty-two example modules and seven test modules (six standalone clients and their aggregate): 75 local modules in the default source import closure.
+    Thirty-six mathematical leaf modules and a public re-export (37 library modules),
+    thirty-three example modules and seven test modules (six standalone clients and their aggregate): 77 local modules in the default source import closure.
+    A continuous injective linear map into a semisimple module with module topology
+    gives the original source its module topology and is an embedding. The scalar
+    ring has an arbitrary topology; the monoid source has continuous addition and
+    scalar action, and the target is an additive group. Scalar and carrier universes
+    are independent. Semisimple-ring corollaries retain both additive monoids and
+    include division rings; real-axis and zero-dimensional applications are included.
     IsModuleTopology.strongDual gives the module topology on the existing
     bounded-convergence continuous dual of a finite-dimensional topological
     vector space with the module topology over a normed field, without a norm

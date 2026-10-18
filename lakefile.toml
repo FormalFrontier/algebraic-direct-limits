@@ -25,6 +25,7 @@ roots = [
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectLimit",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.DirectedUnion",
   "AlgebraicDirectLimitsExamples.Coinduced",
+  "AlgebraicDirectLimitsExamples.ModuleTopology",
   "AlgebraicDirectLimitsExamples.StrongDual",
   "AlgebraicDirectLimitsExamples.Restriction",
   "AlgebraicDirectLimitsExamples.RestrictionKernels",

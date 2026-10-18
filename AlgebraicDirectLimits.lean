@@ -19,6 +19,7 @@ public import AlgebraicDirectLimits.RingTheory.KrullDimension.DirectedUnion
 public import AlgebraicDirectLimits.SimpleRing
 public import AlgebraicDirectLimits.Topology.CoefficientTensor
 public import AlgebraicDirectLimits.Topology.Coinduced
+public import AlgebraicDirectLimits.Topology.ModuleTopology
 public import AlgebraicDirectLimits.Topology.StrongDual
 public import AlgebraicDirectLimits.Topology.Restriction
 public import AlgebraicDirectLimits.Topology.RestrictionKernels

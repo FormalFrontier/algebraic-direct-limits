@@ -10,6 +10,20 @@ The rational-circle modules listed below are separate imports.
 
 ## Headline results
 
+- **Module topology under continuous linear injections.**
+  [`IsModuleTopology.of_continuous_injective`](AlgebraicDirectLimits/Topology/ModuleTopology.lean)
+  gives the original source its module topology, and
+  `LinearMap.isEmbedding_of_isModuleTopology` gives an embedding, for a continuous
+  injective linear map into a semisimple module with module topology. The scalar
+  ring has an arbitrary supplied topology; the source is an additive commutative
+  monoid with continuous addition and scalar action, and the target is an additive
+  commutative group. Scalar, source and target universes are independent. No
+  topological-ring, separation or dimension assumption is required. The
+  `_of_isSemisimpleRing` corollaries retain additive commutative monoids on both
+  modules and apply in particular over division rings. The
+  [examples](AlgebraicDirectLimitsExamples/ModuleTopology.lean) use the proper
+  first real axis and the zero-dimensional source in the same real plane.
+
 - **Flat-coefficient tensor monomorphisms.** Over a commutative ring with a supplied
   topology, tensoring the topological module factor with a flat algebraic coefficient
   module preserves injectivity of continuous linear maps and categorical monomorphisms.
@@ -369,6 +383,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | --- | --- |
 | [`VaryingScalar`](AlgebraicDirectLimits/VaryingScalar.lean) | Module and tensor-product limits over varying scalars |
 | [`Topology.Coinduced`](AlgebraicDirectLimits/Topology/Coinduced.lean) | Generator criterion for linear continuity from coinduced topological modules |
+| [`Topology.ModuleTopology`](AlgebraicDirectLimits/Topology/ModuleTopology.lean) | Module topology and embedding under continuous linear injections into semisimple modules |
+| [`AlgebraicDirectLimitsExamples.ModuleTopology`](AlgebraicDirectLimitsExamples/ModuleTopology.lean) | Proper real-axis and zero-dimensional applications of both target-module and scalar-ring forms |
 | [`Topology.StrongDual`](AlgebraicDirectLimits/Topology/StrongDual.lean) | Module topology on finite-dimensional continuous duals without complete scalars |
 | [`AlgebraicDirectLimitsExamples.StrongDual`](AlgebraicDirectLimitsExamples/StrongDual.lean) | Rational-plane application, dimension-zero boundary and complete-field agreement |
 | [`Topology.Restriction`](AlgebraicDirectLimits/Topology/Restriction.lean) | Same-topology scalar restriction, natural identity/composition comparisons and a regular-action continuity criterion |
@@ -456,7 +472,7 @@ lake --wfail build
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
 which imports the registered standalone clients. Together these targets cover
-35 mathematical leaf modules plus the public aggregate (36 library modules), 32 example modules and seven test modules: 75 local modules in the default source import closure.
+36 mathematical leaf modules plus the public aggregate (37 library modules), 33 example modules and seven test modules: 77 local modules in the default source import closure.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:
@@ -526,6 +542,10 @@ Kim Morrison, Antoine Chambert-Loir and María Inés de Frutos-Fernández.
 The kernel and cokernel preservation modules reuse Mathlib's additive-functor,
 forgetful-limit reflection and quotient-comparison APIs; their module references
 credit the underlying topological-module constructions and formalization approach.
+The continuous-injection theorems combine Kevin Buzzard and Will Sawin's
+module-topology continuity API, Aaron Anderson's semisimple-module extension
+property, and the topological left-inverse criterion of Johannes Hölzl,
+Mario Carneiro and Patrick Massot in Mathlib.
 The finite-dimensional strong-dual theorem uses Kevin Buzzard and Will Sawin's
 module-topology constructions, Mathlib's finite-dimensional basis API, and
 Anatole Dedecker and Yury Kudryashov's bounded-convergence topology.
