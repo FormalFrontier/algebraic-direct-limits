@@ -478,4 +478,12 @@ theorem not_compactSpace_tensor : ¬ CompactSpace (TopModuleCat.tensorLeftObj R 
   exact not_injective_infinite_finite (fun n ↦ rightUnitHomeomorph (tensorVector n))
     (rightUnitHomeomorph.injective.comp tensorVector_injective)
 
+/-- The linear identification of the discrete target with finitely supported coefficients. -/
+noncomputable abbrev dCoefficientEquiv : D ≃ₗ[R] (ℕ →₀ R) :=
+  D_coefficientEquiv
+
+-- The deprecated coefficient-equivalence identifier is retained for existing applications.
+attribute [nolint defsWithUnderscore] D_coefficientEquiv
+attribute [deprecated dCoefficientEquiv (since := "2026-10-20")] D_coefficientEquiv
+
 end TensorNoncompactness

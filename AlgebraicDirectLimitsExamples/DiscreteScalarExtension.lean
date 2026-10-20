@@ -72,6 +72,7 @@ private theorem matrixCoefficient_add_apply
 @[instance_reducible]
 def matrixTopology : TopologicalSpace matrixRing := ⊥
 
+/-- The discrete topology on the ring of two-by-two integer matrices. -/
 local instance : TopologicalSpace matrixRing := matrixTopology
 local instance : DiscreteTopology matrixRing := discreteTopology_bot matrixRing
 

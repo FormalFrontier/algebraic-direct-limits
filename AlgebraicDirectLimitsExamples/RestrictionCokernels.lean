@@ -42,9 +42,11 @@ open CategoryTheory CategoryTheory.Limits
 
 namespace ScalarRestriction.ModFour
 
-local instance : TopologicalSpace (ZMod 4) := topology
+/-- The discrete topology on `ZMod 4` in the doubling cokernel construction. -/
+local instance instTopologicalSpaceZModFourCokernel : TopologicalSpace (ZMod 4) := topology
 local instance : DiscreteTopology (ZMod 4) := discreteTopology_bot _
-local instance : TopologicalSpace (ZMod 2) := ⊥
+/-- The discrete topology on the `ZMod 2` factor of the parity arrow's target. -/
+local instance instTopologicalSpaceZModTwoParity : TopologicalSpace (ZMod 2) := ⊥
 local instance : DiscreteTopology (ZMod 2) := discreteTopology_bot _
 local instance : ContinuousAdd (ℤ × ZMod 2) := ⟨continuous_of_discreteTopology⟩
 local instance : ContinuousSMul ℤ (ℤ × ZMod 2) := ⟨continuous_of_discreteTopology⟩

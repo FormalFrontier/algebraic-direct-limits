@@ -45,7 +45,8 @@ namespace ScalarRestriction.ModFour
 @[instance_reducible]
 def topology : TopologicalSpace (ZMod 4) := ⊥
 
-local instance : TopologicalSpace (ZMod 4) := topology
+/-- The discrete topology on `ZMod 4` used for restriction of scalars to `ℤ`. -/
+local instance instTopologicalSpaceZModFour : TopologicalSpace (ZMod 4) := topology
 local instance : DiscreteTopology (ZMod 4) := discreteTopology_bot _
 
 /-- The unital reduction homomorphism from the integers to `ZMod 4`. -/

@@ -216,4 +216,13 @@ theorem colimitHomeomorph_π_apply (hc : IsColimit c) (j : J)
   rw [limit.conePointUniqueUpToIso_hom_comp]
   exact colimitCone_π_apply F c j p
 
+/-- A filtered ring-colimit cocone induces a limit cone of prime spectra in `TopCat`. -/
+noncomputable abbrev colimitConeIsLimit (hc : IsColimit c) :
+    IsLimit (colimitCone F c) :=
+  colimitCone_isLimit F c hc
+
+-- The deprecated limit-cone identifier is retained for existing applications.
+attribute [nolint defsWithUnderscore] colimitCone_isLimit
+attribute [deprecated colimitConeIsLimit (since := "2026-10-20")] colimitCone_isLimit
+
 end PrimeSpectrum
