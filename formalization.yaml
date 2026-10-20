@@ -62,8 +62,6 @@ automation:
     Independent review is distinct from authorship.
 status:
   scope: >-
-    Thirty-six mathematical leaf modules and a public re-export (37 library modules),
-    thirty-three example modules and seven test modules (six standalone clients and their aggregate): 77 local modules in the default source import closure.
     A continuous injective linear map into a semisimple module with module topology
     gives the original source its module topology and is an embedding. The scalar
     ring has an arbitrary topology; the monoid source has continuous addition and

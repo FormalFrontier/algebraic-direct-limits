@@ -1,5 +1,6 @@
 name = "algebraic-direct-limits"
 version = "0.1.0"
+lintDriver = "batteries/runLinter"
 defaultTargets = ["AlgebraicDirectLimits", "AlgebraicDirectLimitsExamples", "ReadinessTests"]
 
 [leanOptions]
