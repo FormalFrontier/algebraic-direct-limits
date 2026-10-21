@@ -1120,3 +1120,10 @@ end FiniteExtendScalars
 end FiniteFieldSpecialization
 
 end TopModuleCat
+
+attribute [deprecated TopModuleCat.discreteExtendScalarsObj (since := "2026-10-20")]
+  TopModuleCat.finiteExtendScalarsObj
+attribute [deprecated TopModuleCat.discreteExtendScalars (since := "2026-10-20")]
+  TopModuleCat.finiteExtendScalars
+attribute [deprecated TopModuleCat.discreteExtendScalarsRObj (since := "2026-10-20")]
+  TopModuleCat.FiniteExtendScalars.baseObj

@@ -106,7 +106,7 @@ theorem tensorLeftFunctor_map_toLinearMap {M N : TopModuleCat.{uM} R} (g : M ⟶
   tensorMapCLM_toLinearMap R (LinearMap.id : C →ₗ[R] C) g.hom
 
 /-- A functor map leaves the coefficient of each pure tensor unchanged. -/
-@[simp]
+@[simp↓]
 theorem tensorLeftFunctor_map_tmul {M N : TopModuleCat.{uM} R} (g : M ⟶ N)
     (c : C) (m : M) :
     ((tensorLeftFunctor R C).map g).hom (c ⊗ₜ[R] m) = c ⊗ₜ[R] g.hom m :=
