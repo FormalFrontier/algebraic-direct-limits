@@ -140,7 +140,7 @@ theorem tensorCurry_apply (f : tensorLeftObj R C M →L[R] N) (c : C) :
   rfl
 
 /-- The value of a curried map is its value on the corresponding pure tensor. -/
-@[simp]
+@[simp↓]
 theorem tensorCurry_apply_apply (f : tensorLeftObj R C M →L[R] N) (c : C) (m : M) :
     tensorCurry R f c m = f (c ⊗ₜ[R] m) := by
   simp only [tensorCurry_apply, ContinuousLinearMap.comp_apply, tensorGenerator_apply]
