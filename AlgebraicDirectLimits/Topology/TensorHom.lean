@@ -211,26 +211,26 @@ noncomputable def tensorHomLinearEquiv (C : ModuleCat.{uC} R)
       LinearMap.smul_apply, smul_apply, RingHom.id_apply]
 
 /-- The forward Hom equivalence is the curried family. -/
-@[simp]
+@[simp↓]
 theorem tensorHomLinearEquiv_apply (f : tensorLeftObj R C M →L[R] N) :
     tensorHomLinearEquiv R C M N f = tensorCurry R f := by
   rfl
 
 /-- The inverse Hom equivalence is the continuous tensor lift. -/
-@[simp]
+@[simp↓]
 theorem tensorHomLinearEquiv_symm_apply (b : C →ₗ[R] (M →L[R] N)) :
     (tensorHomLinearEquiv R C M N).symm b = tensorLiftCLM R b := by
   rfl
 
 /-- Evaluation of the forward Hom equivalence on a coefficient and module vector. -/
-@[simp]
+@[simp↓]
 theorem tensorHomLinearEquiv_apply_apply (f : tensorLeftObj R C M →L[R] N)
     (c : C) (m : M) :
     tensorHomLinearEquiv R C M N f c m = f (c ⊗ₜ[R] m) := by
   rw [tensorHomLinearEquiv_apply, tensorCurry_apply_apply]
 
 /-- Evaluation of the inverse Hom equivalence on a pure tensor. -/
-@[simp]
+@[simp↓]
 theorem tensorHomLinearEquiv_symm_apply_tmul (b : C →ₗ[R] (M →L[R] N))
     (c : C) (m : M) :
     (tensorHomLinearEquiv R C M N).symm b (c ⊗ₜ[R] m) = b c m := by
