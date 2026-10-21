@@ -204,7 +204,7 @@ theorem restrictScalars_map_hom {M N : TopModuleCat.{uM} S} (f : M ⟶ N) :
     ((restrictScalars φ hφ).map f).hom = restrictScalarsCLM φ hφ f.hom := rfl
 
 /-- A restricted categorical morphism retains its original values. -/
-@[simp]
+@[simp↓]
 theorem restrictScalars_map_apply {M N : TopModuleCat.{uM} S} (f : M ⟶ N) (x : M) :
     (restrictScalars φ hφ).map f x = f x := rfl
 
