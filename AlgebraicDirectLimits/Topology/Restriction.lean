@@ -93,7 +93,7 @@ noncomputable abbrev restrictScalarsObj (M : TopModuleCat.{uM} S) : TopModuleCat
     M.topologicalSpace M.isTopologicalAddGroup inferInstance
 
 /-- The carrier of restriction is the original carrier. -/
-@[simp]
+@[simp↓]
 theorem coe_restrictScalarsObj (M : TopModuleCat.{uM} S) :
     (restrictScalarsObj φ hφ M : Type uM) = M := rfl
 
@@ -143,7 +143,7 @@ noncomputable def restrictScalarsCLM {M : TopModuleCat.{uM} S} {N : TopModuleCat
       (fun g r x ↦ g.map_smul (φ r) x)) f
 
 /-- Restriction of a continuous linear map leaves its function unchanged. -/
-@[simp]
+@[simp↓]
 theorem restrictScalarsCLM_apply {M : TopModuleCat.{uM} S} {N : TopModuleCat.{uN} S}
     (f : M →L[S] N) (x : M) : restrictScalarsCLM φ hφ f x = f x := rfl
 
