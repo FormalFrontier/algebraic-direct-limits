@@ -316,7 +316,7 @@ noncomputable def scalarRCLM (M : TopModuleCat.{uM} R) (k : K) :
     (ContinuousLinearMap.id R M)
 
 /-- Fixed coefficient multiplication sends a pure tensor to its left-factor product. -/
-@[simp]
+@[simp↓]
 theorem scalarRCLM_tmul (M : TopModuleCat.{uM} R) (k c : K) (m : M) :
     scalarRCLM R K M k (c ⊗ₜ[R] m) = (k * c) ⊗ₜ[R] m := by
   exact congrArg (fun z : tensorLeftObj R (coefficient R K) M ↦
@@ -348,7 +348,7 @@ noncomputable def unitContinuous (M : TopModuleCat.{uM} R) :
   tensorGenerator R (coefficient R K) M (show coefficient R K from (1 : K))
 
 /-- The unit is the generator at the coefficient `1`. -/
-@[simp]
+@[simp↓]
 theorem unitContinuous_apply (M : TopModuleCat.{uM} R) (m : M) :
     unitContinuous R K M m = (1 : K) ⊗ₜ[R] m := rfl
 

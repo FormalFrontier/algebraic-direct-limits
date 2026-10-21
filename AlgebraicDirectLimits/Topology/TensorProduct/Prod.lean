@@ -279,7 +279,7 @@ theorem tensorProdRight_symm_tmul_pair (c d : C) (m : M) (n : N) :
         hinl hinr)
 
 /-- The first projection after distribution is the tensor of the right first projection. -/
-@[simp]
+@[simp↓]
 theorem tensorProdRight_fst_comp :
     (ContinuousLinearMap.fst R (tensorLeftObj R C M) (tensorLeftObj R C N)).comp
       (tensorProdRight R C M N).toContinuousLinearMap =
@@ -289,7 +289,7 @@ theorem tensorProdRight_fst_comp :
   rw [tensorProdRight_toContinuousLinearMap, ContinuousLinearMap.fst_comp_prod]
 
 /-- The second projection after distribution is the tensor of the right second projection. -/
-@[simp]
+@[simp↓]
 theorem tensorProdRight_snd_comp :
     (ContinuousLinearMap.snd R (tensorLeftObj R C M) (tensorLeftObj R C N)).comp
       (tensorProdRight R C M N).toContinuousLinearMap =
@@ -299,7 +299,7 @@ theorem tensorProdRight_snd_comp :
   rw [tensorProdRight_toContinuousLinearMap, ContinuousLinearMap.snd_comp_prod]
 
 /-- Inverse distribution after the first inclusion is the tensor of the right first inclusion. -/
-@[simp]
+@[simp↓]
 theorem tensorProdRight_symm_comp_inl :
     (tensorProdRight R C M N).symm.toContinuousLinearMap.comp
       (ContinuousLinearMap.inl R (tensorLeftObj R C M) (tensorLeftObj R C N)) =
@@ -309,7 +309,7 @@ theorem tensorProdRight_symm_comp_inl :
   rw [tensorProdRight_symm_toContinuousLinearMap, ContinuousLinearMap.coprod_comp_inl]
 
 /-- Inverse distribution after the second inclusion is the tensor of the right second inclusion. -/
-@[simp]
+@[simp↓]
 theorem tensorProdRight_symm_comp_inr :
     (tensorProdRight R C M N).symm.toContinuousLinearMap.comp
       (ContinuousLinearMap.inr R (tensorLeftObj R C M) (tensorLeftObj R C N)) =
