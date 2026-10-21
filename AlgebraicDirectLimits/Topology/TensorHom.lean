@@ -88,7 +88,7 @@ theorem tensorLiftCLM_toLinearMap (b : C →ₗ[R] (M →L[R] N)) :
   rfl
 
 /-- The continuous tensor lift evaluates a pure tensor by the given bilinear family. -/
-@[simp]
+@[simp↓]
 theorem tensorLiftCLM_tmul (b : C →ₗ[R] (M →L[R] N)) (c : C) (m : M) :
     tensorLiftCLM R b (c ⊗ₜ[R] m) = b c m := by
   calc
@@ -99,7 +99,7 @@ theorem tensorLiftCLM_tmul (b : C →ₗ[R] (M →L[R] N)) (c : C) (m : M) :
       TensorProduct.lift.tmul (f' := (ContinuousLinearMap.coeLM R).comp b) c m
 
 /-- The continuous tensor lift evaluates a fixed-coefficient generator by its family. -/
-@[simp]
+@[simp↓]
 theorem tensorLiftCLM_tensorGenerator_apply (b : C →ₗ[R] (M →L[R] N))
     (c : C) (m : M) :
     tensorLiftCLM R b (tensorGenerator R C M c m) = b c m := by
