@@ -28,7 +28,7 @@ namespace AlgebraicDirectLimitsExamples.StrongDual
 even though the scalar field is incomplete. -/
 theorem rationalPlane_linear_continuous
     (l : StrongDual ℚ (Fin 2 → ℚ) →ₗ[ℚ] ℚ) : Continuous l := by
-  letI := IsModuleTopology.strongDual ℚ (Fin 2 → ℚ)
+  let := IsModuleTopology.strongDual ℚ (Fin 2 → ℚ)
   exact IsModuleTopology.continuous_of_linearMap l
 
 /-- The theorem includes the dual of the zero-dimensional rational space. -/

@@ -142,7 +142,7 @@ instance tensorLeftFunctor_preservesMonomorphisms [Module.Flat R C] :
       TopModuleCat.{uM} R ⥤ TopModuleCat.{max uC uM} R).PreservesMonomorphisms where
   preserves {M N} g _ := by
     let U : TopModuleCat.{uM} R ⥤ ModuleCat.{uM} R := forget₂ _ _
-    haveI : U.PreservesMonomorphisms :=
+    have : U.PreservesMonomorphisms :=
       CategoryTheory.preservesMonomorphisms_of_preservesLimitsOfShape U
     have hg : Function.Injective g.hom :=
       (ModuleCat.mono_iff_injective (U.map g)).mp (Functor.map_mono U g)

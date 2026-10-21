@@ -191,7 +191,7 @@ theorem tensorAssocContinuousLinearEquiv_symm_apply
   rfl
 
 /-- Reassociation sends a left-parenthesized pure triple to the nested pure triple. -/
-@[simp]
+@[simp↓]
 theorem tensorAssocContinuousLinearEquiv_tmul (c : C) (d : D) (m : M) :
     tensorAssocContinuousLinearEquiv R C D M ((c ⊗ₜ[R] d) ⊗ₜ[R] m) =
       c ⊗ₜ[R] (d ⊗ₜ[R] m) := by
@@ -201,7 +201,7 @@ theorem tensorAssocContinuousLinearEquiv_tmul (c : C) (d : D) (m : M) :
         (TensorProduct.assoc_tmul (R := R) c d m)
 
 /-- Inverse reassociation reverses the pure-triple formula. -/
-@[simp]
+@[simp↓]
 theorem tensorAssocContinuousLinearEquiv_symm_tmul (c : C) (d : D) (m : M) :
     (tensorAssocContinuousLinearEquiv R C D M).symm (c ⊗ₜ[R] (d ⊗ₜ[R] m)) =
       (c ⊗ₜ[R] d) ⊗ₜ[R] m := by
