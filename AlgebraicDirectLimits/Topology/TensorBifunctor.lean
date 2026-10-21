@@ -94,7 +94,7 @@ theorem tensorBifunctor_map_app_hom
   (tensorMapBilinear_apply R f.hom (ContinuousLinearMap.id R M)).symm
 
 /-- The standard uncurried functor acts by the simultaneous tensor map. -/
-@[simp]
+@[simp↓]
 theorem tensorBifunctor_uncurry_map_hom
     {C D : ModuleCat.{uC} R} {M N : TopModuleCat.{uM} R}
     (f : C ⟶ D) (g : M ⟶ N) :
@@ -122,7 +122,7 @@ theorem tensorBifunctor_uncurry_map_apply
   exact tensorMapBilinear_apply_apply R f.hom g.hom x
 
 /-- The uncurried functor sends a pure tensor to the tensor of its two images. -/
-@[simp]
+@[simp↓]
 theorem tensorBifunctor_uncurry_map_tmul
     {C D : ModuleCat.{uC} R} {M N : TopModuleCat.{uM} R}
     (f : C ⟶ D) (g : M ⟶ N) (c : C) (m : M) :

@@ -161,7 +161,7 @@ theorem tensorQuotient_symm_mkQ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
     (tensorQuotient_tensorMapCLM R C M P z).symm
 
 /-- A tensor of a quotient class maps to the quotient class of the pure tensor. -/
-@[simp]
+@[simp↓]
 theorem tensorQuotient_tmul_mkQ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
     (P : Submodule R M) (c : C) (m : M) :
     let φ : TopModuleCat.Hom
@@ -179,7 +179,7 @@ theorem tensorQuotient_tmul_mkQ (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
 
 /-- The inverse equivalence maps the class of a pure tensor to the tensor of the
 right-factor class. -/
-@[simp]
+@[simp↓]
 theorem tensorQuotient_symm_mkQ_tmul (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
     (P : Submodule R M) (c : C) (m : M) :
     let φ : TopModuleCat.Hom
