@@ -92,10 +92,19 @@ theorem rationalCircleTensor_coe :
 def circleTensorGenerator : circleModule →L[ℤ] rationalCircleTensor :=
   TopModuleCat.tensorGenerator ℤ rationalCoefficients circleModule (1 : ℚ)
 
+/-- The topology carried by `rationalCircleTensor` on its underlying integer tensor product. -/
+public abbrev tensorTopology :
+    TopologicalSpace (TensorProduct ℤ ℚ (AddCircle (1 : ℝ))) :=
+  rationalCircleTensor.topologicalSpace
+attribute [local instance] tensorTopology
+
 /-- The circle tensor generator is the pure tensor with left factor `1`. -/
 @[simp]
 theorem circleTensorGenerator_apply (m : circleModule) :
-    circleTensorGenerator m = (1 : ℚ) ⊗ₜ[ℤ] m :=
+    DFunLike.coe
+      (F := AddCircle (1 : ℝ) →L[ℤ]
+        TensorProduct ℤ ℚ (AddCircle (1 : ℝ)))
+      circleTensorGenerator m = (1 : ℚ) ⊗ₜ[ℤ] m :=
   TopModuleCat.tensorGenerator_apply ℤ rationalCoefficients circleModule (1 : ℚ) m
 
 /-- Forgetting continuity gives the algebraic tensor generator at `1`. -/
@@ -111,13 +120,20 @@ theorem circleTensorGenerator_continuous : Continuous circleTensorGenerator :=
 
 /-- The generator sends the zero circle point to zero. -/
 @[simp]
-theorem circleTensorGenerator_zero : circleTensorGenerator 0 = 0 :=
+theorem circleTensorGenerator_zero :
+    DFunLike.coe
+      (F := AddCircle (1 : ℝ) →L[ℤ]
+        TensorProduct ℤ ℚ (AddCircle (1 : ℝ)))
+      circleTensorGenerator 0 = 0 :=
   circleTensorGenerator.map_zero
 
 /-- The generator vanishes on the class of the integer period `1`. -/
 @[simp]
 theorem circleTensorGenerator_period :
-    circleTensorGenerator ((1 : ℝ) : AddCircle (1 : ℝ)) = 0 := by
+    DFunLike.coe
+      (F := AddCircle (1 : ℝ) →L[ℤ]
+        TensorProduct ℤ ℚ (AddCircle (1 : ℝ)))
+      circleTensorGenerator ((1 : ℝ) : AddCircle (1 : ℝ)) = 0 := by
   rw [AddCircle.coe_period]
   exact circleTensorGenerator_zero
 

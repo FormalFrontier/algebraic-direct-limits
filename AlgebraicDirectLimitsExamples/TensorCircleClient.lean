@@ -71,14 +71,20 @@ def circleTensorDetector : rationalCircleTensor →ₗ[ℤ] AddCircle.RationalQu
 circle's image in the rational quotient. -/
 @[simp]
 theorem circleTensorDetector_tmul (q : ℚ) (m : circleModule) :
-    circleTensorDetector (q ⊗ₜ[ℤ] m) = q • AddCircle.toRationalQuotient m :=
+    DFunLike.coe
+      (F := TensorProduct ℤ ℚ (AddCircle (1 : ℝ)) →ₗ[ℤ]
+        AddCircle.RationalQuotient)
+      circleTensorDetector (q ⊗ₜ[ℤ] m) = q • AddCircle.toRationalQuotient m :=
   TensorProduct.rationalCircleDetector_tmul q m
 
 /-- On a real representative, the detector sends `q ⊗ [x]` to the class of
 `(q : ℝ) * x` modulo rational numbers. -/
 @[simp]
 theorem circleTensorDetector_tmul_coe (q : ℚ) (x : ℝ) :
-    circleTensorDetector (q ⊗ₜ[ℤ] (x : AddCircle (1 : ℝ))) =
+    DFunLike.coe
+      (F := TensorProduct ℤ ℚ (AddCircle (1 : ℝ)) →ₗ[ℤ]
+        AddCircle.RationalQuotient)
+      circleTensorDetector (q ⊗ₜ[ℤ] (x : AddCircle (1 : ℝ))) =
       (Submodule.span ℚ {(1 : ℝ)}).mkQ ((q : ℝ) * x) :=
   TensorProduct.rationalCircleDetector_tmul_coe q x
 
@@ -86,7 +92,8 @@ theorem circleTensorDetector_tmul_coe (q : ℚ) (x : ℝ) :
 real numbers modulo rationals. -/
 theorem circleTensorDetector_generator (m : circleModule) :
     circleTensorDetector (circleTensorGenerator m) = AddCircle.toRationalQuotient m := by
-  rw [circleTensorGenerator_apply, circleTensorDetector_tmul, one_smul]
+  exact (congrArg circleTensorDetector (circleTensorGenerator_apply m)).trans
+    ((circleTensorDetector_tmul (1 : ℚ) m).trans (one_smul ℚ _))
 
 /-- The linear composite of the detector with the incoming generator is the
 integer-linear rational-quotient descent. -/
@@ -193,7 +200,7 @@ theorem not_t2Space_rationalCircleTensor : ¬ T2Space rationalCircleTensor := by
   calc
     irrationalGenerator =
         circleTensorGenerator ((Real.sqrt 2 : ℝ) : AddCircle (1 : ℝ)) := by
-      rw [irrationalGenerator_eq_tmul, circleTensorGenerator_apply]
+      rfl
     _ = 0 := congrFun hzero _
 
 end TensorCircleExamples
