@@ -63,7 +63,7 @@ theorem rectangular_reconstruction :
       (TopModuleCat.dualTensorHom ℝ (Fin 2 → ℝ) (Fin 3 → ℝ)).map_add _ _
     _ = _ := by
       ext x i
-      rw [ContinuousLinearMap.add_apply, TopModuleCat.dualTensorHom_tmul,
+      rw [add_apply, TopModuleCat.dualTensorHom_tmul,
         TopModuleCat.dualTensorHom_tmul]
       fin_cases i <;>
         simp [rectangularOperator, realCoordinate, sub_eq_add_neg] <;> ring
