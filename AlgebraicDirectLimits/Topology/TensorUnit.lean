@@ -86,13 +86,13 @@ theorem tensorUnitContinuousLinearEquiv_apply (M : TopModuleCat.{uM} R)
   rfl
 
 /-- The scalar tensor unit sends a pure tensor to scalar multiplication. -/
-@[simp]
+@[simp↓]
 theorem tensorUnitContinuousLinearEquiv_tmul (M : TopModuleCat.{uM} R) (r : R) (m : M) :
     tensorUnitContinuousLinearEquiv R M (r ⊗ₜ[R] m) = r • m := by
   rfl
 
 /-- The inverse scalar tensor unit sends `m` to `1 ⊗ₜ m`. -/
-@[simp]
+@[simp↓]
 theorem tensorUnitContinuousLinearEquiv_symm_apply (M : TopModuleCat.{uM} R) (m : M) :
     (tensorUnitContinuousLinearEquiv R M).symm m = (1 : R) ⊗ₜ[R] m := by
   rfl
@@ -107,7 +107,7 @@ theorem tensorUnitContinuousLinearEquiv_symm_toContinuousLinearMap
   rfl
 
 /-- A fixed-coefficient tensor generator is evaluated by scalar multiplication. -/
-@[simp]
+@[simp↓]
 theorem tensorUnitContinuousLinearEquiv_tensorGenerator_apply
     (M : TopModuleCat.{uM} R) (r : R) (m : M) :
     tensorUnitContinuousLinearEquiv R M

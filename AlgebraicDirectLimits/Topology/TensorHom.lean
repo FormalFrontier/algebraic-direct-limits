@@ -356,7 +356,7 @@ noncomputable def tensorCoordinatesCLM (b : Module.Basis ι R C) :
     tensorLiftCLM R ((b.coord i).smulRight (ContinuousLinearMap.id R M)))
 
 /-- The product coordinates of a pure tensor are scalar multiples of its right factor. -/
-@[simp]
+@[simp↓]
 theorem tensorCoordinatesCLM_tmul_apply (b : Module.Basis ι R C)
     (c : C) (m : M) (i : ι) :
     tensorCoordinatesCLM R C M b (c ⊗ₜ[R] m) i = b.repr c i • m := by
@@ -366,7 +366,7 @@ theorem tensorCoordinatesCLM_tmul_apply (b : Module.Basis ι R C)
     ((b.coord i).smulRight (ContinuousLinearMap.id R M)) c m).trans (by rfl)
 
 /-- The product coordinates of a continuous tensor generator use the basis coefficients. -/
-@[simp]
+@[simp↓]
 theorem tensorCoordinatesCLM_tensorGenerator_apply (b : Module.Basis ι R C)
     (c : C) (m : M) (i : ι) :
     tensorCoordinatesCLM R C M b (tensorGenerator R C M c m) i = b.repr c i • m := by

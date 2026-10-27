@@ -209,13 +209,11 @@ theorem restrictScalars_map_apply {M N : TopModuleCat.{uM} S} (f : M ⟶ N) (x :
     (restrictScalars φ hφ).map f x = f x := rfl
 
 /-- The restriction functor preserves identity morphisms. -/
-@[simp]
 theorem restrictScalars_map_id (M : TopModuleCat.{uM} S) :
     (restrictScalars φ hφ).map (𝟙 M) = 𝟙 ((restrictScalars φ hφ).obj M) :=
   (restrictScalars φ hφ).map_id M
 
 /-- The restriction functor preserves composition of morphisms. -/
-@[simp]
 theorem restrictScalars_map_comp {M N P : TopModuleCat.{uM} S}
     (f : M ⟶ N) (g : N ⟶ P) :
     (restrictScalars φ hφ).map (f ≫ g) =
@@ -293,12 +291,12 @@ theorem restrictScalarsId_inv_app (M : TopModuleCat.{uM} R) :
 /-- The identity natural comparison retains every carrier element. -/
 @[simp]
 theorem restrictScalarsId_hom_app_apply (M : TopModuleCat.{uM} R) (x : M) :
-    (restrictScalarsId (R := R)).hom.app M x = x := rfl
+    M.restrictScalarsIdIso.hom x = x := rfl
 
 /-- The inverse identity natural comparison retains every carrier element. -/
 @[simp]
 theorem restrictScalarsId_inv_app_apply (M : TopModuleCat.{uM} R) (x : M) :
-    (restrictScalarsId (R := R)).inv.app M x = x := rfl
+    M.restrictScalarsIdIso.inv x = x := rfl
 
 end Identity
 
@@ -353,12 +351,12 @@ theorem restrictScalarsComp_inv_app (M : TopModuleCat.{uM} T) :
 /-- The composition natural comparison retains every carrier element. -/
 @[simp]
 theorem restrictScalarsComp_hom_app_apply (M : TopModuleCat.{uM} T) (x : M) :
-    (restrictScalarsComp φ ψ hφ hψ).hom.app M x = x := rfl
+    (restrictScalarsCompIso φ ψ hφ hψ M).hom x = x := rfl
 
 /-- The inverse composition natural comparison retains every carrier element. -/
 @[simp]
 theorem restrictScalarsComp_inv_app_apply (M : TopModuleCat.{uM} T) (x : M) :
-    (restrictScalarsComp φ ψ hφ hψ).inv.app M x = x := rfl
+    (restrictScalarsCompIso φ ψ hφ hψ M).inv x = x := rfl
 
 end Composition
 

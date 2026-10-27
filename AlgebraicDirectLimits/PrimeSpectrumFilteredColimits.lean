@@ -38,7 +38,11 @@ theorem colimitCone_pt : (colimitCone F c).pt = AlgebraicGeometry.Spec.topObj c.
 /-- Each projection of the induced cone contracts along the corresponding cocone map. -/
 @[simp]
 theorem colimitCone_π_apply (j : J) (p : PrimeSpectrum c.pt) :
-    (colimitCone F c).π.app (op j) p = comap (c.ι.app j).hom p := by
+    DFunLike.coe (F := ContinuousMap (PrimeSpectrum c.pt) _)
+      (CategoryTheory.ConcreteCategory.hom
+        (X := AlgebraicGeometry.Spec.topObj c.pt)
+        (Y := AlgebraicGeometry.Spec.toTop.obj (op (F.obj j)))
+        ((colimitCone F c).π.app (op j))) p = comap (c.ι.app j).hom p := by
   rfl
 
 /-- Compatible tuples of prime ideals in a ring diagram, viewed as sections of spectra. -/
@@ -101,7 +105,9 @@ def idealOfSection [IsFiltered J] (hc : IsColimit c) (s : spectrumSections F) :
 
 @[simp] theorem mem_idealOfSection_iff [IsFiltered J] (hc : IsColimit c)
     (s : spectrumSections F) (j : J) (a : F.obj j) :
-    (c.ι.app j).hom a ∈ idealOfSection F c hc s ↔ a ∈ (s.val (op j)).asIdeal := by
+    Membership.mem (α := c.pt) (γ := Ideal c.pt) (idealOfSection F c hc s)
+      (CategoryTheory.ConcreteCategory.hom (X := F.obj j) (Y := c.pt)
+        (c.ι.app j) a) ↔ a ∈ (s.val (op j)).asIdeal := by
   constructor
   · rintro ⟨i, b, h, hb⟩
     exact (section_mem_of_eq F c hc s h.symm).mpr hb

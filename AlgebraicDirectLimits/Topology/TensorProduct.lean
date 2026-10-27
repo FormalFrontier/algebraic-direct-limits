@@ -150,7 +150,7 @@ noncomputable def tensorGenerator (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} 
     (ContinuousLinearEquiv.ulift (R₁ := R) (M₁ := M)).symm.toContinuousLinearMap
 
 /-- The tensor generator sends `m` to `c ⊗ₜ[R] m`. -/
-@[simp]
+@[simp↓]
 theorem tensorGenerator_apply (C : ModuleCat.{uC} R) (M : TopModuleCat.{uM} R)
     (c : C) (m : M) : tensorGenerator R C M c m = c ⊗ₜ[R] m := rfl
 
@@ -245,7 +245,7 @@ theorem tensorMapCLM_apply (f : C →ₗ[R] D) (g : M →L[R] N) (x : tensorLeft
   DFunLike.congr_fun (tensorMapCLM_toLinearMap R f g) x
 
 /-- The continuous tensor map sends a pure tensor to the tensor of its images. -/
-@[simp]
+@[simp↓]
 theorem tensorMapCLM_tmul (f : C →ₗ[R] D) (g : M →L[R] N) (c : C) (m : M) :
     tensorMapCLM R f g (c ⊗ₜ[R] m) = f c ⊗ₜ[R] g m := by
   change (TensorProduct.map f g.toLinearMap :
@@ -255,7 +255,7 @@ theorem tensorMapCLM_tmul (f : C →ₗ[R] D) (g : M →L[R] N) (c : C) (m : M) 
 
 /-- The continuous tensor map carries a tensor generator to the corresponding
 right-factor image in the generator at the left-factor image. -/
-@[simp]
+@[simp↓]
 theorem tensorMapCLM_tensorGenerator_apply (f : C →ₗ[R] D) (g : M →L[R] N)
     (c : C) (m : M) :
     tensorMapCLM R f g (tensorGenerator R C M c m) =

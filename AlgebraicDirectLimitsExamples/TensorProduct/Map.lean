@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import AlgebraicDirectLimits.Topology.TensorProduct
+public import AlgebraicDirectLimitsExamples.TensorProduct.Map.Applications
 public import AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation
 public import Mathlib.LinearAlgebra.Finsupp.Defs
 
