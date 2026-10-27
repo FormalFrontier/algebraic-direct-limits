@@ -6,6 +6,7 @@ module
 
 public import AlgebraicDirectLimits.Topology.TensorProduct
 public import AlgebraicDirectLimitsExamples.TensorProduct.Map.Applications
+public import AlgebraicDirectLimitsExamples.TensorProduct.Map.BilinearApplications
 public import AlgebraicDirectLimitsExamples.ProjectiveTensorSeparation
 public import Mathlib.LinearAlgebra.Finsupp.Defs
 

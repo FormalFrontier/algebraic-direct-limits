@@ -420,7 +420,7 @@ theorem tensorMapBilinear_apply (f : C →ₗ[R] D) (g : M →L[R] N) :
     tensorMapBilinear R C D M N f g = tensorMapCLM R f g := rfl
 
 /-- The bilinear operator sends a pure tensor to the tensor of the two images. -/
-@[simp]
+@[simp↓]
 theorem tensorMapBilinear_tmul (f : C →ₗ[R] D) (g : M →L[R] N) (c : C) (m : M) :
     tensorMapBilinear R C D M N f g (c ⊗ₜ[R] m) = f c ⊗ₜ[R] g m := by
   rw [tensorMapBilinear_apply, tensorMapCLM_tmul]
