@@ -503,7 +503,7 @@ theorem tensorCoordinateLinearEquiv_tmul_apply (b : Module.Basis ι R C)
   simp [tensorCoordinateLinearEquiv]
 
 /-- The algebraic coordinates of a continuous tensor generator. -/
-@[simp]
+@[simp↓]
 theorem tensorCoordinateLinearEquiv_tensorGenerator_apply (b : Module.Basis ι R C)
     (c : C) (m : M) (i : ι) :
     tensorCoordinateLinearEquiv R C M b (tensorGenerator R C M c m) i = b.repr c i • m := by
@@ -591,7 +591,7 @@ theorem tensorCoordinateContinuousLinearEquiv_toContinuousLinearMap_toLinearMap
     tensorCoordinateContinuousLinearEquiv_toLinearEquiv]
 
 /-- The continuous coordinates of a pure tensor are scalar multiples of its right factor. -/
-@[simp]
+@[simp↓]
 theorem tensorCoordinateContinuousLinearEquiv_tmul_apply (b : Module.Basis ι R C)
     (c : C) (m : M) (i : ι) :
     tensorCoordinateContinuousLinearEquiv R C M b (c ⊗ₜ[R] m) i =
@@ -602,7 +602,7 @@ theorem tensorCoordinateContinuousLinearEquiv_tmul_apply (b : Module.Basis ι R 
         (tensorCoordinateLinearEquiv_tmul_apply R C M b c m i)
 
 /-- The continuous coordinates of a tensor generator use the coefficient's basis coordinates. -/
-@[simp]
+@[simp↓]
 theorem tensorCoordinateContinuousLinearEquiv_tensorGenerator_apply (b : Module.Basis ι R C)
     (c : C) (m : M) (i : ι) :
     tensorCoordinateContinuousLinearEquiv R C M b

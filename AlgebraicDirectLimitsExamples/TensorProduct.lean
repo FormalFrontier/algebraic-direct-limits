@@ -10,6 +10,7 @@ public import Mathlib.LinearAlgebra.Basis.Fin
 public import Mathlib.Topology.Instances.Int
 public import Mathlib.Tactic.FinCases
 public import Mathlib.Tactic.NormNum
+public import AlgebraicDirectLimitsExamples.TensorProduct.Coordinates.Applications
 
 /-!
 # Integer-pair tensor generators and boundary cases
