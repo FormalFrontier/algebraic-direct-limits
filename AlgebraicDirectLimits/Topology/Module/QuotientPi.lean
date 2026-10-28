@@ -20,6 +20,10 @@ of submodules with the product of the coordinate quotients, for arbitrary depend
 families over a ring. Both sides have their original quotient and product topologies.
 Only continuity of addition is needed; no separation or closedness is assumed.
 
+`Submodule.quotientProdL` gives the binary equivalence for two modules in independent
+universes, without replacing their carriers or topologies. It commutes with compatible
+semilinear maps through `ContinuousLinearMap.prodMapₛₗ`.
+
 The inverse is continuous because a product of the canonical open quotient maps is
 again an open quotient map. No continuous choice of representatives is used.
 
@@ -120,5 +124,154 @@ theorem quotientPiL_toLinearEquiv (S : ∀ i, Submodule R (M i)) :
   intro x
   induction x using Quotient.induction_on with
   | _ x => rfl
+
+end Submodule
+
+universe uS uM₂ uN₂
+
+namespace ContinuousLinearMap
+
+section
+
+variable {R : Type uR} {S : Type uS} [Semiring R] [Semiring S]
+  {M : Type uM} {N : Type uN} {M₂ : Type uM₂} {N₂ : Type uN₂}
+  [AddCommMonoid M] [AddCommMonoid N] [AddCommMonoid M₂] [AddCommMonoid N₂]
+  [Module R M] [Module R N] [Module S M₂] [Module S N₂]
+  [TopologicalSpace M] [TopologicalSpace N]
+  [TopologicalSpace M₂] [TopologicalSpace N₂] {σ : R →+* S}
+
+/-- The coordinatewise product of two continuous semilinear maps. -/
+def prodMapₛₗ (f : M →SL[σ] M₂) (g : N →SL[σ] N₂) :
+    M × N →SL[σ] M₂ × N₂ where
+  toFun x := (f x.1, g x.2)
+  map_add' x y := congrArg₂ Prod.mk (map_add f x.1 y.1) (map_add g x.2 y.2)
+  map_smul' c x :=
+    congrArg₂ Prod.mk (map_smulₛₗ f c x.1) (map_smulₛₗ g c x.2)
+  cont := (f.continuous.comp continuous_fst).prodMk (g.continuous.comp continuous_snd)
+
+/-- The semilinear product map acts coordinatewise. -/
+@[simp]
+theorem prodMapₛₗ_apply (f : M →SL[σ] M₂) (g : N →SL[σ] N₂) (x : M × N) :
+    f.prodMapₛₗ g x = (f x.1, g x.2) := rfl
+
+/-- The function underlying the semilinear product map is `Prod.map`. -/
+@[simp, norm_cast]
+theorem coe_prodMapₛₗ (f : M →SL[σ] M₂) (g : N →SL[σ] N₂) :
+    ⇑(f.prodMapₛₗ g) = Prod.map f g := rfl
+
+end
+
+section
+
+variable {R : Type uR} [Semiring R]
+  {M : Type uM} {N : Type uN} {M₂ : Type uM₂} {N₂ : Type uN₂}
+  [AddCommMonoid M] [AddCommMonoid N] [AddCommMonoid M₂] [AddCommMonoid N₂]
+  [Module R M] [Module R N] [Module R M₂] [Module R N₂]
+  [TopologicalSpace M] [TopologicalSpace N]
+  [TopologicalSpace M₂] [TopologicalSpace N₂]
+
+/-- At the identity ring homomorphism, the semilinear product is `prodMap`. -/
+@[simp]
+theorem prodMapₛₗ_id (f : M →L[R] M₂) (g : N →L[R] N₂) :
+    f.prodMapₛₗ g = f.prodMap g := by
+  ext x <;> rfl
+
+end
+
+end ContinuousLinearMap
+
+namespace Submodule
+
+variable {R : Type uR} [Ring R] {M : Type uM} {N : Type uN}
+  [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N]
+  [TopologicalSpace M] [TopologicalSpace N]
+  [ContinuousAdd M] [ContinuousAdd N]
+
+/-- The quotient by a product of submodules is continuously linearly equivalent to
+the product of the two quotients, with their original topologies. -/
+noncomputable def quotientProdL (P : Submodule R M) (Q : Submodule R N) :
+    ((M × N) ⧸ P.prod Q) ≃L[R] (M ⧸ P) × (N ⧸ Q) := by
+  let F : M × N →L[R] (M ⧸ P) × (N ⧸ Q) := P.mkQL.prodMap Q.mkQL
+  have hF : IsOpenQuotientMap F :=
+    P.isOpenQuotientMap_mkQL.prodMap Q.isOpenQuotientMap_mkQL
+  have hker : F.ker = P.prod Q :=
+    (LinearMap.ker_prodMap P.mkQ Q.mkQ).trans
+      (congrArg₂ (fun (A : Submodule R M) (B : Submodule R N) => A.prod B)
+        (ker_mkQ P) (ker_mkQ Q))
+  let e : ((M × N) ⧸ P.prod Q) ≃L[R] (M × N) ⧸ F.ker :=
+    { toLinearEquiv := quotEquivOfEq _ _ hker.symm
+      continuous_toFun := by
+        apply (P.prod Q).isQuotientMap_mkQ.continuous_iff.mpr
+        exact F.ker.mkQL.continuous
+      continuous_invFun := by
+        apply F.ker.isQuotientMap_mkQ.continuous_iff.mpr
+        exact (P.prod Q).mkQL.continuous }
+  exact e.trans (F.toLinearMap.quotKerEquivOfIsQuotientMap hF.isQuotientMap)
+
+variable (P : Submodule R M) (Q : Submodule R N)
+
+/-- A pair representative maps to the pair of its coordinate classes. -/
+@[simp]
+theorem quotientProdL_mk (m : M) (n : N) :
+    quotientProdL P Q (Quotient.mk (m, n)) = (Quotient.mk m, Quotient.mk n) := rfl
+
+/-- The inverse sends a pair of representative classes to the class of the pair. -/
+@[simp]
+theorem quotientProdL_symm_mk (m : M) (n : N) :
+    (quotientProdL P Q).symm (Quotient.mk m, Quotient.mk n) = Quotient.mk (m, n) := by
+  rw [← quotientProdL_mk P Q m n, ContinuousLinearEquiv.symm_apply_apply]
+
+/-- The product-quotient equivalence commutes with the canonical quotient maps. -/
+theorem quotientProdL_mkQL :
+    (quotientProdL P Q).toContinuousLinearMap.comp (P.prod Q).mkQL =
+      P.mkQL.prodMap Q.mkQL := by
+  apply ContinuousLinearMap.ext
+  intro x
+  exact quotientProdL_mk P Q x.1 x.2
+
+/-- The underlying linear map is the canonical quotient lift of the product map. -/
+theorem quotientProdL_toLinearMap :
+    (quotientProdL P Q).toLinearEquiv.toLinearMap =
+      (P.prod Q).liftQ (P.mkQ.prodMap Q.mkQ)
+        (((LinearMap.ker_prodMap P.mkQ Q.mkQ).trans
+          (congrArg₂ (fun (A : Submodule R M) (B : Submodule R N) => A.prod B)
+            (ker_mkQ P) (ker_mkQ Q))).ge) := by
+  apply LinearMap.ext
+  intro x
+  induction x using Quotient.induction_on with
+  | _ x => exact quotientProdL_mk P Q x.1 x.2
+
+/-- Values on pair representatives uniquely determine the continuous linear map. -/
+theorem quotientProdL_unique
+    (g : ((M × N) ⧸ P.prod Q) →L[R] (M ⧸ P) × (N ⧸ Q))
+    (hg : ∀ m n, g (Quotient.mk (m, n)) = (Quotient.mk m, Quotient.mk n)) :
+    g = (quotientProdL P Q).toContinuousLinearMap := by
+  apply ContinuousLinearMap.ext
+  intro x
+  induction x using Quotient.induction_on with
+  | _ x => exact (hg x.1 x.2).trans (quotientProdL_mk P Q x.1 x.2).symm
+
+variable {S : Type uS} [Ring S] {M₂ : Type uM₂} {N₂ : Type uN₂}
+  [AddCommGroup M₂] [AddCommGroup N₂] [Module S M₂] [Module S N₂]
+  [TopologicalSpace M₂] [TopologicalSpace N₂]
+  [ContinuousAdd M₂] [ContinuousAdd N₂] {σ : R →+* S}
+
+/-- The binary product-quotient equivalence commutes with compatible semilinear maps.
+The product containment follows from the two coordinate containments. -/
+theorem quotientProdL_naturality
+    (P₂ : Submodule S M₂) (Q₂ : Submodule S N₂)
+    (f : M →SL[σ] M₂) (g : N →SL[σ] N₂)
+    (hf : P ≤ P₂.comap f.toLinearMap) (hg : Q ≤ Q₂.comap g.toLinearMap)
+    (x : (M × N) ⧸ P.prod Q) :
+    quotientProdL P₂ Q₂
+        ((P.prod Q).mapQL (P₂.prod Q₂) (f.prodMapₛₗ g)
+          (fun _z hz => ⟨hf hz.1, hg hz.2⟩) x) =
+      ((P.mapQL P₂ f hf) (quotientProdL P Q x).1,
+       (Q.mapQL Q₂ g hg) (quotientProdL P Q x).2) := by
+  induction x using Quotient.induction_on with
+  | _ x =>
+    rcases x with ⟨m, n⟩
+    rw [quotientProdL_mk P Q m n]
+    exact quotientProdL_mk P₂ Q₂ (f m) (g n)
 
 end Submodule
