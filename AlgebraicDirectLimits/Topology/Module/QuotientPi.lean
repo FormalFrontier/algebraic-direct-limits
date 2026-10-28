@@ -4,6 +4,8 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import AlgebraicDirectLimits.Topology.Module.Quotient
+
 public import Mathlib.LinearAlgebra.Isomorphisms
 public import Mathlib.LinearAlgebra.Quotient.Pi
 public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
@@ -24,7 +26,7 @@ again an open quotient map. No continuous choice of representatives is used.
 ## References
 
 This extends Mathlib’s `Submodule.quotientPi` beyond finite products and commutative
-rings, using `LinearMap.quotKerEquivOfSurjective` and
+rings, using `LinearMap.quotKerEquivOfIsQuotientMap` and
 `IsOpenQuotientMap.piMap` for its algebraic and topological constructions.
 -/
 
@@ -51,18 +53,15 @@ noncomputable def quotientPiL (S : ∀ i, Submodule R (M i)) :
     change (fun i => (S i).mkQ (x i)) = 0 ↔ ∀ i ∈ Set.univ, x i ∈ S i
     simp only [funext_iff, Pi.zero_apply, mkQ_apply, Quotient.mk_eq_zero,
       Set.mem_univ, forall_const]
-  let e := (quotEquivOfEq _ _ hker.symm).trans
-    (Q.toLinearMap.quotKerEquivOfSurjective hQ.surjective)
-  refine { toLinearEquiv := e, continuous_toFun := ?_, continuous_invFun := ?_ }
-  · apply (isQuotientMap_mkQL (pi Set.univ S)).continuous_iff.mpr
-    exact Q.continuous
-  · apply hQ.isQuotientMap.continuous_iff.mpr
-    have h : e.symm ∘ Q = (pi Set.univ S).mkQL := by
-      funext x
-      exact e.symm_apply_apply (Quotient.mk x)
-    change Continuous (e.symm ∘ Q)
-    rw [h]
-    exact (pi Set.univ S).mkQL.continuous
+  let e : ((∀ i, M i) ⧸ pi Set.univ S) ≃L[R] (∀ i, M i) ⧸ Q.ker :=
+    { toLinearEquiv := quotEquivOfEq _ _ hker.symm
+      continuous_toFun := by
+        apply (pi Set.univ S).isQuotientMap_mkQ.continuous_iff.mpr
+        exact Q.ker.mkQL.continuous
+      continuous_invFun := by
+        apply Q.ker.isQuotientMap_mkQ.continuous_iff.mpr
+        exact (pi Set.univ S).mkQL.continuous }
+  exact e.trans (Q.toLinearMap.quotKerEquivOfIsQuotientMap hQ.isQuotientMap)
 
 /-- On a quotient representative, the equivalence takes each coordinate class. -/
 @[simp]

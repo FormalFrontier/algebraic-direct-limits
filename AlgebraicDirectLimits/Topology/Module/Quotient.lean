@@ -9,7 +9,7 @@ public import Mathlib.Topology.Algebra.Module.Equiv
 public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Quotient
 
 /-!
-# Continuous semilinear maps and iterated submodule quotients
+# Continuous semilinear maps and submodule quotients
 
 `Submodule.mapQL` bundles `Submodule.mapQ` as a continuous semilinear map for the
 original quotient topologies. Its continuity follows from the quotient universal
@@ -18,6 +18,11 @@ property, without any continuity assumptions on addition or scalar multiplicatio
 The representative formula and commuting square characterize the induced map.
 The API also records identity, composition, preservation of surjectivity, and the
 quotient-map property for induced maps.
+
+The first isomorphism equivalence identifies the quotient by the kernel of a
+quotient linear map with its codomain. It retains the original topologies and
+Mathlib's underlying algebraic equivalence. Its inverse is continuous by the
+final-topology property, without separation or continuous module operations.
 
 The third isomorphism equivalence identifies an iterated quotient with the quotient
 by the larger submodule. It retains the original quotient topologies and is natural
@@ -217,3 +222,85 @@ theorem quotientQuotientEquivQuotientL_naturality
         ContinuousLinearEquiv.coe_coe, quotientQuotientEquivQuotientL_mk_mk]
 
 end Submodule
+
+namespace LinearMap
+
+variable {R : Type uR} [Ring R] {M : Type uM} {N : Type uN}
+  [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N]
+  [TopologicalSpace M] [TopologicalSpace N]
+
+/-- The first isomorphism equivalence for a quotient linear map, with the original
+quotient and codomain topologies. -/
+noncomputable def quotKerEquivOfIsQuotientMap
+    (f : M →ₗ[R] N) (hf : IsQuotientMap f) : (M ⧸ f.ker) ≃L[R] N := by
+  let e := f.quotKerEquivOfSurjective hf.surjective
+  refine { toLinearEquiv := e, continuous_toFun := ?_, continuous_invFun := ?_ }
+  · apply f.ker.isQuotientMap_mkQ.continuous_iff.mpr
+    exact hf.continuous
+  · apply hf.continuous_iff.mpr
+    have heq : e.symm ∘ f = f.ker.mkQL := by
+      funext x
+      exact e.symm_apply_apply (Submodule.Quotient.mk x)
+    change Continuous (e.symm ∘ f)
+    rw [heq]
+    exact f.ker.mkQL.continuous
+
+variable (f : M →ₗ[R] N) (hf : IsQuotientMap f)
+
+/-- The underlying linear equivalence is the algebraic first isomorphism theorem. -/
+@[simp, norm_cast]
+theorem quotKerEquivOfIsQuotientMap_toLinearEquiv :
+    (f.quotKerEquivOfIsQuotientMap hf).toLinearEquiv =
+      f.quotKerEquivOfSurjective hf.surjective := rfl
+
+/-- A kernel-quotient representative maps to its image under the original map. -/
+@[simp]
+theorem quotKerEquivOfIsQuotientMap_apply_mk (x : M) :
+    f.quotKerEquivOfIsQuotientMap hf (Submodule.Quotient.mk x) = f x := rfl
+
+/-- The inverse sends an image to the class of any of its preimages. -/
+@[simp]
+theorem quotKerEquivOfIsQuotientMap_symm_apply (x : M) :
+    (f.quotKerEquivOfIsQuotientMap hf).symm (f x) = Submodule.Quotient.mk x := by
+  rw [← quotKerEquivOfIsQuotientMap_apply_mk f hf x,
+    ContinuousLinearEquiv.symm_apply_apply]
+
+/-- The first isomorphism equivalence commutes with the kernel quotient map. -/
+theorem quotKerEquivOfIsQuotientMap_mkQL :
+    (f.quotKerEquivOfIsQuotientMap hf).toContinuousLinearMap.comp f.ker.mkQL =
+      ({ toLinearMap := f, cont := hf.continuous } : M →L[R] N) := by
+  ext x
+  exact quotKerEquivOfIsQuotientMap_apply_mk f hf x
+
+/-- Values on representatives uniquely determine the induced continuous linear map. -/
+theorem quotKerEquivOfIsQuotientMap_unique
+    (g : (M ⧸ f.ker) →L[R] N)
+    (hg : ∀ x : M, g (Submodule.Quotient.mk x) = f x) :
+    g = (f.quotKerEquivOfIsQuotientMap hf).toContinuousLinearMap := by
+  ext x
+  induction x using Submodule.Quotient.induction_on with
+  | _ x => exact (hg x).trans (quotKerEquivOfIsQuotientMap_apply_mk f hf x).symm
+
+variable {S : Type uS} [Ring S] {M₂ : Type uT} {N₂ : Type uP}
+  [AddCommGroup M₂] [AddCommGroup N₂] [Module S M₂] [Module S N₂]
+  [TopologicalSpace M₂] [TopologicalSpace N₂] {σ : R →+* S}
+  (g : M₂ →ₗ[S] N₂) (hg : IsQuotientMap g)
+  (α : M →SL[σ] M₂) (β : N →SL[σ] N₂)
+
+/-- The first isomorphism equivalence is natural for compatible semilinear maps.
+The commuting square supplies the containment needed for the quotient map. -/
+theorem quotKerEquivOfIsQuotientMap_naturality
+    (hSquare : β.toLinearMap.comp f = g.comp α.toLinearMap) :
+    (g.quotKerEquivOfIsQuotientMap hg).toContinuousLinearMap.comp
+        (f.ker.mapQL g.ker α
+          ((ker_le_ker_comp f β.toLinearMap).trans_eq
+            ((congrArg ker hSquare).trans (ker_comp α.toLinearMap g)))) =
+      β.comp (f.quotKerEquivOfIsQuotientMap hf).toContinuousLinearMap := by
+  ext x
+  induction x using Submodule.Quotient.induction_on with
+  | _ x =>
+    simp only [ContinuousLinearMap.comp_apply, Submodule.mapQL_apply,
+      ContinuousLinearEquiv.coe_coe, quotKerEquivOfIsQuotientMap_apply_mk]
+    exact (DFunLike.congr_fun hSquare x).symm
+
+end LinearMap
