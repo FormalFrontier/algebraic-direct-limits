@@ -11,6 +11,12 @@ public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Quotient
 /-!
 # Continuous semilinear maps and submodule quotients
 
+`ContinuousLinearMap.liftQ` descends a continuous semilinear map through a
+submodule in its kernel, even when the target is only an additive commutative
+monoid over a semiring. It retains the original module structures and topologies;
+no continuity of module operations is required. Its representative formula,
+projection factorization and uniqueness characterize the map.
+
 `Submodule.mapQL` bundles `Submodule.mapQ` as a continuous semilinear map for the
 original quotient topologies. Its continuity follows from the quotient universal
 property, without any continuity assumptions on addition or scalar multiplication.
@@ -29,6 +35,14 @@ by the larger submodule. It retains the original quotient topologies and is natu
 for continuous semilinear maps preserving the two submodules. The construction bundles
 Mathlib's `Submodule.quotientQuotientEquivQuotient`; both continuity directions
 follow from the quotient universal property.
+
+## Formalization credits
+
+The quotient descent follows Mathlib's quotient-module formalization by
+Johannes Hölzl, Mario Carneiro, Kevin Buzzard and Yury Kudryashov, its additive
+quotient construction by Kevin Buzzard and Patrick Massot (based on work by
+Johannes Hölzl), and its continuous lift by Anatole Dedecker and Sharvil
+Kesarwani.
 -/
 
 @[expose] public section
@@ -36,6 +50,79 @@ follow from the quotient universal property.
 universe uR uS uM uN uT uP
 
 open Topology
+
+namespace ContinuousLinearMap
+
+variable {R : Type uR} {S : Type uS} [Ring R] [Semiring S]
+  {σ : R →+* S} {M : Type uM} {N : Type uN}
+  [AddCommGroup M] [Module R M] [TopologicalSpace M]
+  [AddCommMonoid N] [Module S N] [TopologicalSpace N]
+
+/-- A continuous semilinear map vanishing on `p` descends to the quotient.
+The quotient has its canonical module structure and quotient topology. -/
+def liftQ (f : M →SL[σ] N) (p : Submodule R M) (h : p ≤ f.ker) :
+    M ⧸ p →SL[σ] N where
+  toLinearMap :=
+    { QuotientAddGroup.lift p.toAddSubgroup f.toLinearMap.toAddMonoidHom h with
+      map_smul' := by
+        intro a x
+        refine Submodule.Quotient.induction_on p x ?_
+        intro x
+        exact f.map_smulₛₗ a x }
+  cont := p.isQuotientMap_mkQ.continuous_iff.mpr f.continuous
+
+variable (f : M →SL[σ] N) (p : Submodule R M) (h : p ≤ f.ker)
+
+/-- The descended map takes a quotient representative to its original value. -/
+@[simp]
+theorem liftQ_apply (x : M) :
+    f.liftQ p h (Submodule.Quotient.mk x) = f x := rfl
+
+/-- The function underlying the descended map is the additive quotient lift. -/
+theorem coe_liftQ :
+    ⇑(f.liftQ p h) = QuotientAddGroup.lift p.toAddSubgroup
+      f.toLinearMap.toAddMonoidHom h := rfl
+
+/-- The descended map factors the original map through the quotient projection. -/
+theorem liftQ_mkQL : (f.liftQ p h).comp p.mkQL = f := by
+  apply ContinuousLinearMap.ext
+  intro x
+  exact f.liftQ_apply p h x
+
+/-- Factoring through the quotient projection characterizes the descended map. -/
+theorem liftQ_unique (g : M ⧸ p →SL[σ] N) (hg : g.comp p.mkQL = f) :
+    g = f.liftQ p h := by
+  apply ContinuousLinearMap.ext
+  intro x
+  obtain ⟨x, rfl⟩ := p.mkQ_surjective x
+  exact (DFunLike.congr_fun hg x).trans (f.liftQ_apply p h x).symm
+
+end ContinuousLinearMap
+
+namespace ContinuousLinearMap
+
+variable {R : Type uR} {S : Type uS} [Ring R] [Ring S]
+  {σ : R →+* S} {M : Type uM} {N : Type uN}
+  [AddCommGroup M] [Module R M] [TopologicalSpace M]
+  [AddCommGroup N] [Module S N] [TopologicalSpace N]
+  (f : M →SL[σ] N) (p : Submodule R M) (h : p ≤ f.ker)
+
+/-- With a group target, the underlying semilinear map is `Submodule.liftQ`. -/
+@[simp, norm_cast]
+theorem toLinearMap_liftQ :
+    (f.liftQ p h).toLinearMap = p.liftQ f.toLinearMap h := by
+  apply LinearMap.ext
+  intro x
+  obtain ⟨x, rfl⟩ := p.mkQ_surjective x
+  exact (f.liftQ_apply p h x).trans
+    (p.liftQ_apply f.toLinearMap (h := h) x).symm
+
+/-- With a group target, continuous descent agrees with `Submodule.liftQL`. -/
+theorem liftQ_eq_liftQL : f.liftQ p h = p.liftQL f h := by
+  apply ContinuousLinearMap.coe_injective
+  exact (f.toLinearMap_liftQ p h).trans (p.toLinearMap_liftQL f h).symm
+
+end ContinuousLinearMap
 
 namespace Submodule
 

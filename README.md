@@ -11,6 +11,12 @@ examples and [full module catalogue](GUIDE.md#modules).
 
 ## Headline results
 
+- **Semilinear quotient descent.** A continuous semilinear map from a module
+  over a ring to a module over a semiring descends through any submodule in
+  its kernel, retaining the original module structures and quotient topology.
+  The codomain need only be an additive commutative monoid; continuity of
+  module operations is not assumed. See
+  [Quotient](AlgebraicDirectLimits/Topology/Module/Quotient.lean).
 - **Varying scalars and tensor products.** For compatible semilinear module
   systems over a nonempty directed preorder, the tensor product of the two
   module limits over the varying commutative-semiring limit is equivalent to
