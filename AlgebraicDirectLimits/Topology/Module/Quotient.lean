@@ -4,10 +4,12 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import Mathlib.LinearAlgebra.Isomorphisms
+public import Mathlib.Topology.Algebra.Module.Equiv
 public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Quotient
 
 /-!
-# Continuous semilinear maps between submodule quotients
+# Continuous semilinear maps and iterated submodule quotients
 
 `Submodule.mapQL` bundles `Submodule.mapQ` as a continuous semilinear map for the
 original quotient topologies. Its continuity follows from the quotient universal
@@ -16,6 +18,12 @@ property, without any continuity assumptions on addition or scalar multiplicatio
 The representative formula and commuting square characterize the induced map.
 The API also records identity, composition, preservation of surjectivity, and the
 quotient-map property for induced maps.
+
+The third isomorphism equivalence identifies an iterated quotient with the quotient
+by the larger submodule. It retains the original quotient topologies and is natural
+for continuous semilinear maps preserving the two submodules. The construction bundles
+Mathlib's `Submodule.quotientQuotientEquivQuotient`; both continuity directions
+follow from the quotient universal property.
 -/
 
 @[expose] public section
@@ -106,5 +114,106 @@ theorem mapQL_comp (r : Submodule T P) (g : N →SL[τ] P)
       (q.mapQL r g hg).comp (p.mapQL q f h) := by
   apply ContinuousLinearMap.coe_injective
   exact p.mapQ_comp q r f.toLinearMap g.toLinearMap h hg hc
+
+end Submodule
+
+namespace Submodule
+
+variable {R : Type uR} [Ring R] {M : Type uM}
+  [AddCommGroup M] [Module R M] [TopologicalSpace M]
+
+/-- The third isomorphism theorem for submodule quotients, with their original
+quotient topologies. No continuity of the module operations is required. -/
+def quotientQuotientEquivQuotientL (N P : Submodule R M) (h : N ≤ P) :
+    ((M ⧸ N) ⧸ P.map N.mkQ) ≃L[R] M ⧸ P where
+  toLinearEquiv := N.quotientQuotientEquivQuotient P h
+  continuous_toFun := by
+    apply ((P.map N.mkQ).isQuotientMap_mkQ.comp N.isQuotientMap_mkQ).continuous_iff.mpr
+    change Continuous (fun x : M =>
+      quotientQuotientEquivQuotientAux N P h (Quotient.mk (Quotient.mk x)))
+    have heq : (fun x : M =>
+        quotientQuotientEquivQuotientAux N P h (Quotient.mk (Quotient.mk x))) =
+        P.mkQL := by
+      funext x
+      simpa only [mkQL_apply, mkQ_apply] using
+        quotientQuotientEquivQuotientAux_mk_mk N P h x
+    rw [heq]
+    exact P.mkQL.continuous
+  continuous_invFun := by
+    apply P.isQuotientMap_mkQ.continuous_iff.mpr
+    change Continuous ((P.map N.mkQ).mkQL ∘ N.mkQL)
+    exact (P.map N.mkQ).mkQL.continuous.comp N.mkQL.continuous
+
+variable (N P : Submodule R M) (h : N ≤ P)
+
+/-- The underlying linear equivalence is the algebraic third isomorphism theorem. -/
+@[simp, norm_cast]
+theorem quotientQuotientEquivQuotientL_toLinearEquiv :
+    (N.quotientQuotientEquivQuotientL P h).toLinearEquiv =
+      N.quotientQuotientEquivQuotient P h := rfl
+
+/-- The third isomorphism equivalence sends a double quotient representative to its class. -/
+@[simp]
+theorem quotientQuotientEquivQuotientL_mk_mk (x : M) :
+    N.quotientQuotientEquivQuotientL P h (Quotient.mk (Quotient.mk x)) =
+      Quotient.mk x :=
+  quotientQuotientEquivQuotientAux_mk_mk N P h x
+
+/-- The inverse sends a quotient representative to its double quotient class. -/
+@[simp]
+theorem quotientQuotientEquivQuotientL_symm_mk (x : M) :
+    (N.quotientQuotientEquivQuotientL P h).symm (Quotient.mk x) =
+      Quotient.mk (Quotient.mk x) := by
+  rw [← quotientQuotientEquivQuotientL_mk_mk N P h x,
+    ContinuousLinearEquiv.symm_apply_apply]
+
+/-- The third isomorphism equivalence commutes with the canonical quotient maps. -/
+theorem quotientQuotientEquivQuotientL_mkQL :
+    (N.quotientQuotientEquivQuotientL P h).toContinuousLinearMap.comp
+        ((P.map N.mkQ).mkQL.comp N.mkQL) = P.mkQL := by
+  ext x
+  exact quotientQuotientEquivQuotientL_mk_mk N P h x
+
+/-- Values on common representatives uniquely determine the continuous linear map. -/
+theorem quotientQuotientEquivQuotientL_unique
+    (g : ((M ⧸ N) ⧸ P.map N.mkQ) →L[R] M ⧸ P)
+    (hg : ∀ x : M, g (Quotient.mk (Quotient.mk x)) = Quotient.mk x) :
+    g = (N.quotientQuotientEquivQuotientL P h).toContinuousLinearMap := by
+  ext x
+  induction x using Quotient.induction_on with
+  | _ x =>
+    induction x using Quotient.induction_on with
+    | _ x => exact (hg x).trans (quotientQuotientEquivQuotientL_mk_mk N P h x).symm
+
+variable {S : Type uS} [Ring S] {M₂ : Type uN}
+  [AddCommGroup M₂] [Module S M₂] [TopologicalSpace M₂] {σ : R →+* S}
+
+/-- An induced map on quotients preserves the images of compatible submodules. -/
+theorem map_mkQ_le_comap_mapQL (N₂ P₂ : Submodule S M₂)
+    (f : M →SL[σ] M₂) (hN : N ≤ N₂.comap f.toLinearMap)
+    (hP : P ≤ P₂.comap f.toLinearMap) :
+    P.map N.mkQ ≤ (P₂.map N₂.mkQ).comap (N.mapQL N₂ f hN).toLinearMap := by
+  rintro _ ⟨x, hx, rfl⟩
+  exact ⟨f x, hP hx, rfl⟩
+
+/-- The third isomorphism equivalence is natural for continuous semilinear maps.
+The containment needed for the second quotient map follows from the two original
+submodule containments. -/
+theorem quotientQuotientEquivQuotientL_naturality
+    (N₂ P₂ : Submodule S M₂) (h₂ : N₂ ≤ P₂)
+    (f : M →SL[σ] M₂) (hN : N ≤ N₂.comap f.toLinearMap)
+    (hP : P ≤ P₂.comap f.toLinearMap) :
+    (N₂.quotientQuotientEquivQuotientL P₂ h₂).toContinuousLinearMap.comp
+        ((P.map N.mkQ).mapQL (P₂.map N₂.mkQ) (N.mapQL N₂ f hN)
+          (N.map_mkQ_le_comap_mapQL P N₂ P₂ f hN hP)) =
+      (P.mapQL P₂ f hP).comp
+        (N.quotientQuotientEquivQuotientL P h).toContinuousLinearMap := by
+  ext x
+  induction x using Quotient.induction_on with
+  | _ x =>
+    induction x using Quotient.induction_on with
+    | _ x =>
+      simp only [ContinuousLinearMap.comp_apply, mapQL_apply,
+        ContinuousLinearEquiv.coe_coe, quotientQuotientEquivQuotientL_mk_mk]
 
 end Submodule
