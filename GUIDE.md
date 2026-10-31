@@ -436,6 +436,8 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.TensorCircleModel`](AlgebraicDirectLimitsExamples/TensorCircleModel.lean) | Flat rational coefficients, the usual compact Hausdorff circle and its continuous tensor generator |
 | [`AlgebraicDirectLimitsExamples.TensorCircleClient`](AlgebraicDirectLimitsExamples/TensorCircleClient.lean) | Non-Hausdorff rational-circle tensor, detector and generator laws, a nonzero killed half-angle and combined supporting properties |
 | [`Order.DirectedSystem`](AlgebraicDirectLimits/Order/DirectedSystem.lean) | Constant families with identity transition functions over arbitrary preorders |
+| [`Algebra.Colimit.Zero`](AlgebraicDirectLimits/Algebra/Colimit/Zero.lean) | Canonical zero for function-like hom-types in `Sort`, agreement with the `Type` case and stage formulas for selected zero-preserving maps |
+| [`Data.Finsupp`](AlgebraicDirectLimits/Data/Finsupp.lean) | Exact-support common-stage descent and the canonical finite-support direct-limit equivalence for selected zero-preserving maps |
 | [`RingTheory.DirectLimit`](AlgebraicDirectLimits/RingTheory/DirectLimit.lean) | Constant identity ring-homomorphism systems over arbitrary preorders and nonassociative semirings |
 | [`AlgebraicDirectLimitsTests.Topology.TensorProduct`](tests/AlgebraicDirectLimitsTests/Topology/TensorProduct.lean) | Type contracts for linear continuity, tensor maps, finite-basis coordinates, basis change and preservation properties |
 | [`CofinalSequence`](AlgebraicDirectLimits/CofinalSequence.lean) | Countably cofinal directed indices |

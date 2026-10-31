@@ -21,6 +21,12 @@ examples and [full module catalogue](GUIDE.md#modules).
   including for an empty family, without a separate nonempty-index assumption.
   See [DirectedSystem](AlgebraicDirectLimits/Order/DirectedSystem.lean) and the
   [first-order and paired-matrix examples](AlgebraicDirectLimitsExamples/FiniteRepresentatives.lean).
+- **Finite-support coefficient descent.** Over a nonempty directed preorder,
+  finitely supported functions commute with direct limits of types with zero
+  whose selected transition maps preserve zero. The coefficient index may be
+  arbitrary, and each function has a representative at one stage with exactly
+  the same support. Neither injective transitions nor additive structure are
+  required. See [Finsupp](AlgebraicDirectLimits/Data/Finsupp.lean).
 - **Semilinear quotient descent.** A continuous semilinear map from a module
   over a ring to a module over a semiring descends through any submodule in
   its kernel, retaining the original module structures and quotient topology.

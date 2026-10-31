@@ -6,6 +6,7 @@ module
 
 public import AlgebraicDirectLimits.CofinalSequence
 public import AlgebraicDirectLimits.CofinalGroupCompletion
+public import AlgebraicDirectLimits.Data.Finsupp
 public import AlgebraicDirectLimits.GradedStabilization
 public import AlgebraicDirectLimits.LocalizationPi
 public import AlgebraicDirectLimits.Matrix.Idempotent
@@ -47,7 +48,8 @@ public import AlgebraicDirectLimits.VaryingScalar
 # Algebraic direct limits
 
 Public entry point for directed limits with varying scalars, simultaneous representatives
-of finite families, finite idempotent matrix descent, tensor products, cofinal sequences
+of finite families, finite-support coefficient descent for zero-preserving systems,
+finite idempotent matrix descent, tensor products, cofinal sequences
 and group completions,
 monoidal object classes, graded stabilization, constant identity ring-homomorphism
 systems, Type-valued Mittag--Leffler systems, filtered colimits of simple
