@@ -11,6 +11,11 @@ examples and [full module catalogue](GUIDE.md#modules).
 
 ## Headline results
 
+- **Simultaneous finite-family representatives.** Over a nonempty directed
+  preorder, every finite family in a direct limit of types has representatives
+  at one common stage. Transition maps may be arbitrary function-like maps;
+  neither injectivity nor algebraic structure is needed. See
+  [DirectedSystem](AlgebraicDirectLimits/Order/DirectedSystem.lean).
 - **Semilinear quotient descent.** A continuous semilinear map from a module
   over a ring to a module over a semiring descends through any submodule in
   its kernel, retaining the original module structures and quotient topology.

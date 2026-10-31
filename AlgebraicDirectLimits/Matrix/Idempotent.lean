@@ -6,6 +6,7 @@ module
 
 public import Mathlib.Algebra.Colimit.DirectLimit
 public import Mathlib.Data.Matrix.Mul
+import AlgebraicDirectLimits.Order.DirectedSystem
 import Mathlib.Data.Fintype.Order
 
 /-!
@@ -37,13 +38,11 @@ variable [DirectedSystem R (fun i j h ↦ (f i j h : R i → R j))]
 private theorem exists_matrix_representation {κ : Type uκ} [Finite κ]
     {ν : Type uν} [Finite ν] (p : Matrix κ ν (DirectLimit R f)) :
     ∃ (i : ι) (q : Matrix κ ν (R i)), q.map (NonUnitalRing.of R f i) = p := by
-  classical
-  choose k x hx using fun a b ↦ exists_eq_mk f (p a b)
-  obtain ⟨i, hi⟩ := Finite.exists_le (fun ab : κ × ν ↦ k ab.1 ab.2)
-  refine ⟨i, Matrix.of (fun a b ↦ f (k a b) i (hi (a, b)) (x a b)), ?_⟩
+  obtain ⟨i, q, hq⟩ := exists_eq_mk_of_finite f (fun ab : κ × ν ↦ p ab.1 ab.2)
+  refine ⟨i, Matrix.of (fun a b ↦ q (a, b)), ?_⟩
   ext a b
-  rw [Matrix.map_apply, Matrix.of_apply, NonUnitalRing.of_f]
-  simpa only [NonUnitalRing.of_apply] using (hx a b).symm
+  simpa only [Matrix.map_apply, Matrix.of_apply, NonUnitalRing.of_apply]
+    using (hq (a, b)).symm
 
 variable {κ : Type uκ} [Fintype κ]
 

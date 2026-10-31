@@ -46,8 +46,9 @@ public import AlgebraicDirectLimits.VaryingScalar
 /-!
 # Algebraic direct limits
 
-Public entry point for directed limits with varying scalars, finite idempotent
-matrix descent, tensor products, cofinal sequences and group completions,
+Public entry point for directed limits with varying scalars, simultaneous representatives
+of finite families, finite idempotent matrix descent, tensor products, cofinal sequences
+and group completions,
 monoidal object classes, graded stabilization, constant identity ring-homomorphism
 systems, Type-valued Mittag--Leffler systems, filtered colimits of simple
 rings, spectra of filtered ring colimits, Krull dimension under finite-subset

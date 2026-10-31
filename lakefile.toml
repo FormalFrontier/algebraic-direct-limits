@@ -20,6 +20,7 @@ name = "AlgebraicDirectLimits"
 [[lean_lib]]
 name = "AlgebraicDirectLimitsExamples"
 roots = [
+  "AlgebraicDirectLimitsExamples.FiniteRepresentatives",
   "AlgebraicDirectLimitsExamples.PrimeSpectrumFilteredColimits",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCapture",
   "AlgebraicDirectLimitsExamples.RingTheory.KrullDimension.FiniteCaptureTrace",
