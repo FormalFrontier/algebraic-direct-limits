@@ -10,6 +10,7 @@ public import AlgebraicDirectLimits.Data.Finsupp
 public import AlgebraicDirectLimits.GradedStabilization
 public import AlgebraicDirectLimits.LocalizationPi
 public import AlgebraicDirectLimits.Matrix.Idempotent
+public import AlgebraicDirectLimits.Matrix.ProductDescentSignature
 public import AlgebraicDirectLimits.MittagLeffler
 public import AlgebraicDirectLimits.MonoidalGroupCompletion
 public import AlgebraicDirectLimits.Order.DirectedSystem
