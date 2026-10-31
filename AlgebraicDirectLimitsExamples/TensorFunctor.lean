@@ -99,14 +99,14 @@ theorem tensorLeftFunctor_integerDoubling_monomorphisms :
   let d : integerModule ⟶ integerModule :=
     ConcreteCategory.ofHom (C := TopModuleCat.{0} ℤ)
       (X := integerModule) (Y := integerModule) integerDoubling
-  letI : Module.Free ℤ integerPairCoefficients :=
+  let : Module.Free ℤ integerPairCoefficients :=
     Module.Free.of_basis (Module.Basis.finTwoProd ℤ)
   have hi : Function.Injective integerDoubling := by
     intro x y h
     have h' : (2 : ℤ) * x = 2 * y := by
       simpa [integerDoubling, two_smul, two_mul] using h
     exact mul_left_cancel₀ (by norm_num : (2 : ℤ) ≠ 0) h'
-  haveI hd : Mono d := ConcreteCategory.mono_of_injective d hi
+  have hd : Mono d := ConcreteCategory.mono_of_injective d hi
   exact ⟨hd, TopModuleCat.tensorLeftFunctor_map_injective ℤ integerPairCoefficients d hi,
     Functor.map_mono (TopModuleCat.tensorLeftFunctor ℤ integerPairCoefficients) d⟩
 
@@ -266,9 +266,9 @@ theorem tensorLeftFunctor_modTwo_doubling_boundary :
     exact hx (hi (hzero.trans (map_zero (F.map d).hom).symm))
   refine ⟨hd, hn, ?_⟩
   intro hm
-  letI : Mono (F.map d) := hm
+  let : Mono (F.map d) := hm
   let U : TopModuleCat.{0} ℤ ⥤ ModuleCat.{0} ℤ := forget₂ _ _
-  haveI : U.PreservesMonomorphisms :=
+  have : U.PreservesMonomorphisms :=
     CategoryTheory.preservesMonomorphisms_of_preservesLimitsOfShape U
   exact hn ((ModuleCat.mono_iff_injective (U.map (F.map d))).mp
     (Functor.map_mono U (F.map d)))
