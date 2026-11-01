@@ -11,6 +11,14 @@ examples and [full module catalogue](GUIDE.md#modules).
 
 ## Headline results
 
+- **Finite matrix units.** Over a nonempty directed preorder of semirings
+  with bundled ring-hom transitions, `DirectLimit.matrixUnitsColimitEquiv`
+  identifies the limit of square-matrix unit groups with the matrix units
+  over the coefficient limit. The dimension has `Fintype` and `DecidableEq`
+  and may be empty; transitions need not be injective. See the
+  [matrix-units guide](docs/MatrixUnits.md) and
+  [source module](AlgebraicDirectLimits/Matrix/Units.lean).
+
 - **Simultaneous finite-family representatives.** Over a nonempty directed
   preorder, every finite family in a direct limit of types has representatives
   at one common stage. Transition maps may be arbitrary function-like maps;
@@ -108,8 +116,7 @@ git = "https://github.com/FormalFrontier/algebraic-direct-limits.git"
 rev = "main"
 ```
 
-GitHub `main` contains reviewed releases. Lake resolves the latest release when
-you first add or update the dependency; `lake-manifest.json` retains that commit
+`lake-manifest.json` retains the selected dependency commit
 until the next update. To pin a specific release, replace `main` with its full
 commit from the [public history](https://github.com/FormalFrontier/algebraic-direct-limits).
 

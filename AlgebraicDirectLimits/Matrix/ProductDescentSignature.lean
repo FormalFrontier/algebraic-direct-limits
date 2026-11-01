@@ -17,16 +17,20 @@ even when those products are specified at different stages.
 
 @[expose] public section
 
-universe uι uR uκ uν
+universe uι uR uF uκ uν
 
 namespace DirectLimit
 
 /-- Lift two rectangular factors and both prescribed products to one stage above the two
-parameter stages. The transition maps need not be injective, and the dimensions may be empty. -/
+parameter stages, for a function-like family of nonunital ring homomorphisms.
+The transition maps need not be injective, and the dimensions may be empty. -/
 theorem exists_matrix_products
     {ι : Type uι} [Preorder ι] [IsDirectedOrder ι] [Nonempty ι]
     (R : ι → Type uR) [∀ i, NonUnitalNonAssocSemiring (R i)]
-    (f : ∀ i j, i ≤ j → R i →ₙ+* R j)
+    {F : ∀ ⦃i j : ι⦄, i ≤ j → Type uF}
+    [∀ i j (h : i ≤ j), FunLike (F h) (R i) (R j)]
+    [∀ i j (h : i ≤ j), NonUnitalRingHomClass (F h) (R i) (R j)]
+    (f : ∀ i j (h : i ≤ j), F h)
     [DirectedSystem R (fun i j h ↦ (f i j h : R i → R j))]
     {κ : Type uκ} [Fintype κ] {ν : Type uν} [Fintype ν]
     (i j : ι) (P : Matrix κ κ (R i)) (Q : Matrix ν ν (R j))
