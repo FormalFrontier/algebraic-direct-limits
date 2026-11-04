@@ -27,13 +27,16 @@ hypotheses and is not asserted here.
 
 @[expose] public section
 
-universe uι uR uκ uν
+universe uι uR uF uκ uν
 
 namespace DirectLimit
 
 variable {ι : Type uι} [Preorder ι] [IsDirectedOrder ι] [Nonempty ι]
 variable (R : ι → Type uR) [∀ i, NonUnitalNonAssocSemiring (R i)]
-variable (f : ∀ i j, i ≤ j → R i →ₙ+* R j)
+variable {F : ∀ ⦃i j : ι⦄, i ≤ j → Type uF}
+variable [∀ i j (h : i ≤ j), FunLike (F h) (R i) (R j)]
+variable [∀ i j (h : i ≤ j), NonUnitalRingHomClass (F h) (R i) (R j)]
+variable (f : ∀ i j (h : i ≤ j), F h)
 variable [DirectedSystem R (fun i j h ↦ (f i j h : R i → R j))]
 private theorem exists_matrix_representation {κ : Type uκ} [Finite κ]
     {ν : Type uν} [Finite ν] (p : Matrix κ ν (DirectLimit R f)) :
