@@ -6,6 +6,7 @@ module
 
 public import Mathlib.Basic.Finite.Defs
 public import Mathlib.Order.DirectedInverseSystem
+import AlgebraicDirectLimits.Order.DirectLimit.Pi
 import Mathlib.Data.Fintype.Order
 
 /-!
@@ -120,11 +121,7 @@ The nonempty index assumption is necessary even when the family is empty. -/
 theorem exists_eq_mk_of_finite {α : Type uα} [Finite α]
     (p : α → DirectLimit G f) :
     ∃ (i : ι) (q : α → G i), ∀ a, p a = ⟦⟨i, q a⟩⟧ := by
-  classical
-  choose i x hx using fun a ↦ DirectLimit.exists_eq_mk f (p a)
-  obtain ⟨j, hj⟩ := Finite.exists_le i
-  refine ⟨j, fun a ↦ f (i a) j (hj a) (x a), ?_⟩
-  intro a
-  exact (hx a).trans (DirectLimit.eq_of_le ⟨i a, x a⟩ j (hj a))
+  exact exists_eq_mk_pi (G := fun i (_ : α) ↦ G i)
+    (T := fun {i j} h (_ : α) ↦ T h) (fun i j h _ ↦ f i j h) p
 
 end DirectLimit

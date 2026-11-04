@@ -19,10 +19,14 @@ examples and [full module catalogue](GUIDE.md#modules).
   [matrix-units guide](docs/MatrixUnits.md) and
   [source module](AlgebraicDirectLimits/Matrix/Units.lean).
 
-- **Simultaneous finite-family representatives.** Over a nonempty directed
-  preorder, every finite family in a direct limit of types has representatives
-  at one common stage. Transition maps may be arbitrary function-like maps;
-  neither injectivity nor algebraic structure is needed.
+- **Finite dependent products and representatives.** For directed systems of
+  types over a nonempty directed preorder, `DirectLimit.piEquiv` identifies the
+  limit of a finite dependent product with the product of the coordinate limits.
+  Its forward map is the canonical coordinate comparison `DirectLimit.piMap`.
+  Transition maps may be arbitrary function-like maps and coordinate carriers
+  may be empty; neither injectivity nor algebraic structure is needed. Every
+  finite dependent family of limit elements has representatives at one common
+  stage. See [Pi](AlgebraicDirectLimits/Order/DirectLimit/Pi.lean).
   `DirectLimit.forall_mk_eq_iff_exists` characterizes equality of two finite
   families of quotient classes by equality of their transported functions at
   one common stage. Its `_of_fixed` variant bounds both supplied input stages,

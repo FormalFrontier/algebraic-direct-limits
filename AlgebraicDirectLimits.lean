@@ -14,6 +14,7 @@ public import AlgebraicDirectLimits.Matrix.ProductDescentSignature
 public import AlgebraicDirectLimits.Matrix.Units
 public import AlgebraicDirectLimits.MittagLeffler
 public import AlgebraicDirectLimits.MonoidalGroupCompletion
+public import AlgebraicDirectLimits.Order.DirectLimit.Pi
 public import AlgebraicDirectLimits.Order.DirectedSystem
 public import AlgebraicDirectLimits.PrimeSpectrumFilteredColimits
 public import AlgebraicDirectLimits.RingTheory.DirectLimit
