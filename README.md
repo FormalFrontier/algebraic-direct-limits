@@ -11,6 +11,13 @@ examples and [full module catalogue](GUIDE.md#modules).
 
 ## Headline results
 
+- **Module direct limits as colimits of types.** For a semimodule system over
+  a semiring, indexed by a nonempty directed preorder with decidable equality,
+  the canonical maps into `Module.DirectLimit` form a colimiting cocone of types.
+  Transition maps need not be injective, and the scalar, index and stage
+  universes are independent. See
+  [Module](AlgebraicDirectLimits/Algebra/Colimit/Module.lean).
+
 - **Directed Grothendieck additive groups.** A coherent, jointly surjective
   family of additive maps over a binary-directed index relation induces a
   jointly surjective family on the original Grothendieck additive groups;

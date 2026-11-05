@@ -436,6 +436,7 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`AlgebraicDirectLimitsExamples.TensorCircleModel`](AlgebraicDirectLimitsExamples/TensorCircleModel.lean) | Flat rational coefficients, the usual compact Hausdorff circle and its continuous tensor generator |
 | [`AlgebraicDirectLimitsExamples.TensorCircleClient`](AlgebraicDirectLimitsExamples/TensorCircleClient.lean) | Non-Hausdorff rational-circle tensor, detector and generator laws, a nonzero killed half-angle and combined supporting properties |
 | [`Order.DirectedSystem`](AlgebraicDirectLimits/Order/DirectedSystem.lean) | Constant families with identity transition functions over arbitrary preorders |
+| [`Algebra.Colimit.Module`](AlgebraicDirectLimits/Algebra/Colimit/Module.lean) | Semimodule direct limits as colimiting cocones of types over nonempty directed preorders, with canonical point and legs |
 | [`Algebra.Colimit.Zero`](AlgebraicDirectLimits/Algebra/Colimit/Zero.lean) | Canonical zero for function-like hom-types in `Sort`, agreement with the `Type` case and stage formulas for selected zero-preserving maps |
 | [`Data.Finsupp`](AlgebraicDirectLimits/Data/Finsupp.lean) | Exact-support common-stage descent and the canonical finite-support direct-limit equivalence for selected zero-preserving maps |
 | [`RingTheory.DirectLimit`](AlgebraicDirectLimits/RingTheory/DirectLimit.lean) | Constant identity ring-homomorphism systems over arbitrary preorders and nonassociative semirings |
@@ -492,8 +493,8 @@ lake --wfail build
 
 The default targets in [`lakefile.toml`](lakefile.toml) are the aggregate,
 `AlgebraicDirectLimitsExamples` and [`ReadinessTests`](tests/ReadinessTests.lean),
-which imports the registered standalone clients. Together these targets cover
-37 mathematical leaf modules plus the public aggregate (38 library modules), 34 example modules and seven test modules: 79 local modules in the default source import closure.
+which imports the registered standalone clients. Together these targets build
+the aggregate import closure, the registered examples and standalone clients.
 The coefficient-tensor API includes characteristic identities for concrete Hom, tensor maps, currying, and naturality in algebraic coefficients and continuous targets. The circle library
 modules are imported by the circle clients, not by the public aggregate.
 To check one module or client after the cache succeeds:

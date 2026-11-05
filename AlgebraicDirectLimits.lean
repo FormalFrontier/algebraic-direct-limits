@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import AlgebraicDirectLimits.Algebra.Colimit.Module
 public import AlgebraicDirectLimits.CofinalSequence
 public import AlgebraicDirectLimits.CofinalGroupCompletion
 public import AlgebraicDirectLimits.Data.Finsupp
@@ -51,9 +52,10 @@ public import AlgebraicDirectLimits.VaryingScalar
 /-!
 # Algebraic direct limits
 
-Public entry point for directed limits with varying scalars, simultaneous representatives
-of finite families, finite-support coefficient descent for zero-preserving systems,
-finite idempotent matrix descent, tensor products, cofinal sequences
+Public entry point for directed limits with varying scalars, module direct limits as
+colimits of types, simultaneous representatives of finite families, finite-support
+coefficient descent for zero-preserving systems, finite idempotent matrix descent,
+tensor products, cofinal sequences
 and group completions of directed families,
 monoidal object classes, graded stabilization, constant identity ring-homomorphism
 systems, Type-valued Mittag--Leffler systems, filtered colimits of simple
