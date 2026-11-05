@@ -11,6 +11,17 @@ examples and [full module catalogue](GUIDE.md#modules).
 
 ## Headline results
 
+- **Directed Grothendieck additive groups.** A coherent, jointly surjective
+  family of additive maps over a binary-directed index relation induces a
+  jointly surjective family on the original Grothendieck additive groups;
+  transition identity and composition laws are not needed for this conclusion.
+  Over a directed preorder, if the transitions form a directed system and raw
+  cocone equality is witnessed at a common stage, equality of arbitrary
+  completed images is equivalent to equality at a common completed stage.
+  No cancellation or injectivity of transitions, cocone maps, or canonical
+  completion maps is assumed. See
+  [DirectedGroupCompletion](AlgebraicDirectLimits/DirectedGroupCompletion.lean).
+
 - **Finite matrix units.** Over a nonempty directed preorder of semirings
   with bundled ring-hom transitions, `DirectLimit.matrixUnitsColimitEquiv`
   identifies the limit of square-matrix unit groups with the matrix units
