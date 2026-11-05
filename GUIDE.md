@@ -449,6 +449,7 @@ for arbitrary flat coefficients. Basis change remains a type contract.
 | [`RingTheory.KrullDimension.DirectedUnion`](AlgebraicDirectLimits/RingTheory/KrullDimension/DirectedUnion.lean) | Dimension bound for nonempty inclusion-directed subsemiring unions |
 | [`LocalizationPi`](AlgebraicDirectLimits/LocalizationPi.lean) | Localization and countable products |
 | [`CofinalGroupCompletion`](AlgebraicDirectLimits/CofinalGroupCompletion.lean) | Group completions at cofinal submonoids |
+| [`DirectedGroupCompletion`](AlgebraicDirectLimits/DirectedGroupCompletion.lean) | Joint surjectivity on Grothendieck additive groups from coherent, jointly surjective binary-directed families; common-stage completed equality for directed systems under raw cocone criteria |
 | [`MonoidalGroupCompletion`](AlgebraicDirectLimits/MonoidalGroupCompletion.lean) | Object classes under strong monoidal functors |
 | [`GradedStabilization`](AlgebraicDirectLimits/GradedStabilization.lean) | Graded normalization and kernel criteria |
 
