@@ -182,3 +182,16 @@ formalizing those exact texts or of source-author endorsement. See the
 [full references and credits](GUIDE.md#references-and-credits) and
 [contributors and provenance](docs/CREDITS.md) for attribution details.
 Licensed under [Apache-2.0](LICENSE).
+
+
+## Normalized matrix representatives
+
+A finite rectangular matrix over a directed semiring colimit that is fixed on the left
+and right by matrices from two prescribed stages has a representative at one common
+upper stage satisfying both normalization equations. The normalizing matrices need not
+be idempotent, and the transition maps need not be injective. The result is stated for
+non-unital, non-associative semirings and allows independently indexed, possibly empty
+finite row and column types.
+
+See `AlgebraicDirectLimits.LinearAlgebra.Matrix.NormalizedDescent` and
+`DirectLimit.exists_normalized_matrix`.

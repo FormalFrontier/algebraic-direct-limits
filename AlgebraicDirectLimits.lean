@@ -49,6 +49,8 @@ public import AlgebraicDirectLimits.Topology.TensorAssociativity
 public import AlgebraicDirectLimits.Topology.TensorSeparation
 public import AlgebraicDirectLimits.VaryingScalar
 
+public import AlgebraicDirectLimits.LinearAlgebra.Matrix.NormalizedDescent
+
 /-!
 # Algebraic direct limits
 
